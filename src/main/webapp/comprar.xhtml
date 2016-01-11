@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="template.xhtml"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <style>
+            .colunaEsquerda{text-align: right}
+            .colunaDireita{text-align: left; padding-right: 10px; padding-bottom: 10px; width: 130px}
+        </style>
+        <link rel="stylesheet" href="resources/nivo-themes/default/default.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="resources/css/nivo-slider.css" type="text/css" media="screen" />
+    </h:head>
+    <h:body>
+        <f:view contentType="text/html; charset=UTF-8" encoding="ISO-8859-1" ></f:view>
+        <h:form id="frm">
+
+            <c:if test="#{contextView.pesquisaDaHome}">
+                #{comprarView.buscar()}
+            </c:if>
+
+            <h:outputText value="Procure pelo imóvel que você deseja Comprar!" class="title ui-widget-header ui-corner-all" style="display: block; text-align: center; font-size: 18px; margin-top: 10px; margin-bottom: 10px; padding: 5px;"></h:outputText>
+            <p:panel header="Procure pelo imóvel que você deseja Alugar!" toggleable="true" toggleTitle="Minimize ou maximize está caixa!" rendered="#{visualizarImovelView.entity == null}">
+                <h:panelGrid columns="6" columnClasses="colunaEsquerda,colunaDireita,colunaEsquerda,colunaDireita,colunaEsquerda,colunaDireita" style="100%">
+                    <h:outputLabel value="Tipo Imóvel:"></h:outputLabel>
+                    <p:selectOneMenu value="#{comprarView.imovelVO.tipoImovel}" style="width: 100%">
+                        <f:selectItem itemLabel="Indiferente"></f:selectItem>
+                        <f:selectItems value="#{comprarView.tipoImovelList}" var="tipoImovel" itemValue="#{tipoImovel.id}" itemLabel="#{tipoImovel.nome}"></f:selectItems> 
+                    </p:selectOneMenu>
+                    <h:outputLabel value="Cidade:"></h:outputLabel>
+                    <p:selectOneMenu value="#{comprarView.imovelVO.cidade}" style="width: 100%" valueChangeListener="#{comprarView.alterarBairro}">
+                        <f:selectItem itemLabel="Indiferente"></f:selectItem>
+                        <f:selectItems value="#{comprarView.cidades}"></f:selectItems>
+                        <p:ajax event="change" update=":frm"></p:ajax>
+                    </p:selectOneMenu>
+                    <h:outputLabel value="Bairro:"></h:outputLabel>
+                    <p:selectOneMenu value="#{comprarView.imovelVO.bairro}" style="width: 100%" id="cboBairro">
+                        <f:selectItem itemLabel="Indiferente"></f:selectItem>
+                        <f:selectItems value="#{comprarView.bairros}"></f:selectItems>
+                    </p:selectOneMenu>
+                    <h:outputLabel value="Valor Mínimo:"></h:outputLabel>
+                    <p:spinner stepFactor="10" min="0" value="#{comprarView.imovelVO.valorMinimo}" prefix="R$" size="10" style="width: 100%"></p:spinner>
+                    <h:outputLabel value="Valor Máximo:"></h:outputLabel>
+                    <p:spinner stepFactor="10" min="0" value="#{comprarView.imovelVO.valorMaximo}" prefix="R$" size="9" style="width: 100%"></p:spinner>
+                    <h:outputLabel value="Quartos: "></h:outputLabel>
+                    <p:inputText value="#{comprarView.imovelVO.quartos}" size="2" style="width: 100%"></p:inputText>
+                    <h:outputLabel value="Garagem: "></h:outputLabel>
+                    <p:inputText value="#{comprarView.imovelVO.garagens}" size="2" style="width: 100%"></p:inputText>
+                    <h:outputLabel value="Banheiros: "></h:outputLabel>
+                    <p:inputText value="#{comprarView.imovelVO.banheiros}" converterMessage="Infome apenas números inteiros no campo Banheiros!" size="2" style="width: 100%"></p:inputText>
+                    <h:outputLabel value="Salas: "></h:outputLabel>
+                    <p:inputText value="#{comprarView.imovelVO.salas}" converterMessage="Infome apenas números inteiros no campo Salas!" size="2" style="width: 100%"></p:inputText>
+                    <h:outputLabel value="Armarios de cozinha: "></h:outputLabel>
+                    <p:selectOneMenu value="#{comprarView.imovelVO.armariosCozinha}" style="width: 100%">
+                        <f:selectItem itemLabel="Indiferente"></f:selectItem>
+                        <f:selectItem itemLabel="Sim" itemValue="true"></f:selectItem>
+                        <f:selectItem itemLabel="Não" itemValue="false"></f:selectItem>
+                    </p:selectOneMenu>
+                    <h:outputLabel value="Garda-roupas: "></h:outputLabel>
+                    <p:selectOneMenu value="#{comprarView.imovelVO.guardaRoupas}" style="width: 100%">
+                        <f:selectItem itemLabel="Indiferente"></f:selectItem>
+                        <f:selectItem itemLabel="Sim" itemValue="true"></f:selectItem>
+                        <f:selectItem itemLabel="Não" itemValue="false"></f:selectItem>
+                    </p:selectOneMenu>
+                </h:panelGrid>
+                <h:outputText value="Obs.: Deixe os campos em branco e os valores em 0 para pesquisar tudo!" style="color: #cc0204; display: block"></h:outputText>
+                <p:spacer height="20px"></p:spacer>
+                <h:panelGrid columns="2" width="100%">
+                    <p:commandButton value="Pesquisar" style="width: 450px" actionListener="#{comprarView.buscar}" process=":frm" update=":frm" icon="ui-icon-search"></p:commandButton>
+                    <p:commandButton value="Limpar" onkeydown="javascript:$('frm').reset();" style="width: 450px" actionListener="#{comprarView.limparPesquisa}" update=":frm" icon="ui-icon-trash" ></p:commandButton>
+                </h:panelGrid>
+            </p:panel>
+
+
+            <p:spacer height="20px" width="100%"></p:spacer>
+            <p:button value="Não encontrou o imóvel que procurava? Clique aqui!" onclick="dialogInquilino.show(); return;" style="width: 100%" icon="ui-icon-flag"></p:button>
+            <p:spacer height="20px" width="100%"></p:spacer>
+            <p:dialog widgetVar="dialogInquilino" id="dialogInquilinoId" modal="true" header="Deixa aqui seus dados, vamos procurar um imóvel que atenda suas necessidades!" resizable="false" showEffect="fade" hideEffect="drop" width="500" height="400">
+                <p:messages autoUpdate="true" showDetail="true">
+                    <p:effect type="pulsate" event="load" speed="200" delay="400">  
+                        <f:param name="mode" value="'show'" />
+                    </p:effect> 
+                </p:messages>
+                <h:panelGrid columns="1" width="100%">
+                    <h:outputLabel value="Informe seu nome: "></h:outputLabel>
+                    <p:inputText value="#{inquilinoSiteView.inquilino.nome}" maxlength="100" style="width: 450px"></p:inputText>
+                    <h:outputLabel value="Seu telefone (Informe telefone ou email como preferir): "></h:outputLabel>
+                    <p:inputMask value="#{inquilinoSiteView.inquilino.telefone}" mask="(99) 9999-9999" maxlength="30" size="20"></p:inputMask>
+                    <h:outputLabel value="Seu Email (Informe telefone ou email como preferir): "></h:outputLabel>
+                    <p:inputText value="#{inquilinoSiteView.inquilino.email}" maxlength="150" style="width: 450px"></p:inputText>
+                    <h:panelGroup>
+                        <h:outputLabel value="Descreva o imóvel que você procura!: "></h:outputLabel>
+                        <h:outputText id="contadorLetrasDesc"></h:outputText>
+                    </h:panelGroup>
+                    <p:inputTextarea value="#{inquilinoSiteView.inquilino.descricao}" autoResize="false" maxlength="500" counter="contadorLetrasDesc" style="max-height: 60px; max-width: 450px; min-width: 450px"></p:inputTextarea>
+                </h:panelGrid>
+                <p:commandButton actionListener="#{inquilinoSiteView.salvar}" value="Enviar" style="width: 100%"></p:commandButton>
+            </p:dialog>
+
+
+            <h:panelGroup rendered="#{visualizarImovelView.entity != null}">
+                <div style="width: 100%;">
+                    <div>
+                        <div id="gallery" style="max-width: 600px; max-height: 600px; float: right; box-shadow: 0px 50px 60px -60px #000000; border: 1px solid #AFAFAF; margin-left: 10px; padding: 5px; background-color: #eee">
+                            <h:panelGroup layout="block" styleClass="slider-wrapper theme-default" style=" float: left; margin: 5px;">
+                                <div id="slider" class="nivoSlider">
+                                    <c:forEach items="#{visualizarImovelView.entity.fotoList}" var="foto">
+                                        <p:graphicImage value="imagemServlet?imageName=#{foto.url}" style="margin: 0 auto; max-width: 600px; max-height: 600px;" id="img"/>
+                                    </c:forEach>
+                                    <p:graphicImage value="imagemServlet?imageName=none" style="margin: 0 auto; max-width: 600px; max-height: 600px;" rendered="#{empty visualizarImovelView.entity.fotoList}"/>
+                                </div>
+                            </h:panelGroup>
+                        </div>
+                        <h2>#{visualizarImovelView.entity.tipoImovel.nome}</h2>
+                        <p:spacer height="20px"></p:spacer>
+                        <h:outputText value="Código: #{visualizarImovelView.entity.id}"></h:outputText>
+                        <p:spacer height="20px"></p:spacer>
+                        <h:outputText style="display: block" value="#{visualizarImovelView.entity.descricao}"></h:outputText>
+                        <p:spacer height="20px"></p:spacer>
+                        <h:panelGrid columns="2">
+                            <h:outputText style="font-size: 18px; display: block;padding-right: 10px" value="Valor:"></h:outputText>
+                            <h:outputText style="font-size: 18px; display: block; font-weight: bold; color: forestgreen" value="#{visualizarImovelView.entity.valor}">
+                                <f:convertNumber type="currency" currencyCode="BRL" currencySymbol="R$"></f:convertNumber>
+                            </h:outputText>
+                        </h:panelGrid>
+                        <p:spacer height="20px"></p:spacer>
+                        <h2>Informações detalhadas:</h2>
+                        <p:spacer height="20px"></p:spacer> 
+                        <h:panelGrid columns="2">
+                            <h:outputText value="Quartos: #{visualizarImovelView.entity.quartos}"></h:outputText>
+                            <h:outputText value="Salas: #{visualizarImovelView.entity.salas}"></h:outputText>
+                            <h:outputText value="Banheiros: #{visualizarImovelView.entity.banheiros}"></h:outputText>
+                            <h:outputText value="Garda-roupas: #{visualizarImovelView.entity.guardaroupasEmbutidos?'Sim':'Não'}"></h:outputText>
+                            <h:outputText value="Garagem: #{visualizarImovelView.entity.garagem}"></h:outputText>
+                            <h:outputText value="Armários de cozinha: #{visualizarImovelView.entity.armariosEmbutidos?'Sim':'Não'}"></h:outputText>
+                        </h:panelGrid>
+                        <p:spacer height="20px"></p:spacer>
+                        <h2>Localização:</h2>
+                        <p:spacer height="20px"></p:spacer> 
+                        <h:panelGrid columns="1">
+                            <h:outputText value="Logradouro: #{visualizarImovelView.entity.logradrouro}"></h:outputText>
+                            <h:outputText value="Número: #{visualizarImovelView.entity.numero}"></h:outputText>
+                            <h:outputText value="Complemento: #{visualizarImovelView.entity.complemento}"></h:outputText>
+                            <h:outputText value="Bairro: #{visualizarImovelView.entity.bairro}"></h:outputText>
+                            <h:outputText value="Cidade: #{visualizarImovelView.entity.cidade}"></h:outputText>
+                            <h:outputText value="CEP: #{visualizarImovelView.entity.cep}"></h:outputText>
+                        </h:panelGrid>
+                    </div>
+                    <p:button value="Voltar">
+                        <p:ajax event="click" update=":frm"></p:ajax>
+                    </p:button>
+                    <p:commandButton value="Gostou deste imóvel? Clique aqui!" onclick="dialogEnvioImovel.show()"></p:commandButton>
+                </div>
+            </h:panelGroup>
+
+            <p:dialog widgetVar="dialogEnvioImovel" id="dialogEnvioImovelId" modal="true" header="Envie seus dados que entraremos em contato!" resizable="false" showEffect="fade" hideEffect="drop" width="500" height="400">
+                <p:messages autoUpdate="true" showDetail="true">
+                    <p:effect type="pulsate" event="load" speed="200" delay="400">  
+                        <f:param name="mode" value="'show'" />
+                    </p:effect> 
+                </p:messages>
+                <h:panelGrid columns="1" width="100%">
+                    <h:outputLabel value="Informe seu nome: "></h:outputLabel>
+                    <p:inputText value="#{visualizarImovelView.contato.nome}" maxlength="100" style="width: 450px"></p:inputText>
+                    <h:outputLabel value="Seu telefone (Informe telefone ou email como preferir): "></h:outputLabel>
+                    <p:inputMask value="#{visualizarImovelView.contato.telefone}" mask="(99) 9999-9999" maxlength="30" size="20"></p:inputMask>
+                    <h:outputLabel value="Seu Email (Informe telefone ou email como preferir): "></h:outputLabel>
+                    <p:inputText value="#{visualizarImovelView.contato.email}" maxlength="150" style="width: 450px"></p:inputText>
+                    <h:panelGroup>
+                        <h:outputLabel value="Informe a mesagem deste contato: "></h:outputLabel>
+                        <h:outputText id="contadorLetras"></h:outputText>
+                    </h:panelGroup>
+                    <p:inputTextarea value="#{visualizarImovelView.contato.mensagem}" autoResize="false" maxlength="800" counter="contadorLetras" style="max-height: 60px; max-width: 450px; min-width: 450px"></p:inputTextarea>
+                </h:panelGrid>
+                <p:commandButton actionListener="#{visualizarImovelView.solicitarImovel}" value="Enviar" style="width: 100%">
+                    <f:param name="imovel_id" value="#{visualizarImovelView.entity.id}"></f:param>
+                </p:commandButton>
+            </p:dialog>
+
+            <p:dataGrid value="#{comprarView.entitys}" var="imovel" paginator="true" columns="4" rows="12" rendered="#{visualizarImovelView.entity == null}">
+                <p:column>
+                    <h:link outcome="comprar.jsf?imovel_id=#{imovel.id}" onmouseover="$(this).addClass('ui-state-hover');" onmouseout="$(this).removeClass('ui-state-hover');" style="width: 200px;display: block;text-align: center; text-decoration: none; padding: 5px; background-position-y: 0;" styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+                        <p:graphicImage value="imagemServlet?imageName=#{imovel.urlFotoPrincipal}mini" style="margin: 0 auto; width: 200px" id="img"/>
+                        <h:outputText value="#{imovel.tipoImovel.nome}" style="display: block; font-weight: bold"></h:outputText>
+                        <h:outputText value="#{imovel.descricaoCurta}"></h:outputText>
+                        <h:outputText value="#{imovel.cidade}, #{imovel.bairro}" style="display: block"></h:outputText>
+                        <h:outputText value="#{imovel.valor}" style="display: block">
+                            <f:convertNumber currencyCode="BRL" type="currency" maxFractionDigits="2" minFractionDigits="2"></f:convertNumber>
+                        </h:outputText>
+                    </h:link>
+                </p:column>
+            </p:dataGrid>
+        </h:form>
+        <script type="text/javascript" src="resources/js/jquery.nivo.slider.js"></script>
+        <script type="text/javascript">
+            $(window).load(function() {
+                $('#slider').nivoSlider({
+                    effect: 'sliceDown,sliceDownLeft,sliceUp,sliceUpLeft,sliceUpDown,sliceUpDownLeft,fold,fade', // Specify sets like: 'fold,fade,sliceDown'
+                    slices: 15, // For slice animations
+                    boxCols: 8, // For box animations
+                    boxRows: 4, // For box animations
+                    animSpeed: 600, // Slide transition speed
+                    pauseTime: 4000, // How long each slide will show
+                    startSlide: 0, // Set starting Slide (0 index)
+                    directionNav: true, // Next  Prev navigation
+                    controlNav: false, // 1,2,3... navigation
+                    controlNavThumbs: false, // Use thumbnails for Control Nav
+                    pauseOnHover: true, // Stop animation while hovering
+                    manualAdvance: false, // Force manual transitions
+                    prevText: 'Anterior', // Prev directionNav text
+                    nextText: 'Próximo', // Next directionNav text
+                    randomStart: true, // Start on a random slide
+                    beforeChange: function(){}, // Triggers before a slide transition
+                    afterChange: function(){}, // Triggers after a slide transition
+                    slideshowEnd: function(){}, // Triggers after all slides have been shown
+                    lastSlide: function(){}, // Triggers when last slide is shown
+                    afterLoad: function(){} // Triggers when slider has loaded
+                });
+            });
+        </script>
+    </h:body>
+</ui:composition>
+

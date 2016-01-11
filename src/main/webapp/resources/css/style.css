@@ -1,0 +1,85 @@
+/* CSS Document */
+html{font-family: 'Happy Monkey', cursive; font-size: 0.9em}
+* {margin: 0px; padding: 0px;}
+header{background:url(../imagens/head.jpg) repeat-x; width:100%; height:130px; padding-top: 5px; position: relative}
+
+/*footer{padding-top: 150px}*/
+.rodape {
+	background: url(../imagens/footer.jpg);
+	background-repeat:repeat-x;
+	height: 124px;
+	width: 100%;
+	position: relative;
+	z-index: 9;
+	margin-top: 20px;
+	margin-bottom: -6px;
+	padding-top: 10px;
+	color: #000000;
+        display: inline-block;
+}
+
+.rodape ul {
+	list-style: none;
+	float: left;
+	margin-right: 30px;
+}
+
+.rodape ul li a{
+	transition: all 0.3s ease 0s;
+	-webkit-transition: all 0.3s ease 0s;
+	-moz-transition: all 0.3s ease 0s;
+	cursor: pointer;
+	line-height: 14pt;
+	font-size: 12px;
+	padding: 0px 15px 0px 15px;
+	border-radius: 10px;
+	color: #cc0204;
+        display: block;
+        color: #000;
+        text-decoration: none;
+}
+
+.rodape li:hover a{
+	background: #cc0204;
+	color: #ffffff;
+}
+
+.sombraVertical {
+	background:url(../imagens/sombra_rodape.png);
+	height: 127px;
+	width: 9px;
+	margin-top: -3px;
+	float: left;
+}
+.logoMini{background: url(../imagens/logo.png) no-repeat; height: 54px; width: 145px; background-size: contain; margin-top: 25px}
+
+.sobre p {
+    text-indent: 30px; 
+    line-height: 25px;
+    text-align: justify;
+}
+
+@media(min-width: 1000px){
+    .center {margin: 0 auto;width: 960px;}
+    .btnMenu {display: none;}
+    .menu ul {float: left; margin-top:-2px;height: 30px;list-style:none;line-height:33px;color: #cc0204; display: table;}
+    .menu li {float: left; margin-top:1px;}
+    .menu li:hover a {background: #cc0204; color:#ffffff;cursor: pointer;}
+    .menu a{color: #cc0204; height: 30px; text-decoration: none; display: block; padding-left: 15px;padding-right: 15px; padding-bottom: 4px; border-radius: 20px 20px 0 0; transition: all 0.3s ease-in-out 0s;-webkit-transition: all 0.3s ease-in-out 0s;-moz-transition: all 0.3s ease-in-out 0s;}
+    .sombraMenu{width:100%; height:24px; background: url(../imagens/sombra.png); float: left; margin-top:1px; position:relative;z-index:-1;}
+}
+@media(max-width: 999px){
+    .menu {position: relative; margin-top: 32px;}
+    .btnMenu {display: block;}
+    .menu ul {list-style:none; color: #cc0204; width: 100%; position: absolute; z-index: 999999; background: #eee; display: none}
+    .menu li:hover a {background: #cc0204; color:#ffffff;cursor: pointer;}
+    .menu a{color: #cc0204; height: 30px; text-decoration: none; display: block; padding-left: 15px;padding-right: 15px; padding-bottom: 4px;line-height: 30px;}
+    .overlay{background: black; position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: 99999; opacity: 0.6; display: none;}
+    .cadInquilino{display: none;}
+}
+@media(min-width: 701px){
+    .logo{float: left; background: url(../imagens/logo.png) no-repeat; width:190px; height: 81px;margin-top: 25px}
+}
+@media(max-width: 700px){
+    .logo{background: url(../imagens/logo.png) no-repeat; width:190px; height: 81px; margin: 0 auto;}
+}

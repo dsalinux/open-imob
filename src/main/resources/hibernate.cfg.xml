@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+    
+        <!--Configuracoes kinghost-->
+        <!--    <property name="hibernate.connection.url">jdbc:mysql://mysql.dsadeveloper.com.br/dsadeveloper05</property>
+        <property name="hibernate.connection.username">dsadeveloper05</property>
+        <property name="hibernate.connection.password">571243</property>-->
+    
+        <!--Configuracoes Jelastic-->
+<!--        <property name="hibernate.connection.url">jdbc:mysql://mysql-imperialimoveis.jelastic.websolute.net.br/imperialimoveis</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">LyOvL7nb5q</property>-->
+    
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/imperialimoveis</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">root</property>
+    
+        <property name="hibernate.format_sql">true</property>
+        <property name="hibernate.show_sql">true</property>    
+
+        <property name="hibernate.connection.provider_class">
+            org.hibernate.connection.C3P0ConnectionProvider
+        </property>
+        <property name="hibernate.c3p0.min_size">1</property>
+        <property name="hibernate.c3p0.max_size">20</property>
+        <property name="hibernate.c3p0.timeout">30</property>
+        <property name="hibernate.c3p0.idle_test_period">100</property>
+        <!--<property name="hibernate.hbm2ddl.auto">create</property>-->
+
+
+        <mapping class="br.com.softop.imobiliaria.entity.Banner"/>
+        <mapping class="br.com.softop.imobiliaria.entity.Cliente"/>
+        <mapping class="br.com.softop.imobiliaria.entity.Configuracoes"/>
+        <mapping class="br.com.softop.imobiliaria.entity.Foto"/>
+        <mapping class="br.com.softop.imobiliaria.entity.Imovel"/>
+        <mapping class="br.com.softop.imobiliaria.entity.Inquilino"/>
+        <mapping class="br.com.softop.imobiliaria.entity.Login"/>
+        <mapping class="br.com.softop.imobiliaria.entity.Orientacoes"/>
+        <mapping class="br.com.softop.imobiliaria.entity.TipoImovel"/>
+    
+    </session-factory>
+</hibernate-configuration>

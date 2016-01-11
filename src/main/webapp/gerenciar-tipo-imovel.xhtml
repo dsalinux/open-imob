@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="template-admin.xhtml"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <h:head></h:head>
+    <ui:param name="titulo" value="Gerenciar Clientes"></ui:param>
+    <h:body>
+        <h:form id="frm">
+            <div style="margin-bottom: 10px;">
+                <p:commandButton actionListener="#{tipoImovelView.newRegistre}" update="frm" value="Novo" icon="ui-icon-circle-check"></p:commandButton>
+                <p:commandButton actionListener="#{tipoImovelView.save}" update="frm" value="Salvar" disabled="#{tipoImovelView.currentStateName == 'SEARCH'}" icon="ui-icon-circle-check"></p:commandButton>
+                <p:commandButton actionListener="#{tipoImovelView.search}" update="frm" value="#{tipoImovelView.currentStateName == 'SEARCH'? 'Pesquisar':'Cancelar'}" icon="ui-icon-search"></p:commandButton>
+                <p:commandButton value="Deletar" onclick="confirmationDeleteRegistry.show()" icon="ui-icon-trash" rendered="#{tipoImovelView.currentStateName == 'EDIT' and contextView.login.permissao_.name == 'ADMIN'}"></p:commandButton>
+                <p:confirmDialog message="Tem certeza que deseja remover?" header="Confirmação" severity="alert" widgetVar="confirmationDeleteRegistry">
+                    <p:commandButton id="confirm" icon="ui-icon-trash" value="Sim" update=":frm" onclick="confirmationDeleteRegistry.hide()" actionListener="#{tipoImovelView.delete}" />
+                    <p:commandButton id="decline" icon="ui-icon-arrowreturnthick-1-w" value="Não" onclick="confirmationDeleteRegistry.hide()" type="button" />   
+                </p:confirmDialog>
+            </div>
+            <p:fieldset legend="Informações Básicas" rendered="#{tipoImovelView.currentStateName != 'SEARCH'}">
+                <h:panelGrid columns="1">
+                    <h:outputLabel value="Nome*"/>
+                    <p:inputText value="#{tipoImovelView.entity.nome}" size="50"></p:inputText>
+                </h:panelGrid>
+            </p:fieldset>
+            <p:dataTable value="#{tipoImovelView.entitys}" var="entity" rendered="#{tipoImovelView.currentStateName == 'SEARCH'}" paginator="true" rows="10">
+                <p:column style="width: 20px;"><p:commandLink styleClass="ui-icon ui-icon-pencil" actionListener="#{tipoImovelView.edit(entity)}" update=":frm"></p:commandLink></p:column>
+                <p:column headerText="Nome" filterBy="#{entity.nome}"><h:outputText value="#{entity.nome}"></h:outputText></p:column>
+            </p:dataTable>
+        </h:form>
+    </h:body>
+</ui:composition>
+

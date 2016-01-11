@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="template-admin.xhtml"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <h:head></h:head>
+    <ui:param name="titulo" value="Gerenciar Clientes"></ui:param>
+    <h:body>
+        <h:form id="frm">
+            <div style="margin-bottom: 10px;">
+                <p:commandButton actionListener="#{inquilinoView.newRegistre}" update="frm" value="Novo" icon="ui-icon-circle-check"></p:commandButton>
+                <p:commandButton actionListener="#{inquilinoView.save}" update="frm" value="Salvar" disabled="#{inquilinoView.currentStateName == 'SEARCH'}" icon="ui-icon-circle-check"></p:commandButton>
+                <p:commandButton actionListener="#{inquilinoView.search}" update="frm" value="#{inquilinoView.currentStateName == 'SEARCH'? 'Pesquisar':'Cancelar'}" icon="ui-icon-search"></p:commandButton>
+                <p:commandButton value="Deletar" onclick="confirmationDeleteRegistry.show()" icon="ui-icon-trash" rendered="#{inquilinoView.currentStateName == 'EDIT' and contextView.login.permissao_.name == 'ADMIN'}"></p:commandButton>
+                <p:confirmDialog message="Tem certeza que deseja remover?" header="Confirmação" severity="alert" widgetVar="confirmationDeleteRegistry">
+                    <p:commandButton id="confirm" icon="ui-icon-trash" value="Sim" update=":frm" onclick="confirmationDeleteRegistry.hide()" actionListener="#{inquilinoView.delete}" />
+                    <p:commandButton id="decline" icon="ui-icon-arrowreturnthick-1-w" value="Não" onclick="confirmationDeleteRegistry.hide()" type="button" />   
+                </p:confirmDialog>
+            </div>
+            <p:fieldset legend="Informações Básicas" rendered="#{inquilinoView.currentStateName != 'SEARCH'}" >
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="Nome*"/>
+                    <p:inputText value="#{inquilinoView.entity.nome}" size="50"></p:inputText>
+                    <h:outputLabel value="Telefone:"></h:outputLabel>
+                    <p:inputMask value="#{inquilinoView.entity.telefone}" mask="(99) 9999-9999" maxlength="30" size="20"></p:inputMask>
+                    <h:outputLabel value="Email: "></h:outputLabel>
+                    <p:inputText value="#{inquilinoView.entity.email}" maxlength="150" size="45"></p:inputText>
+                    <h:panelGroup>
+                        <h:outputLabel value="Descrição:"></h:outputLabel>
+                        <h:outputText id="contadorLetras"></h:outputText>
+                    </h:panelGroup>
+                    <p:inputTextarea value="#{inquilinoView.entity.descricao}" counter="contadorLetras" cols="40" rows="4" autoResize="false" maxlength="500" style="height: 120px; max-height: 120px; max-width: 350px"></p:inputTextarea>
+                    <h:panelGroup>
+                        <h:outputLabel value="Observações: "></h:outputLabel>
+                        <h:outputText id="contadorLetrasObs"></h:outputText>
+                    </h:panelGroup>
+                    <p:inputTextarea value="#{inquilinoView.entity.observacoes}" counter="contadorLetrasObs" cols="40" rows="4" autoResize="false" maxlength="300" style="height: 120px; max-height: 120px; max-width: 350px"></p:inputTextarea>
+                    
+                </h:panelGrid>
+            </p:fieldset>
+            <p:dataTable value="#{inquilinoView.entitys}" var="entity" rendered="#{inquilinoView.currentStateName == 'SEARCH'}" paginator="true" rows="10">
+                <p:column style="width: 20px;"><p:commandLink styleClass="ui-icon ui-icon-pencil" actionListener="#{inquilinoView.edit(entity)}" update=":frm"></p:commandLink></p:column>
+                <p:column headerText="Nome" filterBy="#{entity.nome}"><h:outputText value="#{entity.nome}"></h:outputText></p:column>
+                <p:column headerText="Telefone" filterBy="#{entity.telefone}"><h:outputText value="#{entity.telefone}"></h:outputText></p:column>
+                <p:column headerText="Email" filterBy="#{entity.email}"><h:outputText value="#{entity.email}"></h:outputText></p:column>
+                <p:column headerText="Data Cadastro">
+                    <h:outputText value="#{entity.dataCadastro}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"></f:convertDateTime>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="Data Atendimento">
+                    <p:commandButton update=":frm" actionListener="#{inquilinoView.atenderCliente(entity)}" value="#{entity.dataAtendimento == null?'Não atendido':'Atendido'}"></p:commandButton>
+                <h:outputText value="#{entity.dataAtendimento}">
+                    <f:convertDateTime pattern="dd/MM/yyyy"></f:convertDateTime>
+                </h:outputText>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </h:body>
+</ui:composition>
+

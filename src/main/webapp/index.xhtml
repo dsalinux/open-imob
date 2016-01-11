@@ -1,0 +1,155 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="template.xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+<!--                <script type="text/javascript">
+                    $('body').contents().hide();
+                   
+                    $('html').append('<img id="imgload" src="./resources/imagens/load.gif" style="width: 48px; top: 50%; left: 50%; margin-left: -24px; margin-top: -24px; position: fixed;"></img>').show();
+                    var hideDiv = function(){$('body').contents().fadeIn(); $('#imgload').remove()}
+                    var oldLoad = window.onload;
+                    var newLoad = oldLoad ? function(){hideDiv.call(this);oldLoad.call(this);} : hideDiv;
+                    window.onload = newLoad;
+                </script>-->
+        <link rel="stylesheet" href="resources/nivo-themes/default/default.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="resources/css/nivo-slider.css" type="text/css" media="screen" />
+        <style>
+            .banner {width: 600px; margin-bottom: 30px; box-shadow: 0px 50px 60px -60px #000000;}
+            .busca {width: 300px;padding-top: 13px; box-shadow: 0px 50px 60px -60px #000000; font-size: 0.8em}
+        </style>
+
+    </h:head>
+    <h:body>
+        <h:form id="frm">
+            <div class="ui-fluid">
+                
+                <p:panelGrid columns="2" columnClasses="banner,busca" layout="grid" style="margin-bottom: 20px; float: left; width: 100%">
+                    <h:panelGroup layout="block" styleClass="slider-wrapper theme-default" style="width: 600px; height: 300px; float: left; margin-top: 15px; margin-left: 10px;">
+                        <div id="slider" class="nivoSlider">
+                            <c:forEach items="#{contextView.banners}" var="entity">
+                                <img src="imagemServlet?imageName=#{entity.urlImagem}" data-thumb="imagemServlet?imageName=#{entity.urlImagem}" alt="" title="#{(not empty entity.descricao || not empty entity.link)?'#htmlcaption':''}#{(not empty entity.descricao || not empty entity.link)?entity.id:''}"/>
+                            </c:forEach>
+                        </div>
+                        <div style="display: block; visibility: hidden;">
+                            <c:forEach items="#{contextView.banners}" var="entity">
+                                <h:panelGroup layout="block" rendered="#{not empty entity.descricao || not empty link}">
+                                    <div id="htmlcaption#{entity.id}" styleClass="nivo-html-caption">
+                                        <h:outputText value="#{entity.descricao} " rendered="#{not empty entity.descricao}"/> <h:link outcome="#{entity.link}" rendered="#{not empty entity.link}"> Clique para acessar!</h:link>
+                                    </div>
+                                </h:panelGroup>
+                            </c:forEach>
+                        </div>
+                    </h:panelGroup>
+                    <p:panel header="Busca Imóvel">
+                        <h:panelGrid columns="1" style="font-size: 0.9em; width: 100%">
+                            <p:selectOneRadio style="margin: 0 auto; width: 100%" value="#{consultaImovelView.imovel.tipo_}">
+                                <f:selectItem itemLabel="Alugar" itemValue="ALUGUEL"></f:selectItem>
+                                <f:selectItem itemLabel="Comprar" itemValue="VENDA"></f:selectItem>
+                            </p:selectOneRadio>
+                            <h:outputLabel value="Tipo Imóvel:"></h:outputLabel>
+                            <p:selectOneMenu value="#{consultaImovelView.imovel.tipoImovel}" style="width: 100%">
+                                <f:selectItem itemLabel="Indiferente"></f:selectItem>
+                                <f:selectItems value="#{alugarView.tipoImovelList}" var="tipoImovel" itemValue="#{tipoImovel.id}" itemLabel="#{tipoImovel.nome}"></f:selectItems> 
+                            </p:selectOneMenu>
+                            <h:outputLabel value="Cidade:"></h:outputLabel>
+                            <p:selectOneMenu value="#{consultaImovelView.imovel.cidade}" style="width: 100%" valueChangeListener="#{alugarView.alterarBairro}">
+                                <f:selectItem itemLabel="Indiferente"></f:selectItem>
+                                <f:selectItems value="#{alugarView.cidades}"></f:selectItems>
+                                <p:ajax event="change" update=":frm"></p:ajax>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="Bairro:"></h:outputLabel>
+                            <p:selectOneMenu value="#{consultaImovelView.imovel.bairro}" style="width: 100%" id="cboBairro">
+                                <f:selectItem itemLabel="Indiferente"></f:selectItem>
+                                <f:selectItems value="#{alugarView.bairros}"></f:selectItems>
+                            </p:selectOneMenu>
+                            <h:panelGrid columns="3" style="width: 100%">
+                                <h:outputLabel value="Valor Mínimo:"></h:outputLabel>
+                                <h:outputLabel value="Valor Máximo:"></h:outputLabel>
+                                <h:outputLabel></h:outputLabel>
+                                <p:spinner stepFactor="10" min="0" value="#{consultaImovelView.imovel.valorMinimo}" prefix="R$" size="8"></p:spinner>
+                                <p:spinner stepFactor="10" min="0" value="#{consultaImovelView.imovel.valorMaximo}" prefix="R$" size="8"></p:spinner>
+                                <p:commandButton value="Pesquisar" action="#{consultaImovelView.consultar}" icon="ui-icon-search"></p:commandButton>
+                            </h:panelGrid>
+                            <h:outputText value="Informe o cógido para acessar diretamente!"></h:outputText>
+                            <h:panelGrid columns="2">
+                                <p:inputText value="#{contextView.idImovel}" id="idImov">
+                                    <p:ajax event="change" update=":frm"></p:ajax>
+                                </p:inputText>
+                                <h:link id="linkDireto" outcome="visualizarImovel.jsf?imovel_id=#{contextView.idImovel}" rendered="#{contextView.idImovel != null}" onmouseover="$(this).addClass('ui-state-hover');" onmouseout="$(this).removeClass('ui-state-hover');" style="text-align: center; text-decoration: none; padding: 5px; background-position-y: 0;" styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">Ver imóvel</h:link>
+                            </h:panelGrid>
+                        </h:panelGrid>
+                    </p:panel>
+                </p:panelGrid>
+                <h:panelGroup layout="block">
+                    <p:carousel headerText="Procura por aluguel?" style="width: 100%;" responsive="true" rendered="#{not empty alugarView.entitys}" circular="true" value="#{alugarView.entitys}" numVisible="4" var="imovel" autoPlayInterval="8000">
+                        <p:column>
+                            <h:link outcome="alugar.jsf?imovel_id=#{imovel.id}" onmouseover="$(this).addClass('ui-state-hover');" onmouseout="$(this).removeClass('ui-state-hover');" style="width: 200px; height: 300px; display: block;text-align: center; text-decoration: none; padding: 5px; background-position-y: 0;" styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+                                <p:graphicImage value="imagemServlet?imageName=#{imovel.urlFotoPrincipal}mini" style="margin: 0 auto; width: 200px; max-height: 150px;" id="img"/>
+                                <h:outputText value="#{imovel.tipoImovel.nome}" style="display: block; font-weight: bold"></h:outputText>
+                                <h:outputText value="#{imovel.descricaoCurta}"></h:outputText>
+                                <h:outputText value="#{imovel.cidade}, #{imovel.bairro}" style="display: block"></h:outputText>
+                                <h:outputText value="#{imovel.valor}" style="display: block">
+                                    <f:convertNumber currencySymbol="R$" type="currency" maxFractionDigits="2" minFractionDigits="2"></f:convertNumber>
+                                </h:outputText>
+                            </h:link>
+                        </p:column>
+                    </p:carousel>
+                    <p:spacer height="20px" width="100%"></p:spacer>
+                    <p:carousel headerText="Procura comprar!" style="width: 100%" responsive="true" rendered="#{not empty comprarView.entitys}" circular="true" value="#{comprarView.entitys}" var="imovel" numVisible="4" autoPlayInterval="8000">
+                        <p:column>
+                            <h:link outcome="comprar.jsf?imovel_id=#{imovel.id}" onmouseover="$(this).addClass('ui-state-hover');" onmouseout="$(this).removeClass('ui-state-hover');" style="width: 200px; height: 300px; display: block;text-align: center; text-decoration: none; padding: 5px; background-position-y: 0;" styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+                                <p:graphicImage value="imagemServlet?imageName=#{imovel.urlFotoPrincipal}mini" style="margin: 0 auto; width: 200px; max-height: 150px;" id="img"/>
+                                <h:outputText value="#{imovel.tipoImovel.nome}" style="display: block; font-weight: bold"></h:outputText>
+                                <h:outputText value="#{imovel.descricaoCurta}"></h:outputText>
+                                <h:outputText value="#{imovel.cidade}, #{imovel.bairro}" style="display: block"></h:outputText>
+                                <h:outputText value="#{imovel.valor}" style="display: block">
+                                    <f:convertNumber currencyCode="BRL" type="currency" maxFractionDigits="2" minFractionDigits="2"></f:convertNumber>
+                                </h:outputText>
+                            </h:link>
+                        </p:column>
+                    </p:carousel>
+                </h:panelGroup>
+            </div>
+        </h:form>
+    </h:body>
+
+    <script type="text/javascript" src="resources/js/jquery.nivo.slider.js"></script>
+    <script type="text/javascript">
+                            $(window).load(function () {
+                                $('#slider').nivoSlider({
+                                    effect: 'sliceDown,sliceDownLeft,sliceUp,sliceUpLeft,sliceUpDown,sliceUpDownLeft,fold,fade', // Specify sets like: 'fold,fade,sliceDown'
+                                    slices: 15, // For slice animations
+                                    boxCols: 8, // For box animations
+                                    boxRows: 4, // For box animations
+                                    animSpeed: 600, // Slide transition speed
+                                    pauseTime: 5000, // How long each slide will show
+                                    startSlide: 0, // Set starting Slide (0 index)
+                                    directionNav: true, // Next  Prev navigation
+                                    controlNav: false, // 1,2,3... navigation
+                                    controlNavThumbs: false, // Use thumbnails for Control Nav
+                                    pauseOnHover: true, // Stop animation while hovering
+                                    manualAdvance: false, // Force manual transitions
+                                    prevText: 'Anterior', // Prev directionNav text
+                                    nextText: 'Próximo', // Next directionNav text
+                                    randomStart: true, // Start on a random slide
+                                    beforeChange: function () {
+                                    }, // Triggers before a slide transition
+                                    afterChange: function () {
+                                    }, // Triggers after a slide transition
+                                    slideshowEnd: function () {
+                                    }, // Triggers after all slides have been shown
+                                    lastSlide: function () {
+                                    }, // Triggers when last slide is shown
+                                    afterLoad: function () {
+                                    } // Triggers when slider has loaded
+                                });
+                            });
+    </script>
+</ui:composition>
+

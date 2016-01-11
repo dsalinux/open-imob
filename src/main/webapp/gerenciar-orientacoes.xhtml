@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="template-admin.xhtml"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+    </h:head>
+
+    <ui:param name="titulo" value="Gerenciar Orientações"></ui:param>
+
+    <h:form id="frm">
+        <div style="margin-bottom: 10px;">
+            <p:commandButton actionListener="#{orientacoesView.salvar}" update="frm" value="Salvar" icon="ui-icon-circle-check"></p:commandButton>
+            <p:commandButton actionListener="#{orientacoesView.atualizar}" update="frm" value="Atualizar" icon="ui-icon-search"></p:commandButton>
+        </div>
+        <p:fieldset legend="Informações">
+            <p:editor value="#{orientacoesView.orientacoes.texto}" width="930"></p:editor>
+        </p:fieldset>
+        <p:fileUpload fileUploadListener="#{orientacoesView.uploadArquivo}" label="Escolha ou araste a imagem aqui." update=":frm:treeFiles" widgetVar="upimg" multiple="true" auto="true" ></p:fileUpload>
+        <p:tree value="#{orientacoesView.listaArquivos}" var="arq" animate="true" id="treeFiles" selectionMode="single" selection="#{orientacoesView.selecionado}" highlight="true">
+            <p:treeNode expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed">  
+                <h:outputText value="#{arq}"/>  
+            </p:treeNode>
+            <p:treeNode icon="ui-icon-document" type="file">  
+                <h:outputText value="#{arq}"/>  
+            </p:treeNode>
+            <p:ajax event="select" update=":frm" listener="#{orientacoesView.onNodeSelected}"/>
+        </p:tree>
+        
+        <p:dialog id="dialogArquivo" visible="true" header="Copie o código abaixo e cole no documento para disponibilizar para download!" rendered="#{orientacoesView.arquivoVisualizado != null}" closable="fase" resizable="false" width="400">
+            <p:inputText value="$file{#{orientacoesView.arquivoVisualizado.name}}" style="font-size: 20px" transient="true" readonly="true"></p:inputText>
+            <p:spacer height="20px" width="350px"></p:spacer>
+            <h:outputText value="Para renomear o arquivo, altere o nome e clique em renomar!"></h:outputText>
+            <p:inputText value="#{orientacoesView.novoNome}" style="width: 350px"></p:inputText>
+            <p:commandButton icon="ui-icon-pencil" actionListener="#{orientacoesView.renomear}" update=":frm" value="Renomear" rendered="#{orientacoesView.arquivoVisualizado != null}"></p:commandButton>
+            <p:commandButton icon="ui-icon-close" actionListener="#{orientacoesView.fecharVisualizacaoArquivo}" update=":frm" value="Fechar" rendered="#{orientacoesView.arquivoVisualizado != null}"></p:commandButton>
+            <p:commandButton icon="ui-icon-trash" value="Deletar" process=":frm" update=":frm" onclick="javascript:if(confirm('Deseja realmete deletar?'))return true;return false;" actionListener="#{orientacoesView.deletarArquivo}" />
+        </p:dialog>
+    </h:form>
+
+</ui:composition>
+

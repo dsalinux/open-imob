@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="template.xhtml">
+    <ui:param name="titulo" value="Envie-nos uma mensagem que entramos em contato!"></ui:param>
+    <style>
+        .colunaInfo{width: 350px;box-shadow: 0px 50px 60px -60px #000000;}
+        .colunaContato{padding-left: 15px; box-shadow: 0px 50px 60px -60px #000000;}
+    </style>
+    <h:form id="frm">
+        <h:panelGrid columns="2" columnClasses="colunaInfo,colunaContato" style="width: 100%; float: left">
+            <h:panelGroup layout="block" style="float: left;">
+                <h:outputText style="text-align: center; display: block; padding-right: 10px" value="Entre em contato conosco por telefone ou pelo formulário ao lado. Será um prazer lhe atender."></h:outputText>
+                <h:graphicImage library="imagens" name="contato.jpg" style="max-width: 350px;"></h:graphicImage>
+                
+                <p:fieldset legend="Visite-nos">
+                    <a href="http://goo.gl/maps/2dYgE" target="_blank">
+                        <h:graphicImage library="imagens" name="maps.png" style="max-width: 64px; padding-right: 10px; float: right;"></h:graphicImage>
+                    </a>
+                        <p>Praça Coronel Hermógenes, 280</p>
+                        <p>Centro, João Pinheiro-MG</p>
+                        <p>CEP: 38.770-000</p>
+                        <p>Telefone: (38)3561.3866 - Fax: (38)3561.5204</p>
+                </p:fieldset>
+            </h:panelGroup>
+
+            <p:fieldset legend="Preencha os campos e envie-nos uma mensagem!">
+                <h:panelGrid columns="1" style="width: 100%">
+                    <h:outputLabel value="Informe seu nome: "></h:outputLabel>
+                    <p:inputText value="#{contatoView.contato.nome}" maxlength="100" size="45"></p:inputText>
+                    <h:outputLabel value="Seu telefone (Informe telefone ou email como preferir): "></h:outputLabel>
+                    <p:inputMask value="#{contatoView.contato.telefone}" mask="(99) 9999-9999" maxlength="30" size="20"></p:inputMask>
+                    <h:outputLabel value="Seu Email (Informe telefone ou email como preferir): "></h:outputLabel>
+                    <p:inputText value="#{contatoView.contato.email}" maxlength="150" size="45"></p:inputText>
+                    <h:outputLabel value="Informe a mesagem deste contato: "></h:outputLabel>
+                    <h:panelGroup>
+                        <p:inputTextarea value="#{contatoView.contato.mensagem}" cols="40" rows="4" autoResize="false" maxlength="800" style="height: 120px; max-height: 120px; max-width: 350px"></p:inputTextarea>
+                        <h:outputText id="contadorLetras"></h:outputText>
+                    </h:panelGroup>
+                    <h:panelGroup>
+                        <br/>
+                        <p:commandButton actionListener="#{contatoView.enviarMensagem}" value="Enviar Mensagem" id="btnEnviar" update=":frm" style="float: left; width: 100%" icon="ui-icon-mail-closed"></p:commandButton>
+                        <p:blockUI block="frm" trigger="btnEnviar"></p:blockUI>
+
+                        <p:ajaxStatus id="ajaxStatusPanel">  
+                            <f:facet name="start">  
+                                <!--<h:graphicImage value="./resources/images/ajas_load.gif" style="max-width: 24px"/>-->
+                                <h:outputText>Enviando...</h:outputText>
+                            </f:facet>  
+                        </p:ajaxStatus>  
+                    </h:panelGroup>
+                </h:panelGrid>
+            </p:fieldset>
+        </h:panelGrid>
+    </h:form>
+</ui:composition>
+

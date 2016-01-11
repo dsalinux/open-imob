@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="template-admin.xhtml">
+
+    <h:head></h:head>
+    <style>
+        .iconesAtalho {
+            float: left; width: 100px; padding: 10px; height: 100px; margin: 10px;
+        }
+        .iconesAtalho:hover {
+            border-color: skyblue!important;
+            box-shadow: 0px 0px 5px skyblue;
+        }
+        .iconeusuario{
+            background: url(resources/imagens/icone-usuario.png) !important;
+            width: 64px;
+            height: 64px;
+            display: block;
+            position: relative!important;
+            padding-bottom: 5px!important;
+        }
+        .iconecliente{
+            background: url(resources/imagens/icone-cliente.png) !important;
+            width: 64px;
+            height: 64px;
+            display: block;
+            position: relative!important;
+            padding-bottom: 5px!important;
+        }
+        .iconebanner{
+            background: url(resources/imagens/icone-banner.png) !important;
+            width: 64px;
+            height: 64px;
+            display: block;
+            position: relative!important;
+            padding-bottom: 5px!important;
+        }
+        .iconeconfiguracao{
+            background: url(resources/imagens/icone-configuracao.png) !important;
+            width: 64px;
+            height: 64px;
+            display: block;
+            position: relative!important;
+            padding-bottom: 5px!important;
+        }
+        .iconeimovel{
+            background: url(resources/imagens/icone-imovel.png) !important;
+            width: 64px;
+            height: 64px;
+            display: block;
+            position: relative!important;
+            padding-bottom: 5px!important;
+        }
+        .iconeAtalhoRapido {
+            width: 120px; height: 120px; float: left; margin: 10px; padding: 2px;background-position-y: 0!important;
+        }
+        .iconeAtalhoRapido span{
+            right: 0!important;
+            left: 0!important;
+            margin: 0 auto!important;
+            padding: 0!important;
+        }
+    </style>
+    
+    
+    <ui:param name="titulo" value="Menu Acesso Rápido"/>    
+
+    <h:form>
+        <p:commandButton image="iconeusuario" styleClass="iconeAtalhoRapido" value="Gerenciar Usuários" onclick="document.location.href='gerenciar-login.jsf';return false;" rendered="#{contextView.login.permissao_.name == 'ADMIN'}"></p:commandButton>
+        <p:commandButton image="iconecliente" styleClass="iconeAtalhoRapido" value="Gerenciar Clientes" onclick="document.location.href='gerenciar-clientes.jsf';return false;"></p:commandButton>
+        <p:commandButton image="iconebanner" styleClass="iconeAtalhoRapido" value="Gerenciar Banners" onclick="document.location.href='gerenciar-banner.jsf';return false;"></p:commandButton>
+        <p:commandButton image="iconeimovel" styleClass="iconeAtalhoRapido" value="Gerenciar Imóveis" onclick="document.location.href='gerenciar-imovel.jsf';return false;"></p:commandButton>
+        <p:commandButton image="iconeconfiguracao" styleClass="iconeAtalhoRapido" value="Configurções" onclick="document.location.href='gerenciar-configuracao.jsf';return false;"></p:commandButton>
+    </h:form>
+</ui:composition>
+

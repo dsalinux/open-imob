@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link href="./resources/css/default.css" rel="stylesheet" type="text/css" />
+        <link href="./resources/css/cssLayout.css" rel="stylesheet" type="text/css" />
+        <title>Login</title>
+    </h:head>
+    
+    <h:body>
+        <p:dialog modal="true" visible="true" closable="false" draggable="false" appendTo="@(body)" header="#{titulo}" height="220" width="400">
+            <p:messages autoUpdate="true" showDetail="true">
+                <p:effect type="pulsate" event="load" speed="200" delay="400">  
+                </p:effect> 
+            </p:messages>
+            <h:graphicImage library="imagens" name="logo.png" style="float: left; margin-top: 10px"></h:graphicImage>
+            <div style="float: left;">
+                <ui:insert></ui:insert>
+            </div>
+        </p:dialog>
+    </h:body>
+    
+</html>
+

@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="template-admin.xhtml"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <h:head></h:head>
+    <ui:param name="titulo" value="Gerenciar Imóvel"></ui:param>
+    <h:body>
+        <h:form id="frm">
+            <div style="margin-bottom: 10px;">
+                <p:commandButton actionListener="#{gerenciarImovelView.newRegistre}" update="frm" value="Novo" icon="ui-icon-circle-check"></p:commandButton>
+                <p:commandButton actionListener="#{gerenciarImovelView.save}" update="frm" value="Salvar" disabled="#{gerenciarImovelView.currentStateName == 'SEARCH'}" icon="ui-icon-circle-check"></p:commandButton>
+                <p:commandButton actionListener="#{gerenciarImovelView.search}" update="frm" value="#{gerenciarImovelView.currentStateName == 'SEARCH'? 'Pesquisar':'Cancelar'}" icon="ui-icon-search"></p:commandButton>
+                <p:commandButton value="Deletar" onclick="confirmationDeleteRegistry.show()" icon="ui-icon-trash" rendered="#{gerenciarImovelView.currentStateName == 'EDIT' and contextView.login.permissao_.name == 'ADMIN'}"></p:commandButton>
+                <p:confirmDialog message="Tem certeza que deseja remover?" header="Confirmação" severity="alert" widgetVar="confirmationDeleteRegistry">
+                    <p:commandButton id="confirm" icon="ui-icon-trash" value="Sim" update=":frm" onclick="confirmationDeleteRegistry.hide()" actionListener="#{gerenciarImovelView.delete}" />
+                    <p:commandButton id="decline" icon="ui-icon-arrowreturnthick-1-w" value="Não" onclick="confirmationDeleteRegistry.hide()" type="button" />   
+                </p:confirmDialog>
+                <p:commandButton actionListener="#{gerenciarImovelView.ativarDesativar}" update="frm" value="#{gerenciarImovelView.entity.dataDesativacao == null?'Desativar':'Ativar'}" rendered="#{gerenciarImovelView.currentStateName == 'EDIT'}" icon="#{gerenciarImovelView.entity.dataDesativacao == null?'ui-icon-circle-close':'ui-icon-circle-check'}"></p:commandButton>
+            </div>
+            <p:fieldset legend="Informações Básicas" rendered="#{gerenciarImovelView.currentStateName != 'SEARCH'}">
+                <h:panelGrid columns="2">
+                    <h:outputLabel value=""></h:outputLabel>
+                    <p:selectOneRadio value="#{gerenciarImovelView.entity.tipo_}">
+                        <f:selectItem itemValue="ALUGUEL" itemLabel="Aluguel"></f:selectItem>
+                        <f:selectItem itemValue="VENDA" itemLabel="Venda"></f:selectItem>
+                    </p:selectOneRadio>
+                    <h:outputLabel value="Tipo de Imóvel*"></h:outputLabel>
+                    <p:selectOneMenu value="#{gerenciarImovelView.entity.tipoImovel}" converter="#{gerenciarImovelView.tipoImovelConverter}">
+                        <f:selectItems value="#{gerenciarImovelView.tipoImovelList}" var="tipo" itemLabel="#{tipo.nome  }"></f:selectItems>
+                    </p:selectOneMenu>
+                    <h:outputLabel value="Cliente*"></h:outputLabel>
+                    <p:selectOneMenu value="#{gerenciarImovelView.entity.clienteId}" converter="#{gerenciarImovelView.clienteConverter}">
+                        <f:selectItems value="#{gerenciarImovelView.clienteList}" var="cliente" itemLabel="#{cliente.nome}, #{cliente.cpfCnpj}"></f:selectItems>
+                    </p:selectOneMenu>
+                    <h:outputLabel value="Descrição*"/>
+                    <p:inputTextarea value="#{gerenciarImovelView.entity.descricao}" rows="5" cols="40" maxlength="500"></p:inputTextarea>
+                    <h:outputLabel value="Valor*"></h:outputLabel>
+                    <p:spinner value="#{gerenciarImovelView.entity.valor}" prefix="R$"></p:spinner>
+                    <h:outputText value="Área"></h:outputText>
+                    <p:inputText value="#{gerenciarImovelView.entity.area}"></p:inputText>
+                </h:panelGrid>
+            </p:fieldset>
+            <p:fieldset legend="Detalhes do imóvel:" rendered="#{gerenciarImovelView.currentStateName != 'SEARCH'}">
+                <h:panelGrid columns="6">
+                    <h:outputLabel value="Quartos: "></h:outputLabel>
+                    <p:spinner value="#{gerenciarImovelView.entity.quartos}" size="2"></p:spinner>
+                    <h:outputLabel value="Garagem: "></h:outputLabel>
+                    <p:spinner value="#{gerenciarImovelView.entity.garagem}" size="2"></p:spinner>
+                    <h:outputLabel value="Banheiros: "></h:outputLabel>
+                    <p:spinner value="#{gerenciarImovelView.entity.banheiros}" size="2"></p:spinner>
+                    <h:outputLabel value="Salas: "></h:outputLabel>
+                    <p:spinner value="#{gerenciarImovelView.entity.salas}" size="2"></p:spinner>
+                    <h:outputLabel value="Armarios de cozinha: "></h:outputLabel>
+                    <p:selectBooleanButton onLabel="Sim" offLabel="Não" value="#{gerenciarImovelView.entity.armariosEmbutidos}"></p:selectBooleanButton>
+                    <h:outputLabel value="Garda-roupas embutido : "></h:outputLabel>
+                    <p:selectBooleanButton onLabel="Sim" offLabel="Não" value="#{gerenciarImovelView.entity.guardaroupasEmbutidos}"></p:selectBooleanButton>
+                </h:panelGrid>
+            </p:fieldset>
+            <h:outputText></h:outputText>
+            <p:fieldset legend="Endereço do imóvel:" rendered="#{gerenciarImovelView.currentStateName != 'SEARCH'}">
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="CEP: "></h:outputLabel>
+                    <p:inputMask mask="99999-999" value="#{gerenciarImovelView.entity.cep}"></p:inputMask>
+                    
+                    <h:outputLabel value="Logradouro: "></h:outputLabel>
+                    <p:inputText value="#{gerenciarImovelView.entity.logradrouro}" size="50"></p:inputText>
+                    <h:outputLabel value="Número: "></h:outputLabel>
+                    <p:inputText value="#{gerenciarImovelView.entity.numero}"></p:inputText>
+                    <h:outputLabel value="Complemento: "></h:outputLabel>
+                    <p:inputText value="#{gerenciarImovelView.entity.complemento}"></p:inputText>
+                    
+                    <h:outputLabel value="Cidade: " for="acCidade" />  
+                    <p:autoComplete id="acCidade" value="#{gerenciarImovelView.entity.cidade}" effect="drop" maxResults="20" completeMethod="#{gerenciarImovelView.completeCidade}">
+                        <p:ajax event="itemSelect" process=":frm"></p:ajax>
+                    </p:autoComplete> 
+                    
+                    <h:outputLabel value="Bairro: " for="acBairro" />  
+                    <p:autoComplete id="acBairo" value="#{gerenciarImovelView.entity.bairro}" effect="drop" maxResults="20" completeMethod="#{gerenciarImovelView.completeBairro}">  
+                    </p:autoComplete>
+                </h:panelGrid>
+            </p:fieldset>
+            <p:fieldset legend="Fotos do imóvel" rendered="#{gerenciarImovelView.currentStateName != 'SEARCH'}">
+                <p:fileUpload fileUploadListener="#{gerenciarImovelView.uploadImagem}" label="Escolha ou araste a imagem aqui." update=":frm:dataGridFotos" allowTypes="/(\.|\/)(jpe?g|JPE?G)$/" invalidFileMessage="Imagem inválida! Envie imagens no formato JPG ou JPE." invalidSizeMessage="Tamanho de imagem muito grande! Envie imagens com no máximo 400KB." process=":frm" widgetVar="upimg" multiple="true" auto="true" ></p:fileUpload>
+                <p:dataGrid value="#{gerenciarImovelView.entity.fotoList}" var="foto" paginator="true" rows="9" id="dataGridFotos">
+                    <p:panel style="text-align: center; height: 250px">
+                        <f:facet name="header">
+                            <p:commandLink update=":frm" styleClass="ui-icon ui-icon-trash" title="Clique para Desativar do site" style="float: right"></p:commandLink>
+                        </f:facet>
+                        <p:graphicImage value="imagemServlet?imageName=#{foto.url}mini" style="margin: 0 auto;" id="img"/>
+                        <p:overlayPanel for="img" showEvent="mouseover" hideEvent="mouseout">
+                            <p:graphicImage value="imagemServlet?imageName=#{foto.url}" style="margin: 0 auto;" width="300"/>
+                        </p:overlayPanel>
+                    </p:panel>
+                </p:dataGrid>
+            </p:fieldset>
+            <p:dataTable value="#{gerenciarImovelView.entitys}" var="entity" rendered="#{gerenciarImovelView.currentStateName == 'SEARCH'}" paginator="true" rows="10">
+                <p:column style="width: 20px;"><p:commandLink styleClass="ui-icon ui-icon-pencil" actionListener="#{gerenciarImovelView.edit(entity)}" update=":frm"></p:commandLink></p:column>
+                <p:column headerText="Tipo Imóvel" filterBy="#{entity.tipoImovel.nome}"><h:outputText value="#{entity.tipoImovel.nome}"></h:outputText></p:column>
+                <p:column headerText="Tipo negócio" filterBy="#{entity.tipo_.name}"><h:outputText value="#{entity.tipo_.name}"></h:outputText></p:column>
+                <p:column headerText="Cliente" filterBy="#{entity.clienteId.nome}"><h:outputText value="#{entity.clienteId.nome}"></h:outputText></p:column>
+                <p:column headerText="Descrição" filterStyle="width: 200px" filterBy="#{entity.descricao}" filterMatchMode="contains"><h:outputText value="#{entity.descricao}"></h:outputText></p:column>
+                <p:column headerText="Cidade" filterBy="#{entity.cidade}"><h:outputText value="#{entity.cidade}"></h:outputText></p:column>
+                <p:column headerText="Bairro" filterBy="#{entity.bairro}"><h:outputText value="#{entity.bairro}"></h:outputText></p:column>
+            </p:dataTable>
+        </h:form>
+    </h:body>
+</ui:composition>
+

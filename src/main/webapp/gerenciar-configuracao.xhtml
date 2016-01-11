@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="template-admin.xhtml"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+    </h:head>
+    <ui:param name="titulo" value="Gerenciar Configuração"></ui:param>
+    <h:body>
+        <h:form id="frm">
+            <div style="margin-bottom: 10px;">
+                <p:commandButton actionListener="#{configuracoesView.salvar}" update="frm" value="Salvar" icon="ui-icon-circle-check"></p:commandButton>
+                <p:commandButton actionListener="#{configuracoesView.atualizar}" update="frm" value="Atualizar" icon="ui-icon-search"></p:commandButton>
+                <p:commandButton actionListener="#{configuracoesView.testarEnvioDeEmail}" update="frm" value="Teste Envio de Email" icon="ui-icon-mail-closed"></p:commandButton>
+            </div>
+            <p:fieldset legend="Informações">
+                <h:panelGrid columns="1">
+                    <h:outputLabel value="Destinatários*"/>
+                    <p:inputText value="#{configuracoesView.configuracoes.emailsRecebimento}" size="100" id="inputEmails"></p:inputText>
+                    <p:tooltip for="inputEmails" value="Informe a lista de emais que receberão os emails do sistema separadas por vírgula!"></p:tooltip>
+                    <h:outputLabel value="Email Envio*"/>
+                    <p:inputText value="#{configuracoesView.configuracoes.emailEnvio}" size="50"></p:inputText>
+                    <h:outputText value="Senha Envio"></h:outputText>
+                    <p:password id="password" value="#{configuracoesView.senha}"></p:password>
+                </h:panelGrid>
+            </p:fieldset>
+        </h:form>
+    </h:body>
+</ui:composition>
+

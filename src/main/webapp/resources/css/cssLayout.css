@@ -1,0 +1,56 @@
+
+#top {
+    position: fixed;
+    display: block;
+    top: 0px;
+    margin: 0px 0px 10px 0px;
+    z-index: 9999;
+    width: 100%;
+    height: 40px;
+}
+
+#bottom {
+    position: relative;
+    padding: 5px;
+    margin: 10px 0px 0px 0px;
+}
+
+#left {
+    float: left;
+    padding: 5px;
+    width: 150px;
+}
+
+#right {
+    float: right;
+    padding: 5px;
+    width: 150px;
+}
+
+.center_content {
+    position: relative;
+    padding: 15px;
+    margin-top: 70px;
+}
+
+.left_content {
+    padding: 5px;
+    margin-left: 170px;
+}
+
+.right_content {
+    padding: 5px;
+    margin: 0px 170px 0px 170px;
+}
+
+#top a:link:hover, #top a:visited:hover  {
+    font-weight: normal;
+}
+
+.colunaLeft {
+    text-align: left;
+}
+
+.colunaRight {
+    text-align: right;
+}

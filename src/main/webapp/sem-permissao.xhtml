@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:decorate xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns:p="http://primefaces.org/ui"
+             template="template-login.xhtml"
+             xmlns:ui="http://java.sun.com/jsf/facelets"
+             xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <ui:param name="titulo" value="Errro!"></ui:param>
+    <h1 style="float: left;">
+    <h:graphicImage style="float: left; margin-right: 10px" library="imagens" name="logo.jpg"></h:graphicImage>
+        Desculpe mas você não tem permissão para acessar esta tela!</h1>
+    <h:link outcome="index-admin.jsf">Clique aqui para voltar para a pagina inicial</h:link>
+        
+</ui:decorate>
+

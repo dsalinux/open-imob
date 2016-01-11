@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="template-admin.xhtml"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:head></h:head>
+    
+    <ui:param name="titulo" value="Gerenciar Login"/>
+
+    <ui:param name="somenteAdmin" value="true"></ui:param>
+
+    <h:form id="frm">
+
+        <div style="margin-bottom: 10px;">
+            <p:commandButton actionListener="#{gerenciarLoginView.newRegistre}" update="frm" value="Novo" icon="ui-icon-circle-check"></p:commandButton>
+            <p:commandButton actionListener="#{gerenciarLoginView.save}" update="frm" value="Salvar" disabled="#{gerenciarLoginView.currentStateName == 'SEARCH'}" icon="ui-icon-circle-check"></p:commandButton>
+            <p:commandButton actionListener="#{gerenciarLoginView.search}" update="frm" value="#{gerenciarLoginView.currentStateName == 'SEARCH'? 'Pesquisar':'Cancelar'}" icon="ui-icon-search"></p:commandButton>
+            <p:commandButton value="Deletar" onclick="confirmationDeleteRegistry.show()" icon="ui-icon-trash" rendered="#{gerenciarLoginView.currentStateName == 'EDIT'}"></p:commandButton>
+            <p:confirmDialog message="Tem certeza que deseja remover?" header="Confirmação" severity="alert" widgetVar="confirmationDeleteRegistry">
+                <p:commandButton id="confirm" icon="ui-icon-trash" value="Sim" update=":frm" onclick="confirmationDeleteRegistry.hide()" actionListener="#{gerenciarLoginView.delete}" />
+                <p:commandButton id="decline" icon="ui-icon-arrowreturnthick-1-w" value="Não" onclick="confirmationDeleteRegistry.hide()" type="button" />   
+            </p:confirmDialog>  
+        </div>
+
+        <h:panelGrid columns="2" rendered="#{gerenciarLoginView.currentStateName != 'SEARCH'}">
+            <h:outputLabel for="login" value="Nome"></h:outputLabel>
+            <p:inputText id="login" value="#{gerenciarLoginView.entity.login}"></p:inputText>
+            <h:outputLabel for="email" value="Email"></h:outputLabel>
+            <p:inputText id="email" value="#{gerenciarLoginView.entity.email}"></p:inputText>
+            <h:outputLabel for="password" value="Senha"></h:outputLabel>
+            <p:password id="password" value="#{gerenciarLoginView.senha}"></p:password>
+            <h:outputText></h:outputText>
+            <h:panelGroup>
+                <p:selectBooleanCheckbox id="checkAlterar" value="#{gerenciarLoginView.entity.alterarSenha}"></p:selectBooleanCheckbox>
+                <h:outputLabel for="checkAlterar" value="Marque para alterar a Senha no primeiro login"></h:outputLabel>
+            </h:panelGroup>
+            <h:outputLabel for="perfil" value="Perfil de Usuário"></h:outputLabel>
+            <p:selectOneMenu id="perfil" value="#{gerenciarLoginView.entity.permissao_}">
+                <f:selectItem itemLabel="Usuário" itemValue="USER"></f:selectItem>
+                <f:selectItem itemLabel="Administrador" itemValue="ADMIN"></f:selectItem>
+            </p:selectOneMenu>
+        </h:panelGrid>
+
+        <p:dataTable emptyMessage="Nenhum dado para listar." value="#{gerenciarLoginView.entitys}" id="resultSet" var="entity" rendered="#{gerenciarLoginView.currentStateName == 'SEARCH'}">
+            <p:column style="width: 20px;"><p:commandLink styleClass="ui-icon ui-icon-pencil" actionListener="#{gerenciarLoginView.edit(entity)}" update=":frm"></p:commandLink></p:column>
+            <p:column headerText="Nome" sortBy="#{entity.login}"><h:outputText value="#{entity.login}"></h:outputText></p:column>
+            <p:column headerText="Email" sortBy="#{entity.email}"><h:outputText value="#{entity.email}"></h:outputText></p:column>
+        </p:dataTable>
+
+    </h:form>
+</ui:composition>
+

@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:decorate xmlns="http://www.w3.org/1999/xhtml"
+             xmlns:h="http://java.sun.com/jsf/html"
+             xmlns:p="http://primefaces.org/ui"
+             template="template-admin.xhtml"
+             xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:head></h:head>
+    
+    <ui:param name="titulo" value="Sobre o Site/Sistema!"/>
+    <a href="http://www.softop.com.br" style="float: left" target="_blank" title="Softop - Técnologias Inovadoras">
+        <h:graphicImage library="imagens" name="softop.png"></h:graphicImage>
+        <br/>
+        <center>www.softop.com.br</center>
+    </a>
+    <div style="float: left; width: 60%">
+        <p style="font-size: 16px; line-height: 24px;">
+            &ensp;&ensp;&ensp;&ensp;Sistema foi desenvolvido pela empresa Softop - Tecnologias Inovadoras, com recursos web 2.0, para prover recursos de gerenciamento para o site.
+            Criado na linguagem de programação Java com framework JSF e Primefaces.
+        </p>
+        <p style="font-size: 16px; line-height: 24px;">
+            &ensp;&ensp;&ensp;&ensp;Dúvidas e/ou sugestões envie e-mail para dsalinux@gmail.com ou entre em contato pelo telefone (38) 9960-4706.
+        </p>
+    </div>
+    <p:spacer width="100%" height="20px;"></p:spacer>
+    <p:fieldset legend="Recomendações">
+        <ul>
+            <li>Browosers</li>
+            <ul>
+                <li>Mozilla Firefox 14+</li>
+                <li>Internet Explorer 8+</li>
+                <li>Google Chrome 20+</li>
+                <li>Browsers com Webkit</li>    
+            </ul>
+            <li>Computador</li>
+            <ul>
+                <li>Resolução mínima recomendada: 1024x768</li>
+            </ul>
+        </ul>
+    </p:fieldset>
+</ui:decorate>
+
