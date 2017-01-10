@@ -1,5 +1,6 @@
 package br.com.softop.imobiliaria.util;
 
+import br.com.softop.imobiliaria.util.exception.BusinessException;
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -13,60 +14,42 @@ import javax.mail.internet.MimeMessage;
  * @author danilo
  */
 public class MailUtil {
-    
-    public static void sendMail(String[] emailsDest, String nomeDest, String emailRemet, String senhaEmail, String nomeRemet, String assunto, String corpo) {
+
+    public static void sendMail(String[] emailsDest, String nomeDest, String emailRemet, String senhaEmail, String nomeRemet, String assunto, String corpo) throws Exception{
         try {
+            //Passo 1 - Configuar email
             Properties props = System.getProperties();
+            props.put("mail.smtp.port", "587");
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.starttls.enable", "true");
+            props.put("mail.smtp.socketFactory.fallback", "true");
 
-            props.put("mail.smtp.host", "smtp.gmail.com"); 
-//            props.put("mail.smtp.port", "25"); 
-            props.put("mail.debug", "false"); 
-            props.put("mail.smtp.auth", "true"); 
-            props.put("mail.smtp.starttls.enable","true"); 
-            props.put("mail.smtp.EnableSSL.enable","true");
-
-            props.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");   
-            props.setProperty("mail.smtp.socketFactory.fallback", "false");   
-//            props.setProperty("mail.smtp.port", "465");   
-            props.setProperty("mail.smtp.socketFactory.port", "465"); 
-            
-            final String remetente = emailRemet;
-            final String senha = senhaEmail;
-            
-            Authenticator auth = new Authenticator() {
-
-                @Override
-                public PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(remetente, senha);
-                }
-            };
-            
-            Session session = Session.getDefaultInstance(props, auth);
-            MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(emailRemet, nomeRemet));
+            //Passo 2 - recuperar sessao do email
+            Session mailSession = Session.getDefaultInstance(props, null);
+            MimeMessage mailMessage = new MimeMessage(mailSession);
+            mailMessage.setFrom(new InternetAddress(emailRemet, nomeRemet));
             Address[] addresses = new Address[emailsDest.length];
-            for(int i = 0; i < emailsDest.length; i++){
+            for (int i = 0; i < emailsDest.length; i++) {
                 addresses[i] = new InternetAddress(emailsDest[i].toLowerCase().trim());
             }
-            message.addRecipients(Message.RecipientType.TO, addresses);
-            message.setSubject(assunto);
-//            message.setContent(corpo, "text/plain");
-            message.setContent(corpo, "text/html");
-            
-//            // connect to the transport
-//            Transport transport = session.getTransport("smtps");
-//            transport.connect("smtp.gmail.com", 465, "dsalinux@gmail.com", "isolinux571243"); // host, user, password
-//            // send the msg and close the connection
-//            transport.sendMessage(message, message.getAllRecipients());
-//            transport.close();
+            mailMessage.addRecipients(Message.RecipientType.TO, addresses);
+            mailMessage.setSubject(assunto);
+            mailMessage.setContent(corpo, "text/html");
 
-            
-            Transport.send(message);
+            //Passo 3 - Pegar sessao enviar email
+            Transport transport = mailSession.getTransport("smtp");
+
+            // Enter your correct gmail UserID and Password
+            // if you have 2FA enabled then provide App Specific Password
+            transport.connect("smtp.gmail.com", emailRemet, senhaEmail);
+            transport.sendMessage(mailMessage, mailMessage.getAllRecipients());
+            transport.close();
+
         } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(MailUtil.class.getName()).log(Level.SEVERE, null, ex);
+            throw new Exception("Erro ao enviar o email. Desculpe, mas parece que estamos com alguns problemas!");
         } catch (MessagingException ex) {
-            Logger.getLogger(MailUtil.class.getName()).log(Level.SEVERE, null, ex);
+            throw new Exception("Erro ao enviar o email. Desculpe, mas parece que estamos com alguns problemas!");
         }
     }
-    
+
 }

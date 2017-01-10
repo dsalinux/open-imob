@@ -25,7 +25,7 @@
 
             <h:outputText value="Procure pelo imóvel que você deseja Comprar!" class="title ui-widget-header ui-corner-all" style="display: block; text-align: center; font-size: 18px; margin-top: 10px; margin-bottom: 10px; padding: 5px;"></h:outputText>
             <p:panel header="Procure pelo imóvel que você deseja Alugar!" toggleable="true" toggleTitle="Minimize ou maximize está caixa!" rendered="#{visualizarImovelView.entity == null}">
-                <h:panelGrid columns="6" columnClasses="colunaEsquerda,colunaDireita,colunaEsquerda,colunaDireita,colunaEsquerda,colunaDireita" style="100%">
+                <h:panelGrid columns="6" columnClasses="colunaEsquerda,colunaDireita,colunaEsquerda,colunaDireita,colunaEsquerda,colunaDireita" >
                     <h:outputLabel value="Tipo Imóvel:"></h:outputLabel>
                     <p:selectOneMenu value="#{comprarView.imovelVO.tipoImovel}" style="width: 100%">
                         <f:selectItem itemLabel="Indiferente"></f:selectItem>

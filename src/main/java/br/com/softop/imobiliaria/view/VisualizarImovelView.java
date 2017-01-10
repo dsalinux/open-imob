@@ -6,10 +6,10 @@ package br.com.softop.imobiliaria.view;
 
 import br.com.softop.imobiliaria.entity.Imovel;
 import br.com.softop.imobiliaria.entity.vo.ContatoVO;
+import br.com.softop.imobiliaria.logic.ImovelLogic;
 import br.com.softop.imobiliaria.logic.impl.ContatoLogicImpl;
 import br.com.softop.imobiliaria.logic.impl.ImovelLogicImpl;
 import br.com.softop.imobiliaria.util.exception.BusinessException;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -17,41 +17,39 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author danilo
  */
+@Component
 @RequestScoped
 @ManagedBean
 public class VisualizarImovelView extends JSFUtil {
 
+    private static final long serialVersionUID = -7732876875307617604L;
+
     private Imovel entity = null;
     private ContatoVO contato = new ContatoVO();
+    private Integer imovelId;
+
+    @Autowired
+    private ImovelLogic imovelLogic;
 
     @PostConstruct
     public void init() {
-        try {
-            Integer id;
-            id = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("imovel_id"));
-            if (id != null) {
-                buscarPeloId(id);
-            }
-        } catch (NumberFormatException ex) {
-        }
+        imovelLogic = new ImovelLogicImpl();
     }
 
     public void solicitarImovel() {
         try {
-            try {
-                Integer id;
-                id = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("imovel_id"));
-                if (id != null) {
-                    buscarPeloId(id);
-                }
-            } catch (NumberFormatException ex) {
+            Imovel imv = null;
+            if (imovelId != null) {
+                imv = imovelLogic.findById(imovelId);
             }
-            new ContatoLogicImpl().solicitarImovel(entity, contato);
+            new ContatoLogicImpl().solicitarImovel(imv, contato);
             addMessage(FacesMessage.SEVERITY_INFO, "Mensagem enviada com sucesso! Aguarde o contato de nossos consultores!");
         } catch (BusinessException ex) {
             addMessage(FacesMessage.SEVERITY_WARN, ex.getMessage());
@@ -63,10 +61,13 @@ public class VisualizarImovelView extends JSFUtil {
     }
 
     public void buscarPeloId(Integer id) {
-        entity = new ImovelLogicImpl().findById(id);
+        entity = imovelLogic.findById(id);
     }
 
     public Imovel getEntity() {
+        if (imovelId != null && entity == null) {
+            buscarPeloId(imovelId);
+        }
         return entity;
     }
 
@@ -80,6 +81,14 @@ public class VisualizarImovelView extends JSFUtil {
 
     public void setContato(ContatoVO contato) {
         this.contato = contato;
+    }
+
+    public Integer getImovelId() {
+        return imovelId;
+    }
+
+    public void setImovelId(Integer imovelId) {
+        this.imovelId = imovelId;
     }
 
 }

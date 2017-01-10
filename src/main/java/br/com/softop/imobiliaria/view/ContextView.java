@@ -8,10 +8,13 @@ import java.util.Calendar;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
+import org.springframework.stereotype.Controller;
 
 /**
  * @author danilo
  */
+@Controller
 @RequestScoped
 @ManagedBean
 public class ContextView extends JSFUtil {
@@ -43,7 +46,7 @@ public class ContextView extends JSFUtil {
     }
 
     public void deslogar() {
-        Context.setLogin(null);
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
     }
 
     public List<Banner> getBanners() {

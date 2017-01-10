@@ -7,11 +7,13 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author danilo
  */
+@Service
 public class HibernateClienteDAO extends HibernateGenericDAO<Cliente, Integer> implements ClienteDAO {
  
     @Override

@@ -13,4 +13,6 @@ public interface ImovelDAO extends GenericDAO<Imovel, Integer> {
     List<String> buscarCidades(String nome);
     List<String> buscarBairros(String cidade, String bairro);
     List<Imovel> buscarAtivosPorFiltro(ImovelVO imovelVO);
+    List<Imovel> buscarAtivosDestaquer();
+    List<Imovel> buscarTodos(boolean todos);
 }

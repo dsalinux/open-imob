@@ -18,7 +18,7 @@
     <h:body>
         <f:view contentType="text/html; charset=UTF-8" encoding="ISO-8859-1" ></f:view>
         <h:form id="frm">
-
+            #{visualizarImovelView.init()}
             <h:panelGroup rendered="#{visualizarImovelView.entity != null}">
                 <div style="width: 100%;">
                     <div>
@@ -49,7 +49,7 @@
                         <h2>Informações detalhadas:</h2>
                         <p:spacer height="20px"></p:spacer> 
                         <h:panelGrid columns="2">
-                            <h:outputText value="Quartos: #{visualizarImovelView.entity.quartos}"></h:outputText>
+                            <h:outputText value=" Quartos: #{visualizarImovelView.entity.quartos}"></h:outputText>
                             <h:outputText value="Salas: #{visualizarImovelView.entity.salas}"></h:outputText>
                             <h:outputText value="Banheiros: #{visualizarImovelView.entity.banheiros}"></h:outputText>
                             <h:outputText value="Garda-roupas: #{visualizarImovelView.entity.guardaroupasEmbutidos?'Sim':'Não'}"></h:outputText>

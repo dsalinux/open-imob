@@ -1,96 +1,76 @@
-<?xml version='1.0' encoding='UTF-8' ?> 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:c="http://java.sun.com/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <h:head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <link href="./resources/css/default.css" rel="stylesheet" type="text/css" />
-        <link href="./resources/css/cssLayout.css" rel="stylesheet" type="text/css" />
-        <title>Imobiliária</title>
+        <f:facet name="first">
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+        </f:facet>
+
+        <title>#{not empty configuracoesView.configuracoes.nomeImobiliaria?configuracoesView.configuracoes.nomeImobiliaria:'Imobiliária'} - Administração</title>
+
+        <h:outputStylesheet library="dsatheme" name="styles/custom.css" />
+        <h:outputStylesheet library="dsatheme" name="styles/layout.css" />
+        <h:outputStylesheet library="dsatheme" name="styles/components.css" />
+
+        <h:outputScript target="body" library="primefaces" name="jquery/jquery.js" />
+        <h:outputScript target="body" library="dsatheme" name="javascripts/app.js" />
+        <h:outputScript target="body" library="dsatheme" name="javascripts/jquery.slimscroll.min.js" />
     </h:head>
-    <style>
-        .menuItem span{font-weight: normal!important;}
-    </style>
+
     <h:body>
-        <p:dialog height="55" width="200" widgetVar="dialogAjax" visible="false" modal="true" draggable="false" closable="false" resizable="false" showHeader="false" appendTo="@(body)">
-            <h:panelGrid columns="2" columnClasses="columnEsquerda, columnDireita">
-                <h:graphicImage value="./resources/imagens/load.gif" style="width: 48px; margin-right: 10px;"/>
-                <h:outputText style="float: right; vertical-align: middle; font-weight: bold; border: none; background: none;-moz-box-shadow: inset 0px 0px 0px #fff;-webkit-box-shadow: inset 0px 0px 0px white;box-shadow: inset 0px 0px 0px white;" styleClass="ui-state-default" value="Processando!"></h:outputText>
-            </h:panelGrid>
-        </p:dialog>
-        <p:ajaxStatus onstart="PF('dialogAjax').show()" oncomplete="PF('dialogAjax').hide()" onerror="PF('dialogAjax').hide()" onsuccess="PF('dialogAjax').hide()" id="ajaxStatusPanel"> 
-        </p:ajaxStatus> 
-        
-        <c:if test="#{contextView.login == null}">
+
+        <c:if test="#{!loginView.loggado}">
             #{loginView.redirecionarLogin()}
         </c:if>
-        <c:if test="#{contextView.login != null and somenteAdmin and contextView.login.permissao_.name != 'ADMIN'}">
+        <c:if test="#{loginView.loggado and somenteAdmin and loginView.usuarioLogado.permissao_.name != 'ADMIN'}">
             #{loginView.redirecionarPermissao()}
         </c:if>
-
-        <div id="top" class="top ui-menu ui-menubar ui-widget ui-widget-content ui-corner-all ui-helper-clearfix" style="background-position-y: 50%">
-            <h:form id="frmTemp">
-                <p:menubar style="z-index: 999999; float: right; background: none; border: none; margin-right: 10px">
-                    <p:menuitem value="Ir para Site" icon="ui-icon-home" ajax="false" url="index.jsf"></p:menuitem>
-                </p:menubar>
-                <div style="float: right; line-height: 40px;">
-                    <p:separator style="float: right; width: 2px; height: 38px"></p:separator>
-                    <h:outputText value="#{contextView.mensagemLogado}" style="padding-right: 10px;"></h:outputText>
+        <h:form>
+            <header class="dsa-topbar">
+                <div class="logo">
+                    <h:graphicImage rendered="#{not empty configuracoesView.configuracoes.logo}" value="#{facesContext.externalContext.contextName}/imagemServlet?imageName=#{configuracoesView.configuracoes.logo}" style="max-height: 40px"></h:graphicImage>
+                    <h:graphicImage rendered="#{empty configuracoesView.configuracoes.logo}" library="images" name="logoimb.png"  style="max-height: 40px"></h:graphicImage>
                 </div>
-                <div class="ui-widget ui-widget-header ui-corner-all" style="width: 120px; height: 60px; position: fixed; top: 5px; left: 10px;">
-                    <div style="width: 110px; height: 50px; margin-top: 5px; margin-left: 5px; text-align: center; background-color: #fff">
-                        <img src="resources/imagens/logo-mini.jpg" style="max-width: 100px; max-height: 50px;"></img>
-                    </div>
-                </div>
-                <p:menubar style="background: none; margin-left: 160px; border: none;" styleClass="menuItem" id="menuBarSistema">
-                    <p:menuitem value="Início" icon="ui-icon-home" url="index-admin.jsf"></p:menuitem>
-                    <p:submenu label="Gerenciar" >
-                        <p:menuitem value="Usuários" url="gerenciar-login.jsf" rendered="#{contextView.login.permissao_.name == 'ADMIN'}"></p:menuitem>
-                        <p:menuitem value="Clientes" url="gerenciar-clientes.jsf"></p:menuitem>
-                        <p:menuitem value="Tipo de Imóvel" url="gerenciar-tipo-imovel.jsf"></p:menuitem>
-                        <p:menuitem value="Inquilino" url="gerenciar-inquilino.jsf"></p:menuitem>
-                        <p:menuitem value="Imóvel" url="gerenciar-imovel.jsf"></p:menuitem>
-                        <p:menuitem value="Banner" url="gerenciar-banner.jsf"></p:menuitem>
-                        <p:menuitem value="Orientações" url="gerenciar-orientacoes.jsf"></p:menuitem>
-                        <p:menuitem value="Configurções" url="gerenciar-configuracao.jsf"></p:menuitem>
-                    </p:submenu>
-                    <p:submenu label="Ajuda" icon="ui-icon-help" id="submen">
-                        <p:menuitem value="Sobre" url="about-developer.jsf"></p:menuitem>
-                    </p:submenu>
-                    <p:menuitem value="Sair" icon="ui-icon-close" ajax="false" action="#{contextView.deslogar()}"></p:menuitem>
-                </p:menubar>
 
-            </h:form>
-        </div>
-        <div id="content" class="center_content">
-            <p:messages autoUpdate="true" showDetail="true" >
-                <p:effect type="pulsate" event="load" speed="200" delay="400">  
-                    <f:param name="mode" value="'show'" />  
-                </p:effect> 
-            </p:messages>
-            <p:fieldset legend="#{titulo}">
+                <div class="dsa-item-bar-left">
+                    <a href="#" class="dsa-toggle  js-toggle"><i class="fa  fa-bars"></i></a>
+                </div>
+                <div class="dsa-item-bar-right">
+                    <a href="#{facesContext.externalContext.applicationContextPath}/home" title="Ir para o site" class="dsa-toggle"><i class="fa  fa-home"></i></a>
+                </div>
+                <!--                <div class="dsa-item-bar-right">
+                                    <a href="#" class="dsa-toggle"><i class="fa  fa-user"></i> #{contextView.login.login.split(' ')[0]}</a>
+                                </div>-->
+            </header>
+
+            <aside class="dsa-sidebar  js-sidebar">
+                <ui:include src="menu-admin.xhtml" />
+            </aside>
+        </h:form>
+        <section class="dsa-content  js-content">
+            <p:messages showDetail="true" autoUpdate="true" globalOnly="true"></p:messages>
+            <p:growl autoUpdate="true" showDetail="true" life="10000"></p:growl>
+            <p:panel header="#{titulo}">
                 <ui:insert></ui:insert>
-            </p:fieldset>
-            <p:fieldset style=" margin-top: 5px; background-position: 50%">
-                <div>
-                    <span style="float: left">Imperial Imóveis - Painel de gerenciamento - Versão 1.1</span>
-                </div>
-                <div style="float: right; line-height: 20px;">
-                    <span style="float: left">Desenvolvido por:</span>
-                    <a href="http:\\www.softop.com.br" target="_blank"><h:graphicImage library="imagens" name="softop.png" style="height: 20px; float: left; padding-left: 10px"></h:graphicImage></a>
-
-                </div>
-            </p:fieldset>
-        </div>
-
-
-
-        
+            </p:panel>
+        </section>
+        <p:ajaxStatus onstart="PF('dialogAjaxWait').show()" oncomplete="PF('dialogAjaxWait').hide()"></p:ajaxStatus>
+        <p:dialog widgetVar="dialogAjaxWait" showHeader="false" modal="true" resizable="false" responsive="true" closable="false">
+            <i class="fa fa-refresh fa-spin"></i><h:outputText value=" Processando..."></h:outputText>
+        </p:dialog>
+        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+            <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+            <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-close" />
+        </p:confirmDialog>
     </h:body>
 
 </html>

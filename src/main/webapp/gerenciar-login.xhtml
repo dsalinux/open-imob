@@ -5,7 +5,8 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 template="template-admin.xhtml"
-                xmlns:f="http://java.sun.com/jsf/core">
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:imb="http://xmlns.jcp.org/jsf/composite/imb">
 
     <h:head></h:head>
     
@@ -14,17 +15,7 @@
     <ui:param name="somenteAdmin" value="true"></ui:param>
 
     <h:form id="frm">
-
-        <div style="margin-bottom: 10px;">
-            <p:commandButton actionListener="#{gerenciarLoginView.newRegistre}" update="frm" value="Novo" icon="ui-icon-circle-check"></p:commandButton>
-            <p:commandButton actionListener="#{gerenciarLoginView.save}" update="frm" value="Salvar" disabled="#{gerenciarLoginView.currentStateName == 'SEARCH'}" icon="ui-icon-circle-check"></p:commandButton>
-            <p:commandButton actionListener="#{gerenciarLoginView.search}" update="frm" value="#{gerenciarLoginView.currentStateName == 'SEARCH'? 'Pesquisar':'Cancelar'}" icon="ui-icon-search"></p:commandButton>
-            <p:commandButton value="Deletar" onclick="confirmationDeleteRegistry.show()" icon="ui-icon-trash" rendered="#{gerenciarLoginView.currentStateName == 'EDIT'}"></p:commandButton>
-            <p:confirmDialog message="Tem certeza que deseja remover?" header="Confirmação" severity="alert" widgetVar="confirmationDeleteRegistry">
-                <p:commandButton id="confirm" icon="ui-icon-trash" value="Sim" update=":frm" onclick="confirmationDeleteRegistry.hide()" actionListener="#{gerenciarLoginView.delete}" />
-                <p:commandButton id="decline" icon="ui-icon-arrowreturnthick-1-w" value="Não" onclick="confirmationDeleteRegistry.hide()" type="button" />   
-            </p:confirmDialog>  
-        </div>
+        <imb:toolbar crud="#{gerenciarLoginView}"></imb:toolbar>
 
         <h:panelGrid columns="2" rendered="#{gerenciarLoginView.currentStateName != 'SEARCH'}">
             <h:outputLabel for="login" value="Nome"></h:outputLabel>

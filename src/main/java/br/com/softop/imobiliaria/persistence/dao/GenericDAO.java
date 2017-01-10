@@ -15,6 +15,7 @@ public interface GenericDAO<T, I extends Serializable> extends Serializable{
     void refresh(T entity);
     void initializer(List<T> entitys);
     T findById(I id);
+    T findById(I id, boolean closeSession);
     void clear();
     List<T> findByExample(T entity, String...filds);
     List<T> findAll();

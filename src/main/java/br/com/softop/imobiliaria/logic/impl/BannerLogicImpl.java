@@ -10,11 +10,13 @@ import java.io.File;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author danilo
  */
+@Service
 public class BannerLogicImpl implements BannerLogic {
 
     @Override
@@ -48,6 +50,11 @@ public class BannerLogicImpl implements BannerLogic {
     @Override
     public List<Banner> buscarAtivos() {
         return ContextDAO.getBannerDAO().buscarAtivos();
+    }
+
+    @Override
+    public Banner findById(Banner entity) {
+        return findById(entity.getId());
     }
     
 }

@@ -79,7 +79,7 @@ public class Cliente implements Serializable {
     private Date dataDesativacao;
     @Enumerated(EnumType.STRING)
     @Column(name = "tipo")
-    private TipoCliente tipoCliente;
+    private TipoCliente tipoCliente = TipoCliente.FISICA;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "clienteId")
     private List<Imovel> imovelList;
 

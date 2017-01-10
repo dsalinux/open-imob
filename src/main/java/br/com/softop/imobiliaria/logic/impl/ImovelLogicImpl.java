@@ -2,7 +2,6 @@ package br.com.softop.imobiliaria.logic.impl;
 
 import br.com.softop.imobiliaria.entity.Foto;
 import br.com.softop.imobiliaria.entity.Imovel;
-import br.com.softop.imobiliaria.entity.vo.ContatoVO;
 import br.com.softop.imobiliaria.entity.vo.ImovelVO;
 import br.com.softop.imobiliaria.logic.ImovelLogic;
 import br.com.softop.imobiliaria.util.ContextDAO;
@@ -12,11 +11,14 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.hibernate.Hibernate;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author danilo
  */
+@Service
 public class ImovelLogicImpl implements ImovelLogic {
 
     @Override
@@ -68,7 +70,8 @@ public class ImovelLogicImpl implements ImovelLogic {
 
     @Override
     public Imovel findById(Integer id) {
-        return ContextDAO.getImovelDAO().findById(id);
+        Imovel imovel = ContextDAO.getImovelDAO().findById(id);
+        return imovel;
     }
 
     @Override
@@ -99,6 +102,17 @@ public class ImovelLogicImpl implements ImovelLogic {
     @Override
     public List<String> buscarBairros(String cidade, String bairro){
         return ContextDAO.getImovelDAO().buscarBairros(cidade, bairro);
+    }
+
+    @Override
+    public List<Imovel> buscarAtivosDestaque() {
+        List<Imovel> imoveis = ContextDAO.getImovelDAO().buscarAtivosDestaquer();
+        return imoveis;
+    }
+
+    @Override
+    public Imovel findById(Imovel entity) {
+        return findById(entity.getId());
     }
     
 }

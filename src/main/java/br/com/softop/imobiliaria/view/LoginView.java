@@ -10,6 +10,7 @@ import br.com.softop.imobiliaria.logic.impl.LoginLogicImpl;
 import br.com.softop.imobiliaria.util.Context;
 import br.com.softop.imobiliaria.util.StringHelper;
 import br.com.softop.imobiliaria.util.exception.BusinessException;
+import com.ocpsoft.pretty.PrettyContext;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Set;
@@ -20,11 +21,13 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+import org.springframework.stereotype.Controller;
 
 /**
  *
  * @author danilo
  */
+@Controller
 @ManagedBean
 @SessionScoped
 public class LoginView extends JSFUtil {
@@ -34,12 +37,13 @@ public class LoginView extends JSFUtil {
     private String repetirSenha;
     private String url;
     private LoginLogic loginLogic = new LoginLogicImpl();
+    private Login usuarioLogado;
 
     public void logar() {
         try {
-            Login login = loginLogic.logar(email, senha);
+            usuarioLogado = loginLogic.logar(email, senha);
             senha = null;
-            Context.setLogin(login);
+            Context.setLogin(usuarioLogado);
         } catch (BusinessException ex) {
             addMessage(FacesMessage.SEVERITY_WARN, ex.getMessage());
             Logger.getLogger(LoginView.class.getName()).log(Level.SEVERE, null, ex);
@@ -51,7 +55,7 @@ public class LoginView extends JSFUtil {
             if(StringHelper.isEmpty(url)){
                 url = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("retorno");
                 if (StringHelper.isEmpty(url)) {
-                    url = "index-admin.jsf";
+                    url = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath()+"/admin";
                 }
             }
             FacesContext.getCurrentInstance().getExternalContext().redirect(url);
@@ -62,31 +66,19 @@ public class LoginView extends JSFUtil {
     }
 
     public void redirecionarPermissao() {
-        url = "sem-permissao.jsf";
+        url = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath()+"/admin/sem-permissao";
         redirecionar();
     }
 
     public void redirecionarLogin() {
         try {
-            HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-            StringBuilder url = new StringBuilder();
-            url.append(request.getRequestURI());
-            Set key = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().keySet();
-            Collection value = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().values();
-            if (FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().size() > 0) {
-                String k = key.toArray()[0].toString();
-                String v = value.toArray()[0].toString();
-                url.append("?");
-                url.append(k);
-                url.append('=');
-                url.append(v);
-            }
-            this.url = url.toString();
-            FacesContext.getCurrentInstance().getExternalContext().redirect("login-admin.jsf");
+            this.url = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath()+PrettyContext.getCurrentInstance().getRequestURL().toURL();
+            String urlRedirect = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath()+"/admin/login";
+            FacesContext.getCurrentInstance().getExternalContext().redirect(urlRedirect);
         } catch (IOException ex) {
             try {
                 addMessage(FacesMessage.SEVERITY_ERROR, "Erro ao redirecionar!");
-                FacesContext.getCurrentInstance().getExternalContext().redirect("/index.jsf");
+                FacesContext.getCurrentInstance().getExternalContext().redirect(FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath()+"/home");
                 Logger.getLogger(LoginView.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex1) {
                 Logger.getLogger(LoginView.class.getName()).log(Level.SEVERE, null, ex1);
@@ -122,6 +114,18 @@ public class LoginView extends JSFUtil {
         return false;
     }
 
+    public boolean isLoggado(){
+        return usuarioLogado != null;
+    }
+
+    public Login getUsuarioLogado() {
+        return usuarioLogado;
+    }
+
+    public void setUsuarioLogado(Login usuarioLogado) {
+        this.usuarioLogado = usuarioLogado;
+    }
+    
     public String getEmail() {
         return email;
     }

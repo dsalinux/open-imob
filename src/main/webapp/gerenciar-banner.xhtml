@@ -5,7 +5,8 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 template="template-admin.xhtml"
-                xmlns:f="http://java.sun.com/jsf/core">
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:imb="http://xmlns.jcp.org/jsf/composite/imb">
     <h:head></h:head>
     <ui:param name="titulo" value="Gerenciar Clientes"></ui:param>
     <style>
@@ -13,16 +14,8 @@
     </style>
     <h:body>
         <h:form id="frm">
-            <div style="margin-bottom: 10px;">
-                <p:commandButton actionListener="#{bannerView.newRegistre}" update="frm" value="Novo" icon="ui-icon-circle-check"></p:commandButton>
-                <p:commandButton actionListener="#{bannerView.save}" update="frm" value="Salvar" disabled="#{bannerView.currentStateName == 'SEARCH'}" icon="ui-icon-circle-check"></p:commandButton>
-                <p:commandButton actionListener="#{bannerView.search}" update="frm" value="#{bannerView.currentStateName == 'SEARCH'? 'Pesquisar':'Cancelar'}" icon="ui-icon-search"></p:commandButton>
-                <p:commandButton value="Deletar" onclick="confirmationDeleteRegistry.show()" icon="ui-icon-trash" rendered="#{bannerView.currentStateName == 'EDIT' and contextView.login.permissao_.name == 'ADMIN'}"></p:commandButton>
-                <p:confirmDialog message="Tem certeza que deseja remover?" header="Confirmação" severity="alert" widgetVar="confirmationDeleteRegistry">
-                    <p:commandButton id="confirm" icon="ui-icon-trash" value="Sim" update=":frm" onclick="confirmationDeleteRegistry.hide()" actionListener="#{bannerView.delete}" />
-                    <p:commandButton id="decline" icon="ui-icon-arrowreturnthick-1-w" value="Não" onclick="confirmationDeleteRegistry.hide()" type="button" />   
-                </p:confirmDialog>
-            </div>
+            <imb:toolbar crud="#{bannerView}"></imb:toolbar>
+
             <p:fieldset legend="Informações Básicas" rendered="#{bannerView.currentStateName != 'SEARCH'}">
                 <h:panelGrid columns="2">
                     <h:outputLabel value="Descrição" for="description"></h:outputLabel>
@@ -32,10 +25,10 @@
                     <h:outputText/>
                     <h:panelGroup>
                         <p:fileUpload fileUploadListener="#{bannerView.uploadImagem}" label="Escolha ou araste a imagem aqui (Tamanho ideal é: 600px de largura por 300px de altura)." update=":frm:foto :frm:imgPanel" allowTypes="/(\.|\/)(gif|jpe?g|png|GIF|JPE?G|PNG)$/" process=":frm" widgetVar="upimg" auto="true" style="float: left; z-index: 0"></p:fileUpload>
-                        <h:graphicImage value="imagemServlet?imageName=#{bannerView.entity.urlImagem}" id="foto"  style="cursor: pointer; height: 50px; float: left; border: 1px #555 solid; padding: 5px;"></h:graphicImage>
+                        <h:graphicImage value="#{facesContext.externalContext.contextName}/imagemServlet?imageName=#{bannerView.entity.urlImagem}" id="foto"  style="cursor: pointer; height: 50px; float: left; border: 1px #555 solid; padding: 5px;"></h:graphicImage>
                         <p:overlayPanel id="imgPanel" for="foto" showEffect="fade" hideEffect="fade" showEvent="mouseover" hideEvent="mouseout"  styleClass="ui-helper-clearfix">  
                             <p:imageSwitch id="imgSwitch" effect="fade">  
-                                <p:graphicImage value="imagemServlet?imageName=#{bannerView.entity.urlImagem}"/>  
+                                <p:graphicImage value="#{facesContext.externalContext.contextName}/imagemServlet?imageName=#{bannerView.entity.urlImagem}"/>  
                             </p:imageSwitch>  
                         </p:overlayPanel>
                         <h:outputText></h:outputText>
@@ -43,16 +36,19 @@
                 </h:panelGrid>
             </p:fieldset>
             <p:dataGrid value="#{bannerView.entitys}" var="entity" rendered="#{bannerView.currentStateName == 'SEARCH'}" paginator="true" rows="9">
-                <p:panel style="text-align: center">
-                    <f:facet name="header">
-                        <p:commandLink styleClass="ui-icon ui-icon-pencil" actionListener="#{bannerView.edit(entity)}" title="Clique para editar" style="float: right" update=":frm"></p:commandLink>
-                        <p:commandLink update=":frm" styleClass="ui-icon ui-icon-circle-close" title="Clique para Desativar do site" style="float: right" rendered="#{entity.dataDesativacao == null}" actionListener="#{bannerView.ativarDesativar(entity)}"></p:commandLink>
-                        <p:commandLink update=":frm" styleClass="ui-icon ui-icon-circle-check" title="Clique para Ativar no site" style="float: right" rendered="#{entity.dataDesativacao != null}" actionListener="#{bannerView.ativarDesativar(entity)}"></p:commandLink>
+                <p:panel header="">
+                    <p:graphicImage value="#{facesContext.externalContext.contextName}/imagemServlet?imageName=#{entity.urlImagem}" styleClass="mousehover" width="300" style="margin: 0 auto; transition: all 0.6s ease-in-out 0s;-webkit-transition: all 0.6s ease-in-out 0s;-moz-transition: all 0.6s ease-in-out 0s;#{entity.dataDesativacao == null?'':'opacity:0.2; filter:alpha(opacity=20);'}"/>
+                    <f:facet name="actions">
+                        <p:commandButton update="@form" actionListener="#{bannerView.delete(entity)}" class="ui-panel-titlebar-icon" icon="fa fa-trash">
+                            <p:confirm message="Tem certeza que deseja excluir?" icon="fa fa-warning"></p:confirm>
+                        </p:commandButton>
+                        <p:commandButton icon="fa fa-edit" actionListener="#{bannerView.edit(entity)}" title="Clique para editar" class="ui-panel-titlebar-icon" update="@form"></p:commandButton>
+                        <p:commandButton icon="fa #{entity.dataDesativacao == null?'fa-close':'fa-check'}" class="ui-panel-titlebar-icon" update="@form" actionListener="#{bannerView.ativarDesativar(entity)}">
+                            <p:tooltip for="@parent" value="#{entity.dataDesativacao == null?'Clique para não exibir no site':'Clique para exibir no site'}"></p:tooltip>
+                        </p:commandButton>
                     </f:facet>
-                    <p:graphicImage value="imagemServlet?imageName=#{entity.urlImagem}" styleClass="mousehover" width="300" style="margin: 0 auto; transition: all 0.6s ease-in-out 0s;-webkit-transition: all 0.6s ease-in-out 0s;-moz-transition: all 0.6s ease-in-out 0s;#{entity.dataDesativacao == null?'':'opacity:0.2; filter:alpha(opacity=20);'}"/>
                 </p:panel>
             </p:dataGrid>
-
         </h:form>
     </h:body>
 </ui:composition>

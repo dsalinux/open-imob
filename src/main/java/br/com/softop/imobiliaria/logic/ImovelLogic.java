@@ -15,5 +15,5 @@ public interface ImovelLogic extends GenericLogic<Imovel, Integer> {
         List<String> buscarBairros(String cidade);
         List<String> buscarBairros(String cidade, String bairro);
         List<Imovel> buscarAtivosPorFiltro(ImovelVO imovelVO);
-        
+        List<Imovel> buscarAtivosDestaque();
 }

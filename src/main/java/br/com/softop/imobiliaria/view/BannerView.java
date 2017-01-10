@@ -5,17 +5,21 @@ import br.com.softop.imobiliaria.logic.impl.BannerLogicImpl;
 import br.com.softop.imobiliaria.util.Constants;
 import br.com.softop.imobiliaria.util.FileUtil;
 import br.com.softop.imobiliaria.util.StringHelper;
+import br.com.softop.imobiliaria.util.exception.BusinessException;
 import java.io.File;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import org.primefaces.event.FileUploadEvent;
+import org.springframework.stereotype.Controller;
 
+@Controller
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class BannerView extends GenericBean<Banner, BannerLogicImpl> {
 
     private String fotoSelecionada;
@@ -23,17 +27,23 @@ public class BannerView extends GenericBean<Banner, BannerLogicImpl> {
     private int cont = 1;
 
     public void ativarDesativar(Banner entity){
-        super.setEntity(entity);
-        if(super.getEntity().getDataDesativacao() == null){
-            super.getEntity().setDataDesativacao(new Date());
-        } else {
-            super.getEntity().setDataDesativacao(null);
+        try {
+            if(entity.getDataDesativacao() == null){
+                entity.setDataDesativacao(new Date());
+            } else {
+                entity.setDataDesativacao(null);
+            }
+            super.save(entity);
+        }catch(BusinessException ex){
+            addMessageWarn(ex);
+        } catch (Exception ex) {
+            Logger.getLogger(BannerView.class.getName()).log(Level.SEVERE, null, ex);
+            addMessageFatal("Desculpe, ocorreu um erro no sistema!");
         }
-        super.save(null);
     }
     
     @Override
-    public void newRegistre(ActionEvent actionEvent) {
+    public void newRegistre() {
         if (!StringHelper.isEmpty(fotoSelecionada)) {
             File apagar = new File(fotoSelecionada);
             if (apagar.delete()) {
@@ -44,12 +54,12 @@ public class BannerView extends GenericBean<Banner, BannerLogicImpl> {
         }
         fotoAnterior = null;
         fotoSelecionada = null;
-        super.newRegistre(actionEvent);
+        super.newRegistre();
     }
 
     @Override
-    public void save(ActionEvent actionEvent) {
-        super.save(actionEvent);
+    public void save() {
+        super.save();
         if (getEntity() != null && StringHelper.isEmpty(getEntity().getUrlImagem()) && !StringHelper.isEmpty(fotoAnterior) && !fotoAnterior.equals(fotoSelecionada)) {
             File apagar = new File(fotoAnterior);
             if (apagar.delete()) {
@@ -61,10 +71,15 @@ public class BannerView extends GenericBean<Banner, BannerLogicImpl> {
         fotoAnterior = null;
         fotoSelecionada = null;
     }
+    
+    public void delete(Banner banner){
+        setEntity(banner);
+        this.delete();
+    }
 
     @Override
-    public void delete(ActionEvent actionEvent) {
-        super.delete(actionEvent);
+    public void delete() {
+        super.delete();
         if (!StringHelper.isEmpty(fotoSelecionada)) {
             File apagar = new File(fotoSelecionada);
             if (apagar.delete()) {
@@ -78,7 +93,7 @@ public class BannerView extends GenericBean<Banner, BannerLogicImpl> {
     }
 
     @Override
-    public void search(ActionEvent event) {
+    public void search() {
         if (!StringHelper.isEmpty(fotoSelecionada)) {
             File apagar = new File(fotoSelecionada);
             if (apagar.delete()) {
@@ -89,7 +104,7 @@ public class BannerView extends GenericBean<Banner, BannerLogicImpl> {
         }
         fotoAnterior = null;
         fotoSelecionada = null;
-        super.search(event);
+        super.search();
     }
 
     public void uploadImagem(FileUploadEvent event) {

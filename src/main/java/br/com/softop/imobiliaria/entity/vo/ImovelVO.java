@@ -6,16 +6,17 @@ package br.com.softop.imobiliaria.entity.vo;
 
 import br.com.softop.imobiliaria.entity.Imovel;
 import br.com.softop.imobiliaria.entity.Imovel.Tipo;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
  *
  * @author danilo
  */
-public class ImovelVO {
-
-    private BigDecimal valorMinimo = BigDecimal.ZERO;
-    private BigDecimal valorMaximo = BigDecimal.ZERO;
+public class ImovelVO implements Serializable {
+    
+    private Integer valorMinimo;
+    private Integer valorMaximo;
     private Integer quartos;
     private Integer banheiros;
     private Integer cozinhas;
@@ -28,19 +29,19 @@ public class ImovelVO {
     private Integer tipoImovel;
     private Imovel.Tipo tipo_;
 
-    public BigDecimal getValorMinimo() {
+    public Integer getValorMinimo() {
         return valorMinimo;
     }
 
-    public void setValorMinimo(BigDecimal valorMinimo) {
+    public void setValorMinimo(Integer valorMinimo) {
         this.valorMinimo = valorMinimo;
     }
 
-    public BigDecimal getValorMaximo() {
+    public Integer getValorMaximo() {
         return valorMaximo;
     }
 
-    public void setValorMaximo(BigDecimal valorMaximo) {
+    public void setValorMaximo(Integer valorMaximo) {
         this.valorMaximo = valorMaximo;
     }
 
@@ -126,6 +127,10 @@ public class ImovelVO {
 
     public Tipo getTipo_() {
         return tipo_;
+    }
+    
+    public Tipo[] getListaTipo(){
+        return Tipo.values();
     }
 
     public void setTipo_(Tipo tipo) {

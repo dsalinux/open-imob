@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="template.xhtml"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:outputStylesheet library="css" name="expandable-image.css"></h:outputStylesheet>
+    <h:outputStylesheet library="css" name="reset.css"></h:outputStylesheet>
+    <!--	<header>
+                    <h1>Casa</h1>
+            </header>-->
+    <!--<ui:define name="no-container">-->
+    <section class="cd-single-item">
+        <div class="cd-slider-wrapper">
+            <ul class="cd-slider">
+                <c:forEach items="#{visualizarImovelView.entity.fotoList}" var="foto" varStatus="p">
+                    <li class="#{p.index == 0?'selected':''}">
+                        <h:graphicImage value="#{facesContext.externalContext.contextName}/imagemServlet?imageName=#{foto.url}" style="width: 100%" id="img"/>
+                    </li>
+                </c:forEach>
+                <c:if test="#{empty visualizarImovelView.entity.fotoList}">
+                    <li class="selected">
+                        <h:graphicImage value="#{facesContext.externalContext.contextName}/imagemServlet?imageName=none" style="margin: 0 auto; max-width: 600px; max-height: 600px;"/>
+                    </li>
+                </c:if>
+            </ul> <!-- cd-slider -->
+
+            <ul class="cd-slider-navigation">
+                <li><a href="#0" class="cd-prev glyphicon glyphicon-chevron-left inactive">Next</a></li>
+                <li><a href="#0" class="cd-next glyphicon glyphicon-chevron-right">Prev</a></li>
+            </ul> <!-- cd-slider-navigation -->
+
+            <a href="#0" class="cd-close glyphicon glyphicon-remove-circle">Close</a>
+        </div> <!-- cd-slider-wrapper -->
+
+        <div class="cd-item-info">
+            <h2>#{visualizarImovelView.entity.tipo_.descricao} - #{visualizarImovelView.entity.tipoImovel.nome}</h2>
+
+            <p>#{visualizarImovelView.entity.descricao}</p>
+
+
+            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#modal-solicitar-chave"><i class="glyphicon glyphicon-tags"></i>&nbsp;&nbsp;Solicitar Chave</button>
+            <div class="modal fade" id="modal-solicitar-chave" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">Solicitar Chave</h4>
+                        </div>
+                        <h:form id="frm">
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <h:outputLabel styleClass="control-label" value="Informe seu nome: "></h:outputLabel>
+                                    <h:inputText styleClass="form-control" value="#{visualizarImovelView.contato.nome}" maxlength="100"></h:inputText>
+                                </div>
+                                <div class="form-group">
+                                    <h:outputLabel styleClass="control-label" for="inputfone" value="Seu telefone (Informe telefone ou email como preferir): "></h:outputLabel>
+                                    <h:inputText styleClass="form-control" id="inputfone" value="#{visualizarImovelView.contato.telefone}" maxlength="30"></h:inputText>
+                                </div>
+                                <div class="form-group">
+                                    <h:outputLabel styleClass="control-label" value="Seu Email (Informe telefone ou email como preferir): "></h:outputLabel>
+                                    <h:inputText styleClass="form-control" value="#{visualizarImovelView.contato.email}" maxlength="150"></h:inputText>
+                                </div>
+                                <div class="form-group">
+                                    <h:outputLabel styleClass="control-label" value="Conte um pouco mais do que deseja: "></h:outputLabel>
+                                    <h:inputTextarea styleClass="form-control" value="#{visualizarImovelView.contato.mensagem}"></h:inputTextarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <h:commandButton styleClass="btn btn-primary" actionListener="#{visualizarImovelView.solicitarImovel()}" value="Solicitar" style="width: 100%">
+                                </h:commandButton>
+                            </div>
+                        </h:form>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+        </div> <!-- cd-item-info -->
+    </section> <!-- cd-single-item -->
+
+    <div class="cd-content">
+        <h2>Descrição do imóvel</h2>
+        <div class="col-md-12 col-sm-12">
+            <br/>
+            <h4>Código: #{visualizarImovelView.entity.id}</h4>
+            <h4 style="color: green; font-weight: bold">
+                Valor: 
+                <h:outputText  value="#{visualizarImovelView.entity.valor>0?visualizarImovelView.entity.valor:'Entre em contato!'}">
+                    <f:convertNumber rendered="#{visualizarImovelView.entity.valor >0}" type="currency" locale="pt_BR" currencySymbol="R$"></f:convertNumber>
+                </h:outputText>
+            </h4>
+            <br/>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <h2><i class='fa fa-info'></i> Informações detalhadas:</h2>
+            <p><i class='fa fa-bed'></i> Quartos: #{visualizarImovelView.entity.quartos}</p>
+            <p><i class="fa fa-television"></i> Salas: #{visualizarImovelView.entity.salas}</p>
+            <p><i class="fa fa-bath"></i> Banheiros: #{visualizarImovelView.entity.banheiros}</p>
+            <p><i class="fa fa-archive"></i>Garda-roupas: #{visualizarImovelView.entity.guardaroupasEmbutidos?'Sim':'Não'}</p>
+            <p><i class="fa fa-car"></i> Garagem: #{visualizarImovelView.entity.garagem}</p>
+            <p><i class="fa fa-cutlery"></i> Armários de cozinha: #{visualizarImovelView.entity.armariosEmbutidos?'Sim':'Não'}</p>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <h2><i class='fa fa-map'></i> Localização:</h2>
+            <p>#{visualizarImovelView.entity.logradrouro}</p>
+            <p>Número: #{visualizarImovelView.entity.numero}</p>
+            <c:if test="#{not empty visualizarImovelView.entity.complemento}">
+                <p>Complemento: #{visualizarImovelView.entity.complemento}</p>
+            </c:if>
+            <p>Bairro: #{visualizarImovelView.entity.bairro}</p>
+            <p>Cidade: #{visualizarImovelView.entity.cidade}</p>
+            <p>CEP: #{visualizarImovelView.entity.cep}</p>
+        </div>
+    </div>
+
+    <!--</ui:define>-->
+
+    <ui:define name="lastLine">
+        <h:outputScript library="js" name="jquery.mobile.min.js"></h:outputScript>
+        <h:outputScript library="js" name="expandable-main.js"></h:outputScript>
+        <script>
+            //<![CDATA[
+                    $('#frm\\:inputfone').keyup(function (event) {
+                var phone, element;
+                phone = this.value.replace(/\D/g, '');
+                element = $(this);
+                if (phone.length > 10) {
+                    element.mask("(00) 0 0000-0000");
+                } else {
+                    element.mask("(00) 0000-0000#");
+                }
+            });
+//]]>
+        </script>
+    </ui:define>
+</ui:composition>
+

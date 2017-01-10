@@ -8,11 +8,12 @@ import java.util.List;
  *
  * @author danilo
  */
-public interface GenericLogic<T, I extends Serializable> {
+public interface GenericLogic<T, I extends Serializable> extends Serializable{
  
     T save(T entity) throws BusinessException;
     void delete(T entity) throws BusinessException;
     T findById(I id);
+    T findById(T entity);
     List<T> find(T entity) throws BusinessException;
     
 }

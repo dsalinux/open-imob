@@ -9,6 +9,7 @@ import br.com.softop.imobiliaria.persistence.dao.ImovelDAO;
 import br.com.softop.imobiliaria.persistence.dao.InquilinoDAO;
 import br.com.softop.imobiliaria.persistence.dao.LoginDAO;
 import br.com.softop.imobiliaria.persistence.dao.OrientacoesDAO;
+import br.com.softop.imobiliaria.persistence.dao.ThemeDAO;
 import br.com.softop.imobiliaria.persistence.dao.TipoImovelDAO;
 import br.com.softop.imobiliaria.persistence.dao.hibernate.HibernateBannerDAO;
 import br.com.softop.imobiliaria.persistence.dao.hibernate.HibernateClienteDAO;
@@ -18,6 +19,7 @@ import br.com.softop.imobiliaria.persistence.dao.hibernate.HibernateImovelDAO;
 import br.com.softop.imobiliaria.persistence.dao.hibernate.HibernateInquilinoDAO;
 import br.com.softop.imobiliaria.persistence.dao.hibernate.HibernateLoginDAO;
 import br.com.softop.imobiliaria.persistence.dao.hibernate.HibernateOrientacoesDAO;
+import br.com.softop.imobiliaria.persistence.dao.hibernate.HibernateThemeDAO;
 import br.com.softop.imobiliaria.persistence.dao.hibernate.HibernateTipoImovelDAO;
 
 /**
@@ -35,6 +37,7 @@ public class ContextDAO {
     private static FotoDAO fotoDAO;
     private static OrientacoesDAO orientacoesDAO;
     private static InquilinoDAO inquilinoDAO;
+    private static ThemeDAO themeDAO;
     
     public static LoginDAO getLoginDAO() {
         if(loginDAO == null){
@@ -98,5 +101,13 @@ public class ContextDAO {
         }
         return inquilinoDAO;
     }
+
+    public static ThemeDAO getThemeDAO() {
+        if(themeDAO == null){
+            themeDAO = new HibernateThemeDAO();
+        }
+        return themeDAO;
+    }
+    
     
 }

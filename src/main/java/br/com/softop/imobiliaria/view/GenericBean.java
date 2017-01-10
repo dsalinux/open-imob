@@ -47,7 +47,7 @@ public abstract class GenericBean<E, L extends GenericLogic> extends JSFUtil {
         
     }
     
-    public void newRegistre(ActionEvent actionEvent){
+    public void newRegistre(){
         try {
             entity = getClassEntity().newInstance();
             setCurrentState(CurrentState.INSERT);
@@ -59,26 +59,29 @@ public abstract class GenericBean<E, L extends GenericLogic> extends JSFUtil {
         
     }
     
-    public void save(ActionEvent actionEvent){
+    public void save(){
         try {
-            entity = (E)getGenericLogic().save(entity);
+            entity = save(entity);
             entity = getClassEntity().newInstance();
             setCurrentState(CurrentState.SEARCH);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informação", "Salvo com sucesso!"));
         } catch (BusinessException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", ex.getMessage()));
         } catch (Exception ex) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro", "Desculpe, mas parece que ocorreu um erro na aplicação!"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro", "Desculpe, mas parece que ocorreu um erro na aplicação!\n"+ex.getMessage()));
             Logger.getLogger(GenericBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    public E save(E entity) throws Exception{
+        return (E) getGenericLogic().save(entity);
+    }
     
-    public void delete(ActionEvent actionEvent){
+    public void delete(){
         try {
             getGenericLogic().delete(entity);
             getEntitys().remove(getEntity());
-            newRegistre(actionEvent);
-            search(actionEvent);
+            newRegistre();
+            search();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "Removido com sucesso!!"));
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro", "Desculpe, mas parece que ocorreu um erro na aplicação!"));
@@ -87,11 +90,11 @@ public abstract class GenericBean<E, L extends GenericLogic> extends JSFUtil {
     }
     
     public void edit(E entity){
-        this.entity = entity;
+        this.entity = (E) genericLogic.findById(entity);
         setCurrentState(CurrentState.EDIT);
     }
     
-    public void search(ActionEvent event){
+    public void search(){
         try {
             if(currentState.equals(CurrentState.SEARCH)){
                 entitys = genericLogic.find(entity);

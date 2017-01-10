@@ -6,11 +6,13 @@ import br.com.softop.imobiliaria.util.Assert;
 import br.com.softop.imobiliaria.util.ContextDAO;
 import br.com.softop.imobiliaria.util.StringHelper;
 import br.com.softop.imobiliaria.util.exception.BusinessException;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author danilo
  */
+@Service
 public class ConfiguracoesLogicImpl implements ConfiguracoesLogic {
 
     @Override
@@ -32,6 +34,14 @@ public class ConfiguracoesLogicImpl implements ConfiguracoesLogic {
 
     @Override
     public Configuracoes recupararConfiguracoes() {
+        /*TODO caso não exista as configurações, devemos criar um default, mas 
+        para implantação na imperial esta melhoria ficará para depois*/
+//        if(configuracoes.getLatitude() == null || configuracoes.getLatitude().compareTo(0D) <= 0){
+//            if(configuracoes.getLongitude() == null || configuracoes.getLongitude().compareTo(0D) <= 0){
+//                configuracoes.setLatitude(-17.7504272);
+//                configuracoes.setLongitude(-46.1844659);
+//            }
+//        }
         return ContextDAO.getConfiguracoesDAO().findById(1);
     }
     

@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:p="http://primefaces.org/ui">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <cc:attribute name="crud" displayName="CRUD" required="true" shortDescription="CRUD padrão das views."></cc:attribute>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <div style="margin-bottom: 10px;">
+            <p:toolbar>
+                <p:toolbarGroup>
+                    <p:commandButton actionListener="#{cc.attrs.crud.newRegistre()}" update="frm" value="Novo" icon="fa fa-file-o"></p:commandButton>
+                    <p:commandButton actionListener="#{cc.attrs.crud.save()}" update="frm" value="Salvar" disabled="#{cc.attrs.crud.currentStateName == 'SEARCH'}" icon="fa fa-save"></p:commandButton>
+                    <p:commandButton value="Deletar" actionListener="#{cc.attrs.crud.delete()}" icon="fa fa-trash" rendered="#{cc.attrs.crud.currentStateName == 'EDIT' and contextView.login.permissao_.name == 'ADMIN'}">
+                        <p:confirm message="Tem certeza que deseja excluir?" icon="fa fa-warning"></p:confirm>
+                    </p:commandButton>
+                    <p:separator></p:separator>
+                    <p:commandButton actionListener="#{cc.attrs.crud.search()}" update="frm" value="#{cc.attrs.crud.currentStateName == 'SEARCH'? 'Pesquisar':'Cancelar'}" icon="fa #{cc.attrs.crud.currentStateName == 'SEARCH'? 'fa-search':'fa-undo'}"></p:commandButton>
+                </p:toolbarGroup>
+                <p:toolbarGroup align="right">
+                    <cc:insertChildren>
+                    </cc:insertChildren>
+                </p:toolbarGroup>
+            </p:toolbar>
+        </div>
+    </cc:implementation>
+</html>

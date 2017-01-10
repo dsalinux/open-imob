@@ -4,77 +4,58 @@ import br.com.softop.imobiliaria.entity.Configuracoes;
 import br.com.softop.imobiliaria.logic.ConfiguracoesLogic;
 import br.com.softop.imobiliaria.logic.impl.ConfiguracoesLogicImpl;
 import br.com.softop.imobiliaria.logic.impl.ContatoLogicImpl;
+import br.com.softop.imobiliaria.util.Constants;
+import br.com.softop.imobiliaria.util.FileUtil;
 import br.com.softop.imobiliaria.util.StringHelper;
 import br.com.softop.imobiliaria.util.exception.BusinessException;
+import java.io.File;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.event.map.MarkerDragEvent;
+import org.primefaces.model.map.DefaultMapModel;
+import org.primefaces.model.map.LatLng;
+import org.primefaces.model.map.MapModel;
+import org.primefaces.model.map.Marker;
+import org.springframework.stereotype.Controller;
 
 /**
  *
  * @author danilo
  */
+@Controller
 @ManagedBean
 @ApplicationScoped
 public class ConfiguracoesView extends JSFUtil {
-    
+
     public Configuracoes configuracoes;
     public ConfiguracoesLogic configuracoesLogic;
-    public String senha;
+
+    public long ultimaConsulta = 0;
+    public long tempoEntreConsultas = 20000;
     
     @PostConstruct
-    public void init(){
+    public void init() {
         configuracoesLogic = new ConfiguracoesLogicImpl();
-        configuracoes = configuracoesLogic.recupararConfiguracoes();
-    }
-    
-    public void testarEnvioDeEmail(){
-        try{
-            new ContatoLogicImpl().testarEnvioDeEmail(configuracoes);
-            addMessage(FacesMessage.SEVERITY_INFO, "Email teste enviado! Confira o recebimento do email de teste com os destinatários!\n Não esqueça de salvar as configurações!");
-        } catch (Exception e){
-            addMessage(FacesMessage.SEVERITY_ERROR, "Ocorreu erro no envio: " + e.getMessage());
-        }
     }
 
-    public void salvar(){
-        try {
-            if(!StringHelper.isEmpty(senha)){
-                configuracoes.setSenhaEnvio(senha);
-            }
-            configuracoes = configuracoesLogic.salvar(configuracoes);
-            addMessage(FacesMessage.SEVERITY_INFO, "Salvo com sucesso!");
-        } catch (BusinessException ex) {
-            addMessage(FacesMessage.SEVERITY_WARN, ex.getMessage());
-        } catch (Exception e){
-            addMessage(FacesMessage.SEVERITY_ERROR, "Parece que nossos servidores estão com algum problema! Aguarde alguns instantes e tente novamente!");
-            Logger.getLogger(ConfiguracoesView.class.getName()).log(Level.SEVERE, null, e);
-        }
-    }
-    
-    public void atualizar(){
-        configuracoes = configuracoesLogic.recupararConfiguracoes();
-        if(configuracoes == null){
-            addMessage(FacesMessage.SEVERITY_ERROR, "Erro ao buscar as configurções! Entre em contato com o administrador ou tente novamente em alguns instantes.");
-        }
-    }
     
     public Configuracoes getConfiguracoes() {
+        if(ultimaConsulta < new Date().getTime()){
+            ultimaConsulta = new Date().getTime() + tempoEntreConsultas;
+            configuracoes = configuracoesLogic.recupararConfiguracoes();
+        }
         return configuracoes;
     }
+
     public void setConfiguracoes(Configuracoes configuracoes) {
         this.configuracoes = configuracoes;
     }
 
-    public String getSenha() {
-        return senha;
-    }
 
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-    
 }

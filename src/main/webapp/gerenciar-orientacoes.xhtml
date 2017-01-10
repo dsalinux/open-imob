@@ -13,8 +13,12 @@
 
     <h:form id="frm">
         <div style="margin-bottom: 10px;">
-            <p:commandButton actionListener="#{orientacoesView.salvar}" update="frm" value="Salvar" icon="ui-icon-circle-check"></p:commandButton>
-            <p:commandButton actionListener="#{orientacoesView.atualizar}" update="frm" value="Atualizar" icon="ui-icon-search"></p:commandButton>
+            <p:toolbar>
+                <p:toolbarGroup>
+                    <p:commandButton actionListener="#{orientacoesView.salvar}" update="frm" value="Salvar" icon="ui-icon-circle-check"></p:commandButton>
+                    <p:commandButton actionListener="#{orientacoesView.atualizar}" update="frm" value="Atualizar" icon="ui-icon-search"></p:commandButton>
+                </p:toolbarGroup>
+            </p:toolbar>
         </div>
         <p:fieldset legend="Informações">
             <p:editor value="#{orientacoesView.orientacoes.texto}" width="930"></p:editor>
@@ -29,7 +33,7 @@
             </p:treeNode>
             <p:ajax event="select" update=":frm" listener="#{orientacoesView.onNodeSelected}"/>
         </p:tree>
-        
+
         <p:dialog id="dialogArquivo" visible="true" header="Copie o código abaixo e cole no documento para disponibilizar para download!" rendered="#{orientacoesView.arquivoVisualizado != null}" closable="fase" resizable="false" width="400">
             <p:inputText value="$file{#{orientacoesView.arquivoVisualizado.name}}" style="font-size: 20px" transient="true" readonly="true"></p:inputText>
             <p:spacer height="20px" width="350px"></p:spacer>
@@ -37,7 +41,9 @@
             <p:inputText value="#{orientacoesView.novoNome}" style="width: 350px"></p:inputText>
             <p:commandButton icon="ui-icon-pencil" actionListener="#{orientacoesView.renomear}" update=":frm" value="Renomear" rendered="#{orientacoesView.arquivoVisualizado != null}"></p:commandButton>
             <p:commandButton icon="ui-icon-close" actionListener="#{orientacoesView.fecharVisualizacaoArquivo}" update=":frm" value="Fechar" rendered="#{orientacoesView.arquivoVisualizado != null}"></p:commandButton>
-            <p:commandButton icon="ui-icon-trash" value="Deletar" process=":frm" update=":frm" onclick="javascript:if(confirm('Deseja realmete deletar?'))return true;return false;" actionListener="#{orientacoesView.deletarArquivo}" />
+            <p:commandButton icon="ui-icon-trash" value="Deletar" process=":frm" update=":frm" onclick="javascript:if (confirm('Deseja realmete deletar?'))
+                        return true;
+                    return false;" actionListener="#{orientacoesView.deletarArquivo}" />
         </p:dialog>
     </h:form>
 

@@ -8,11 +8,13 @@ import br.com.softop.imobiliaria.util.StringHelper;
 import br.com.softop.imobiliaria.util.exception.BusinessException;
 import java.util.Date;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author danilo
  */
+@Service
 public class ClienteLogicImpl implements ClienteLogic {
 
     @Override
@@ -66,6 +68,11 @@ public class ClienteLogicImpl implements ClienteLogic {
     @Override
     public List<Cliente> find(Cliente entity) throws BusinessException {
         return ContextDAO.getClienteDAO().buscar(entity);
+    }
+
+    @Override
+    public Cliente findById(Cliente entity) {
+        return findById(entity.getId());
     }
     
 }

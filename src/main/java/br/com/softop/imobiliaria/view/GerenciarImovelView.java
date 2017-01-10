@@ -15,21 +15,26 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import org.primefaces.event.FileUploadEvent;
+import org.springframework.stereotype.Controller;
 
 /**
  *
  * @author danilo
  */
+@Controller
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class GerenciarImovelView extends GenericBean<Imovel, ImovelLogicImpl> {
 
     private List<TipoImovel> tipoImovelList;
@@ -53,6 +58,27 @@ public class GerenciarImovelView extends GenericBean<Imovel, ImovelLogicImpl> {
         } else {
             getEntity().setDataDesativacao(null);
             addMessage(FacesMessage.SEVERITY_INFO, "Ativado, não esqueça de salvar!");
+        }
+    }
+    
+    public void marcarDesmarcarDestaque(){
+        marcarDesmarcarDestaque(getEntity());
+    }
+    
+    public void marcarDesmarcarDestaque(Imovel imovel){
+        try {
+            imovel = (Imovel) getGenericLogic().findById(imovel.getId());
+            imovel.setImovelDestaque(!imovel.isImovelDestaque());
+            imovel = save(imovel);
+            int posicao = getEntitys().indexOf(imovel);
+            getEntitys().remove(posicao);
+            getEntitys().add(posicao, imovel);
+            addMessageInfo(imovel.isImovelDestaque()?"Imóvel colocado como destaque!":"Imóvel removido do destaque!");
+        } catch (BusinessException ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Aviso", ex.getMessage()));
+        } catch (Exception ex) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro", "Desculpe, mas parece que ocorreu um erro na aplicação!\n"+ex.getMessage()));
+            Logger.getLogger(GenericBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -120,7 +146,14 @@ public class GerenciarImovelView extends GenericBean<Imovel, ImovelLogicImpl> {
             }
         };
     }
-
+    public void removerImagem(Foto foto){
+        if(getEntity().getFotoListRemover() == null){
+            getEntity().setFotoListRemover(new ArrayList<Foto>());
+        }
+        getEntity().getFotoList().remove(foto);
+        getEntity().getFotoListRemover().add(foto);
+        addMessageInfo("Foto incluida para deletar. Foto será deletada quando clicar em salvar!");
+    }
     public void uploadImagem(FileUploadEvent event) {
         StringBuilder img = new StringBuilder();
         img.append(new Date().getTime());

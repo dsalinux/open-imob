@@ -1,0 +1,274 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Quer encontrar um imóvel de forma fácil? <button class="btn btn-success" data-toggle="collapse" data-target="#demo" onclick="return false;"><i class="glyphicon glyphicon-filter"></i>Filtrar pesquisa</button></div>
+        <div class="panel-body">
+            <div class="bootstrap-iso">
+                <div class="container-fluid">
+                    <div class="form-horizontal" method="post">
+                        <div class="row">
+                            <div class="form-group ">
+                                <label class="control-label col-sm-2" for="select">
+                                    Tipo Negócio:
+                                </label>
+                                <div class="col-sm-10">
+                                    <div class="btn-group" role="group" aria-label="...">
+                                        <h:commandButton styleClass="btn #{imoveisView.imovelVO.tipo_ == null?'btn-primary':'btn-default'}" value="Todos">
+                                            <f:ajax listener="#{imoveisView.selecionarTipoNegocio(null)}" render="@form"></f:ajax>
+                                        </h:commandButton>
+                                        <h:commandButton styleClass="btn #{imoveisView.imovelVO.tipo_.name == 'ALUGUEL'?'btn-primary':'btn-default'}" value="Alugar">
+                                            <f:ajax listener="#{imoveisView.selecionarTipoNegocio('ALUGUEL')}" render="@form"></f:ajax>
+                                        </h:commandButton>
+                                        <h:commandButton styleClass="btn #{imoveisView.imovelVO.tipo_.name == 'VENDA'?'btn-primary':'btn-default'}" value="Comprar">
+                                            <f:ajax listener="#{imoveisView.selecionarTipoNegocio('VENDA')}" render="@form"></f:ajax>
+                                        </h:commandButton>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="">
+                            <div class="form-horizontal collapse" method="post" id="demo">
+                                <div class="form-group ">
+                                    <label class="control-label col-sm-2" for="select">
+                                        Tipo Imóvel
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <h:selectOneMenu value="#{imoveisView.imovelVO.tipoImovel}" styleClass="select form-control" id="selectTipoImovel">
+                                            <f:selectItem itemLabel="Qualquer Tipo"></f:selectItem>
+                                            <f:selectItems value="#{imoveisView.tipoImovelList}" var="tipoImovel" itemLabel="#{tipoImovel.nome}" itemValue="#{tipoImovel.id}"></f:selectItems>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <label class="control-label col-sm-2" for="selectCidade">
+                                        Cidade
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <h:selectOneMenu value="#{imoveisView.imovelVO.cidade}" styleClass="select form-control" id="selectCidade">
+                                            <f:ajax event="change" listener="#{imoveisView.alterarBairro}" render="selectBairro"></f:ajax>
+                                            <f:selectItem itemLabel="Qualquer cidade"></f:selectItem>
+                                            <f:selectItems value="#{imoveisView.cidades}" var="cidade" itemLabel="#{cidade}" itemValue="#{cidade}"></f:selectItems>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                                <script>
+                                    jsf.ajax.addOnEvent(function (data) {
+                                        var ajaxstatus = data.status; // Can be "begin", "complete" and "success"
+                                        var ajaxloader = document.getElementById("frm:ajaxloader");
+
+                                        switch (ajaxstatus) {
+                                            case "begin": // This is called right before ajax request is been sent.
+                                                ajaxloader.style.display = 'block';
+                                                break;
+
+                                            case "complete": // This is called right after ajax response is received.
+                                                ajaxloader.style.display = 'none';
+                                                break;
+
+                                            case "success": // This is called when ajax response is successfully processed.
+                                                // NOOP.
+                                                break;
+                                        }
+                                    });
+                                </script>
+
+
+                                <div class="form-group ">
+                                    <label class="control-label col-sm-2" for="selectBairro">
+                                        Bairro
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <div class="input-group">
+                                            <h:selectOneMenu value="#{imoveisView.imovelVO.bairro}" styleClass="select form-control" id="selectBairro" disabled="#{empty imoveisView.imovelVO.cidade}">
+                                                <f:selectItem itemLabel="Qualquer Bairro"></f:selectItem>
+                                                <f:selectItems value="#{imoveisView.bairros}" var="bairro" itemLabel="#{bairro}" itemValue="#{bairro}"></f:selectItems>
+                                            </h:selectOneMenu>
+                                            <div class="input-group-addon" >
+                                                <h:graphicImage library="images" name="ajax-loader-mini.gif" style="display: none" id="ajaxloader"></h:graphicImage>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <label class="control-label col-sm-2" for="valorMinimo">
+                                        Valor Mínimo
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="glyphicon glyphicon-usd">
+                                                </i>
+                                            </div>
+                                            <h:inputText value="#{imoveisView.imovelVO.valorMinimo}" maxlength="10" class="form-control" id="valorMinimo"></h:inputText>
+                                            <div class="input-group-addon">
+                                                ,00
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <label class="control-label col-sm-2" for="valorMaximo">
+                                        Valor Máximo
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="glyphicon glyphicon-usd">
+                                                </i>
+                                            </div>
+                                            <h:inputText value="#{imoveisView.imovelVO.valorMaximo}" maxlength="10" class="form-control" id="valorMaximo"></h:inputText>
+                                            <div class="input-group-addon">
+                                                ,00
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <label class="control-label col-sm-2" for="selectQtQuartos">
+                                        Quantidade de Quartos
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <h:selectOneMenu value="#{imoveisView.imovelVO.quartos}" styleClass="select form-control" id="selectQtQuartos">
+                                            <f:selectItem itemLabel="Qualquer quantiade"></f:selectItem>
+                                            <f:selectItem itemValue="1"></f:selectItem>
+                                            <f:selectItem itemValue="2"></f:selectItem>
+                                            <f:selectItem itemValue="3"></f:selectItem>
+                                            <f:selectItem itemValue="4"></f:selectItem>
+                                            <f:selectItem itemValue="5"></f:selectItem>
+                                            <f:selectItem itemValue="6"></f:selectItem>
+                                            <f:selectItem itemValue="7"></f:selectItem>
+                                            <f:selectItem itemValue="8"></f:selectItem>
+                                            <f:selectItem itemValue="9"></f:selectItem>
+                                            <f:selectItem itemValue="10"></f:selectItem>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <label class="control-label col-sm-2" for="selectQtBanheiros">
+                                        Quantidade de Banheiros
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <h:selectOneMenu value="#{imoveisView.imovelVO.banheiros}" styleClass="select form-control" id="selectQtBanheiros">
+                                            <f:selectItem itemLabel="Qualquer quantiade"></f:selectItem>
+                                            <f:selectItem itemValue="1"></f:selectItem>
+                                            <f:selectItem itemValue="2"></f:selectItem>
+                                            <f:selectItem itemValue="3"></f:selectItem>
+                                            <f:selectItem itemValue="4"></f:selectItem>
+                                            <f:selectItem itemValue="5"></f:selectItem>
+                                            <f:selectItem itemValue="6"></f:selectItem>
+                                            <f:selectItem itemValue="7"></f:selectItem>
+                                            <f:selectItem itemValue="8"></f:selectItem>
+                                            <f:selectItem itemValue="9"></f:selectItem>
+                                            <f:selectItem itemValue="10"></f:selectItem>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <label class="control-label col-sm-2" for="selectQtGaragens">
+                                        Vagas na garagem
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <h:selectOneMenu value="#{imoveisView.imovelVO.garagens}" styleClass="select form-control" id="selectQtGaragens">
+                                            <f:selectItem itemLabel="Qualquer quantiade"></f:selectItem>
+                                            <f:selectItem itemValue="1"></f:selectItem>
+                                            <f:selectItem itemValue="2"></f:selectItem>
+                                            <f:selectItem itemValue="3"></f:selectItem>
+                                            <f:selectItem itemValue="4"></f:selectItem>
+                                            <f:selectItem itemValue="5"></f:selectItem>
+                                            <f:selectItem itemValue="6"></f:selectItem>
+                                            <f:selectItem itemValue="7"></f:selectItem>
+                                            <f:selectItem itemValue="8"></f:selectItem>
+                                            <f:selectItem itemValue="9"></f:selectItem>
+                                            <f:selectItem itemValue="10"></f:selectItem>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <h:commandLink styleClass="btn btn-danger">
+                <span class="glyphicon glyphicon-remove"></span> Limpar filtro
+                <f:ajax event="click" listener="#{imoveisView.limparPesquisa()}" execute="@form" render="@form messages"></f:ajax>
+            </h:commandLink>
+            <h:commandLink styleClass="btn btn-primary">
+                <span class="glyphicon glyphicon-search"></span> Procurar
+                <f:ajax event="click" listener="#{imoveisView.buscar()}" execute="@form" render="@form messages"></f:ajax>
+            </h:commandLink>
+        </div>
+    </div>
+
+    <ui:define name="lastLine">
+        <!--<h:outputScript library="js" name="slippry.min.js"></h:outputScript>-->
+        <script>
+            $(function () {
+                //                        $("#demo1").slippry({
+                //                            transition: 'fade',
+                //                            pager: false
+                //                        });
+                //        
+                $('.carousel').carousel();
+            });
+            $(".dropdown-menu li a").click(function () {
+                var selText = $()(this).text();
+                $(this).parents('.btn-group').find('.dropdown-toggle').html(selText + ' <span class="caret"></span>');
+            });
+
+            $("#btnSearch").click(function () {
+                alert($('.btn-select').text() + ", " + $('.btn-select2').text());
+            });
+
+
+
+//            $(function () {
+//                var contDiv = 0;
+//                var contAdd = 0;
+//
+//                $("#mais").click(function () {
+//                    if (contDiv === 0) {
+//                        $("#grupo2").css("display", "unset");
+//                        contDiv++;
+//                    }
+//                });
+//
+//                $("#mais").click(function () {
+//                    contDiv = 0;
+//                    if (contDiv === 0) {
+//                        $("#grupo3").css("display", "unset");
+//                        contDiv++;
+//                    }
+//
+//                });
+//
+//
+//
+//
+//                $("#menos").click(function () {
+//                    if (contDiv === 1) {
+//                        $("#grupo2").css("display", "none");
+//                        contDiv--;
+//                    }
+//                    if (contDiv === 1) {
+//                        $("#grupo3").css("display", "none");
+//                        contDiv--;
+//                    }
+//                });
+
+
+//            });
+        </script>
+    </ui:define>
+
+</html>
+

@@ -11,8 +11,8 @@ import br.com.softop.imobiliaria.util.exception.BusinessException;
  */
 public interface ContatoLogic {
 
-    void enviarMensagem(ContatoVO contatoVO) throws BusinessException;
-    void solicitarImovel(Imovel imovel, ContatoVO contatoVO) throws BusinessException;
-    void testarEnvioDeEmail(Configuracoes configuracoes);
+    void enviarMensagem(ContatoVO contatoVO) throws BusinessException, Exception;
+    void solicitarImovel(Imovel imovel, ContatoVO contatoVO) throws BusinessException, Exception;
+    void testarEnvioDeEmail(Configuracoes configuracoes) throws Exception;
     
 }

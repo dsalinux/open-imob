@@ -5,11 +5,13 @@ import br.com.softop.imobiliaria.persistence.dao.BannerDAO;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author danilo
  */
+@Service
 public class HibernateBannerDAO extends HibernateGenericDAO<Banner, Integer> implements BannerDAO {
 
     @Override

@@ -16,11 +16,13 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.event.ValueChangeEvent;
+import org.springframework.stereotype.Controller;
 
 /**
  *
  * @author danilo
  */
+@Controller
 @SessionScoped
 @ManagedBean
 public class ComprarView extends JSFUtil {

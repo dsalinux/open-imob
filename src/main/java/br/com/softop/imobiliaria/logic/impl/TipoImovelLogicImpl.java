@@ -6,11 +6,13 @@ import br.com.softop.imobiliaria.util.ContextDAO;
 import br.com.softop.imobiliaria.util.StringHelper;
 import br.com.softop.imobiliaria.util.exception.BusinessException;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author danilo
  */
+@Service
 public class TipoImovelLogicImpl implements TipoImovelLogic {
 
     @Override
@@ -35,6 +37,11 @@ public class TipoImovelLogicImpl implements TipoImovelLogic {
     @Override
     public List<TipoImovel> find(TipoImovel entity) throws BusinessException {
         return ContextDAO.getTipoImovelDAO().findAll();
+    }
+
+    @Override
+    public TipoImovel findById(TipoImovel entity) {
+        return findById(entity.getId());
     }
     
 }

@@ -1,126 +1,171 @@
-<?xml version='1.0' encoding='UTF-8' ?> 
+<?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core">
-
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
-        <meta name="apple-mobile-web-app-capable" content="yes"/>
-        <link  href="resources/css/style.css" type="text/css" rel="stylesheet"/>
-        <link href='http://fonts.googleapis.com/css?family=Happy+Monkey' rel='stylesheet' type='text/css'></link>
-        <title>Imóveis</title>
-    </h:head>
-    <body>
-        <header>
-            <div class="center">
-                <div class="logo"></div>
-                <div style="height: 89px; width: 700px; float:right;" class="cadInquilino">
-                    <div style="float: right;">
-                        <h:link onclick="PF('dialogInquilino').show();
-                                return false;" outcome="#" onmouseover="$(this).addClass('ui-state-hover');" onmouseout="$(this).removeClass('ui-state-hover');" style="width: 350px;display: block;text-align: center; text-decoration: none; padding: 5px; background-position-y: 0;" styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
-                            <h:graphicImage library="imagens" name="icone-imovel.png" ></h:graphicImage>
-                            <h:outputText value="Não encontrou o imóvel que você quer? Clique aqui!" style="width: 250px; margin-top: 10px; display: block; float: left"></h:outputText>
-                        </h:link>
-                    </div>
-                    <p:dialog widgetVar="dialogInquilino" id="dialogInquilinoId" modal="true" header="Deixa aqui seus dados, vamos procurar um imóvel que atenda suas necessidades!" resizable="false" showEffect="fade" hideEffect="drop" width="500" height="400">
-                        <p:messages autoUpdate="true" showDetail="true">
-                            <p:effect type="pulsate" event="load" speed="200" delay="400">  
-                                <f:param name="mode" value="'show'" />
-                            </p:effect> 
-                        </p:messages>
-                        <h:panelGrid columns="1" width="100%">
-                            <h:outputLabel value="Informe seu nome: "></h:outputLabel>
-                            <p:inputText value="#{inquilinoSiteView.inquilino.nome}" maxlength="100" style="width: 450px"></p:inputText>
-                            <h:outputLabel value="Seu telefone (Informe telefone ou email como preferir): "></h:outputLabel>
-                            <p:inputMask value="#{inquilinoSiteView.inquilino.telefone}" mask="(99) 9999-9999" maxlength="30" size="20"></p:inputMask>
-                            <h:outputLabel value="Seu Email (Informe telefone ou email como preferir): "></h:outputLabel>
-                            <p:inputText value="#{inquilinoSiteView.inquilino.email}" maxlength="150" style="width: 450px"></p:inputText>
-                            <h:panelGroup>
-                                <h:outputLabel value="Descreva o imóvel que você procura!: "></h:outputLabel>
-                                <h:outputText id="contadorLetrasDesc"></h:outputText>
-                            </h:panelGroup>
-                            <p:inputTextarea value="#{inquilinoSiteView.inquilino.descricao}" autoResize="false" maxlength="500" counter="contadorLetrasDesc" style="max-height: 60px; max-width: 450px; min-width: 450px"></p:inputTextarea>
-                        </h:panelGrid>
-                        <p:commandButton actionListener="#{inquilinoSiteView.salvar}" value="Enviar" style="width: 100%"></p:commandButton>
-                    </p:dialog>
-                </div>
-                <p:button styleClass="btnMenu" icon="fa fa-navicon" style="z-index: 100000; float: right" onclick="mostrarEsconderMenu();
-                        return false;"></p:button>
-                <div class="menu">
-                    <ul id="menuSite">
-                        <li><a href="index.jsf">Home</a></li>
-                        <li><a href="sobre.jsf">Sobre nós</a></li>
-                        <li><a href="alugar.jsf">Quero Alugar</a></li>
-                        <li><a href="comprar.jsf">Quero Comprar</a></li>
-                        <li><a href="orientacoes.jsf">Orientações</a></li>
-                        <li><a href="contato.jsf">Fale Conosco</a></li>
-                    </ul>
-                </div>
-                <div class="overlay" onclick="mostrarEsconderMenu()"></div>
-                <script>
-                    function mostrarEsconderMenu() {
-                        if ($('#menuSite').css('display') == 'none') {
-                            $('#menuSite').slideDown();
-                            $('.overlay').show('fade');
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <title>#{not empty configuracoesView.configuracoes.nomeImobiliaria?configuracoesView.configuracoes.nomeImobiliaria:'Imobiliária'}</title>
 
-                        } else {
-                            $('#menuSite').slideUp();
-                            $('.overlay').hide('fade');
-                        }
-                    }
-                </script>
-                <div class="sombraMenu"></div>
-            </div>
-        </header>
-        <footer>
-            <div class="center">
-                <div id="content" class="center_content">
-                    <p:messages autoUpdate="true" showDetail="true">
-                        <p:effect type="pulsate" event="load" speed="1000" delay="400"></p:effect> 
-                    </p:messages>
-                </div>
-                <ui:insert></ui:insert>
-            </div>
-            <div class="rodape">
-                <div class="center">
-                    <ul>
-                        <li><a href="index.jsf">Home</a></li>
-                        <li><a href="sobre.jsf">Quem somos</a></li>
-                        <li><a href="alugar.jsf">Quero Alugar</a></li>
-                        <li><a href="comprar.jsf">Quero Comprar</a></li>
-                        <li><a href="index-admin.jsf">Administração</a></li>
-                        <li><a href="#">E-mail</a></li>
-                    </ul>
-                    <div class="sombraVertical"></div>
-                    <div style="float: left; margin-left: 20px;text-shadow: 1px 1px 1px #fff;">
-                        <p>Praça Coronel Hermógenes, 280</p>
-                        <p>Centro, João Pinheiro-MG</p>
-                        <p>CEP: 38.770-000</p>
-                        <p>Telefone: (38)3561.3866 - Fax: (38)3561.5204</p>
-                    </div>
-                    <div style="float: right;">
-                        <a href="#">
-                            <div class="logoMini" style="margin-right: 10px; margin-top:10px;"></div></a>
-                        <br />
-                        <div style="float: right; margin-right: 10px;">
-                            <a href="http://www.softop.com.br" target="_blank" title="Softop - Técnologias Inovadoras"><img src="http://dsadeveloper.com.br/softop/public/image/softop_mini.png" style="padding-top: 5px;"/>
+        <!-- Bootstrap -->
+        <h:outputStylesheet library="css" name="bootstrap.css"></h:outputStylesheet>
+        <h:outputStylesheet library="css" name="bootstrap-theme.min.css"></h:outputStylesheet>
+        <!--<h:outputStylesheet library="css" name="imobiliaria-layout-site.css"></h:outputStylesheet>-->
+        <h:outputStylesheet library="css" name="font-awesome.css"></h:outputStylesheet>
+        <ui:include src="imobiliaria-layout-site.xhtml"></ui:include>
+        <f:facet name="last">
+        </f:facet> 
+
+        <ui:insert name="header"></ui:insert>
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        <style>
+            .alert div,
+            .alert span{
+                padding-left: 5px;
+                display:table-cell;
+            }
+            .alert ul {
+                list-style: none;
+            }
+            .ajax-processing {
+                height: 50px;display: block;width: 250px;left: 50%;position: fixed;z-index: 9999999;margin-left: -125px;border-radius: 0 0 10px 10px;border-top: none;box-shadow: 0px 15px 15px -15px black; font-size: 2rem; text-align: center
+            }
+        </style>
+    </h:head>
+    <h:body>
+
+        <div style="display: none" id="ajaxprocessing"  class="alert alert-warning ajax-processing">
+            <i class="glyphicon glyphicon-refresh fa-spin"></i> Carregando...
+        </div>
+        <!--        <h:messages style="position: absolute; margin:0 auto; top: 80px; max-width: 300px; width: 100%; z-index: 999" infoClass="alert alert-info" warnClass="alert alert-warning" errorClass="alert alert-danger" showDetail="true" fatalClass="alert alert-danger"></h:messages>-->
+        <div class="corpoSite">
+            <div class="container-fluid imb-header">
+                <div class="container">
+                    <div class="navbar navbar-default" style="background: none; border: none; box-shadow: none;">
+                        <!-- Brand and toggle get grouped for better mobile display -->
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed btn btn-default" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a href="#{request.contextPath}" rel="Página inicial">
+                                <h:graphicImage rendered="#{not empty configuracoesView.configuracoes.logo}" value="#{facesContext.externalContext.contextName}/imagemServlet?imageName=#{configuracoesView.configuracoes.logo}" styleClass="img-thumbnail" style="margin:-10px; padding-top: 15px; width: 190px; height: 90px;"></h:graphicImage>
+                                <h:graphicImage rendered="#{empty configuracoesView.configuracoes.logo}" library="images" name="logoimb.png"  styleClass="img-thumbnail" style="margin:-10px;padding-top: 15px; width: 190px; height: 90px;"></h:graphicImage>
                             </a>
+                        </div>
+                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                            <ul class="nav navbar-nav navbar-right" >
+                                <li role="presentation" ><a href="#{application.contextPath}/home">Home</a></li>
+                                <li role="presentation"><a href="#{application.contextPath}/sobre">Sobre Nós</a></li>
+                                <li role="presentation"><a href="#{application.contextPath}/imovel">Procurar Imóveis</a></li>
+                                <li role="presentation"><a href="#{application.contextPath}/orientacoes">Orientações</a></li>
+                                <li role="presentation"><a href="#{application.contextPath}/contato">Fale conosco</a></li>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
+            <ui:insert name="no-container"></ui:insert>
+            <div class="container">
+                <h:messages id="messages"  showSummary="true" showDetail="true"/>
+                <ui:insert></ui:insert>
+            </div>
+        </div>
+        <footer class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-6">
+                        <ul class="nav nav-pills nav-stacked">
+                            <li><a href="#{facesContext.externalContext.applicationContextPath}/home">Home</a></li>
+                            <li><a href="#{facesContext.externalContext.applicationContextPath}/sobre">Sobre</a></li>
+                            <li><a href="#{facesContext.externalContext.applicationContextPath}/imovel">Procurar imóveis</a></li>
+                            <li><a href="#{facesContext.externalContext.applicationContextPath}/orientacoes">Orientações</a></li>
+                            <li><a href="#{facesContext.externalContext.applicationContextPath}/contato">Entrar em contato</a></li>
+                            <li><a href="#{facesContext.externalContext.applicationContextPath}/admin">Administração do site</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6">
+                        <p>
+                            #{configuracoesView.configuracoes.nomeImobiliaria}
+                        </p>
+                        <p>
+                            #{configuracoesView.configuracoes.logradouro}, #{configuracoesView.configuracoes.numero}
+                        </p>
+                        <p>
+                            #{configuracoesView.configuracoes.bairro}, #{configuracoesView.configuracoes.cidade}-#{configuracoesView.configuracoes.uf}
+                        </p>
+                        <p>
+                            CEP: #{configuracoesView.configuracoes.cep}
+                        </p>
+                        <c:if test="#{not empty configuracoesView.configuracoes.fone1}">
+                            <p>
+                                <i class="glyphicon glyphicon-phone-alt"></i>&nbsp;#{configuracoesView.configuracoes.fone1}
+                            </p>
+                        </c:if>
+                        <c:if test="#{not empty configuracoesView.configuracoes.fone2}">
+                            <p>
+                                <i class="glyphicon glyphicon-phone-alt"></i>&nbsp;#{configuracoesView.configuracoes.fone2}
+                            </p>
+                        </c:if>
+                        <c:if test="#{not empty configuracoesView.configuracoes.fone3}">
+                            <p>
+                                <i class="glyphicon glyphicon-phone-alt"></i>&nbsp;#{configuracoesView.configuracoes.fone3}
+                            </p>
+                        </c:if>
+                        <c:if test="#{not empty configuracoesView.configuracoes.fax}">
+                            <p>
+                                <i class="glyphicon glyphicon-phone-alt"></i>&nbsp;Fax: #{configuracoesView.configuracoes.fax}
+                            </p>
+                        </c:if>
+                        <p>
+                            <i class="glyphicon glyphicon-map-marker"></i>&nbsp;<a href="https://www.google.com.br/maps/dir//#{configuracoesView.configuracoes.latitude},#{configuracoesView.configuracoes.longitude}/@#{configuracoesView.configuracoes.latitude},#{configuracoesView.configuracoes.longitude},17z" target="_blank">Como chegar...</a> 
+                        </p>
+                    </div>
+                </div>
+
+            </div>
         </footer>
-        <p:ajaxStatus onstart="PF('dialogAjax').show()" oncomplete="PF('dialogAjax').hide()" onerror="PF('dialogAjax').hide()" onsuccess="PF('dialogAjax').hide()" id="ajaxStatusPanel">  
-            <p:dialog height="55" width="220" widgetVar="dialogAjax" styleClass="ui-widget ui-state-default ui-corner-all ui-button-text-icon-left" modal="true" draggable="false" visible="false" closable="false" resizable="false" showHeader="false" appendTo="@(body)" style="position: fixed">
-                <h:panelGrid columns="2" columnClasses="columnEsquerda, columnDireita">
-                    <h:graphicImage value="./resources/imagens/load.gif" style="width: 48px; margin-right: 10px;"/>
-                    <h:outputText style="float: right; vertical-align: middle; font-weight: bold; border: none; background: none;-moz-box-shadow: inset 0px 0px 0px #fff;-webkit-box-shadow: inset 0px 0px 0px white;box-shadow: inset 0px 0px 0px white;" styleClass="ui-state-default" value="Processando!"></h:outputText>
-                </h:panelGrid>
-            </p:dialog>
-        </p:ajaxStatus>
-    </body>
+
+
+
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <h:outputScript library="js" name="bootstrap.min.js"></h:outputScript>
+        <h:outputScript library="js" name="jquery.mask.min.js"></h:outputScript>
+        <h:outputScript library="javax.faces" name="jsf.js" />
+        <ui:insert name="lastLine"></ui:insert>
+        <script>
+            if (!window["busystatus"]) {
+                var busystatus = {};
+            }
+
+            busystatus.onStatusChange = function onStatusChange(data) {
+                var status = data.status;
+                if (status === "begin") { // turn on busy indicator
+                    document.body.style.cursor = 'wait';
+                    $('#ajaxprocessing').slideDown(200);
+                } else { // turn off busy indicator, on either "complete" or "success"
+                    document.body.style.cursor = 'auto';
+                    $('#ajaxprocessing').slideUp(200);
+                }
+            };
+
+            jsf.ajax.addOnEvent(busystatus.onStatusChange);
+        </script>
+        
+    </h:body>
 </html>
+

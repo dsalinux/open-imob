@@ -26,11 +26,13 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
+import org.springframework.stereotype.Controller;
 
 /**
  *
  * @author danilo
  */
+@Controller
 @ManagedBean
 @SessionScoped
 public class OrientacoesView extends JSFUtil {

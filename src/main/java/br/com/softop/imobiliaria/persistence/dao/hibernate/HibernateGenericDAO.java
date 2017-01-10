@@ -14,6 +14,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Example;
+import org.hibernate.resource.transaction.spi.TransactionStatus;
 
 /**
  *
@@ -31,7 +32,7 @@ public class HibernateGenericDAO<T, I extends Serializable> implements GenericDA
             transaction = getSession().beginTransaction();
         } else {
             transaction = getSession().getTransaction();
-            if(!transaction.isActive()){
+            if(!transaction.getStatus().equals(TransactionStatus.ACTIVE)){
                 transaction.begin();
             }
         }
@@ -49,7 +50,7 @@ public class HibernateGenericDAO<T, I extends Serializable> implements GenericDA
             transaction = getSession().beginTransaction();
         } else {
             transaction = getSession().getTransaction();
-            if(!transaction.isActive()){
+            if(!transaction.getStatus().equals(TransactionStatus.ACTIVE)){
                 transaction.begin();
             }
         }
@@ -71,6 +72,7 @@ public class HibernateGenericDAO<T, I extends Serializable> implements GenericDA
     @Override
     public void refresh(T entity){
         getSession().refresh(entity);
+        getSession().close();
     }
     
     @Override
@@ -82,7 +84,14 @@ public class HibernateGenericDAO<T, I extends Serializable> implements GenericDA
     
     @Override
     public T findById(I id) {
+        return findById(id, true);
+    }
+    @Override
+    public T findById(I id, boolean closeSession) {
         T entity = (T) getSession().get(getPersistentClass(), id);
+        if(closeSession){
+            getSession().close();
+        }
         return entity;
     }
 
@@ -96,7 +105,9 @@ public class HibernateGenericDAO<T, I extends Serializable> implements GenericDA
             example.excludeProperty(exclude);
         }
         crit.add(example);
-        return crit.list();
+        List l = crit.list();
+        getSession().close();
+        return l;
     }
 
     @Override
@@ -104,7 +115,9 @@ public class HibernateGenericDAO<T, I extends Serializable> implements GenericDA
 //        getSession().flush();Quando o cliente clica em editar depois apaga um campo e tenta pesquisar novametne, da erro! por isso foi comentado
         getSession().clear();
         Criteria crit = getSession().createCriteria(getPersistentClass());
-        return crit.list();
+        List l = crit.list();
+        getSession().close();
+        return l;
     }
     
     @Override
@@ -120,13 +133,11 @@ public class HibernateGenericDAO<T, I extends Serializable> implements GenericDA
         }
         return this.session;
     }
-    public void setSession(Session session){
-        this.session = session;
-    }
     
     public Class<T> getPersistentClass(){
         persistentClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
         return persistentClass;
     }
+
     
 }

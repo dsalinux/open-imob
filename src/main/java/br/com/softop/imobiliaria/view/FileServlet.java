@@ -47,6 +47,7 @@ public class FileServlet extends HttpServlet {
             if(file != null){
                 response.setHeader("Content-Disposition", "attachment;filename=" + file.getName());
                 response.setHeader("Cache-Control", "public");
+                response.setHeader("Content-Length: ", file.length()+"");
                 Calendar dataExpiracao = Calendar.getInstance();
                 dataExpiracao.add(Calendar.HOUR, 2);
                 response.setHeader("expires", new SimpleDateFormat().format(dataExpiracao.getTime()));

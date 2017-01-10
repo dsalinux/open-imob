@@ -16,11 +16,13 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.event.ValueChangeEvent;
+import org.springframework.stereotype.Controller;
 
 /**
  *
  * @author danilo
  */
+@Controller
 @SessionScoped
 @ManagedBean
 public class AlugarView extends JSFUtil {
@@ -36,7 +38,7 @@ public class AlugarView extends JSFUtil {
 
     public AlugarView() {
         imovelVO = new ImovelVO();
-        imovelVO.setTipo_(Imovel.Tipo.ALUGUEL);
+//        imovelVO.setTipo_(Imovel.Tipo.ALUGUEL);
     }
 
     @PostConstruct
@@ -67,17 +69,17 @@ public class AlugarView extends JSFUtil {
     public void limparPesquisa() {
         bairros = null;
         imovelVO = new ImovelVO();
-        imovelVO.setTipo_(Imovel.Tipo.ALUGUEL);
+        buscar();
     }
 
     public void buscar() {
-        if (Context.getImovelConsulta() != null) {
-            ImovelVO i = Context.getImovelConsulta();
-            if (Imovel.Tipo.ALUGUEL.equals(i.getTipo_())) {
-                imovelVO = i;
-            }
-            Context.setImovelConsulta(null);
-        }
+//        if (Context.getImovelConsulta() != null) {
+//            ImovelVO i = Context.getImovelConsulta();
+//            if (Imovel.Tipo.ALUGUEL.equals(i.getTipo_())) {
+//                imovelVO = i;
+//            }
+//            Context.setImovelConsulta(null);
+//        }
         entitys = imovelLogic.buscarAtivosPorFiltro(imovelVO);
     }
 

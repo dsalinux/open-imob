@@ -8,15 +8,20 @@ import br.com.softop.imobiliaria.util.Assert;
 import br.com.softop.imobiliaria.util.MailUtil;
 import br.com.softop.imobiliaria.util.StringHelper;
 import br.com.softop.imobiliaria.util.exception.BusinessException;
+import java.net.URL;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author danilo
  */
+@Service
 public class ContatoLogicImpl implements ContatoLogic {
 
     @Override
-    public void enviarMensagem(ContatoVO contatoVO) throws BusinessException {
+    public void enviarMensagem(ContatoVO contatoVO) throws BusinessException, Exception {
         if (StringHelper.isEmpty(contatoVO.getNome())) {
             throw new BusinessException("Por favor informe seu nome!");
         }
@@ -44,11 +49,11 @@ public class ContatoLogicImpl implements ContatoLogic {
         mensagem.append("<br/>");
         mensagem.append(contato);
         Configuracoes configuracoes = new ConfiguracoesLogicImpl().recupararConfiguracoes();
-        MailUtil.sendMail(configuracoes.getEmailsRecebimento().split(","), null, configuracoes.getEmailEnvio(), configuracoes.getSenhaEnvio(), "Imperial Imóveis", contatoVO.getNome() + " entrou em contato pelo site", mensagem.toString());
+        MailUtil.sendMail(configuracoes.getEmailsRecebimento().split(","), null, configuracoes.getEmailEnvio(), configuracoes.getSenhaEnvio(), configuracoes.getNomeImobiliaria(), contatoVO.getNome() + " entrou em contato pelo site", mensagem.toString());
     }
 
     @Override
-    public void solicitarImovel(Imovel imovel, ContatoVO contatoVO) throws BusinessException {
+    public void solicitarImovel(Imovel imovel, ContatoVO contatoVO) throws BusinessException, Exception {
         if (imovel == null) {
             throw new BusinessException("Erro ao identificar o imóvel! Tente recaregar a página!");
         }
@@ -74,15 +79,13 @@ public class ContatoLogicImpl implements ContatoLogic {
         }
         StringBuilder mensagem = new StringBuilder("O cliente ");
         mensagem.append(contatoVO.getNome());
-        mensagem.append(" enviou uma mensagem a respeito do imóvel código ");
+        mensagem.append(" solicitou a chave do imóvel código ");
         mensagem.append(imovel.getId());
-        mensagem.append(" http://imperialimoveis.com/");
-        if(Imovel.Tipo.ALUGUEL.equals(imovel.getTipo_())){
-            mensagem.append("alugar.jsf");
-        } else {
-            mensagem.append("comprar.jsf");
-        }
-        mensagem.append("?imovel_id=");
+        mensagem.append(" ");
+        HttpServletRequest request = ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest());
+        URL url = new URL(request.getScheme(), request.getServerName(), request.getServerPort(), request.getContextPath());
+        mensagem.append(url.toString());
+        mensagem.append("/imovel/visualizar/");
         mensagem.append(imovel.getId());
         mensagem.append("<br/><br/>");
         mensagem.append(contatoVO.getMensagem());
@@ -93,7 +96,7 @@ public class ContatoLogicImpl implements ContatoLogic {
     }
 
     @Override
-    public void testarEnvioDeEmail(Configuracoes configuracoes){
+    public void testarEnvioDeEmail(Configuracoes configuracoes) throws Exception{
         MailUtil.sendMail(configuracoes.getEmailsRecebimento().split(","), null, configuracoes.getEmailEnvio(), configuracoes.getSenhaEnvio(), "Imperial Imóveis", "Email de teste enviado pelo sistema!", "Se você recebeu este email, tudo está configurado corretamente! Qualquer dúvida entre em contato com Softop pelo site: www.softop.com.br");
     }
 }

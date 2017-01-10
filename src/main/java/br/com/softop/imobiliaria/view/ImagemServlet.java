@@ -52,9 +52,10 @@ public class ImagemServlet extends HttpServlet {
             if(foto != null){
                 response.setHeader("Content-Disposition", "attachment;filename=" + foto.getName());
                 response.setHeader("Cache-Control", "public");
+//                response.setHeader("Content-Length: ", foto.length()+"");
                 Calendar dataExpiracao = Calendar.getInstance();
                 dataExpiracao.add(Calendar.HOUR, 2);
-                response.setHeader("expires", new SimpleDateFormat().format(dataExpiracao.getTime()));
+                response.setHeader("expires", dataExpiracao.getTime().toString());
                 response.setContentType("image/png");
                 byte[] img;
                 img = FileUtil.fileToByteArray(foto);

@@ -6,7 +6,9 @@ import br.com.softop.imobiliaria.util.StringHelper;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
+import org.springframework.stereotype.Controller;
 
+@Controller
 @ManagedBean
 @ViewScoped
 public class GerenciarLoginView extends GenericBean<Login, LoginLogicImpl> {
@@ -14,11 +16,11 @@ public class GerenciarLoginView extends GenericBean<Login, LoginLogicImpl> {
         private String senha;
 
     @Override
-    public void save(ActionEvent actionEvent) {
+    public void save() {
         if(!StringHelper.isEmpty(senha)){
             getEntity().setSenha(senha);
         }
-        super.save(actionEvent);
+        super.save();
     }
     
     public String getSenha() {

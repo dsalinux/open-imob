@@ -5,21 +5,14 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 template="template-admin.xhtml"
-                xmlns:f="http://java.sun.com/jsf/core">
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:imb="http://xmlns.jcp.org/jsf/composite/imb">
     <h:head></h:head>
     <ui:param name="titulo" value="Gerenciar Clientes"></ui:param>
     <h:body>
         <h:form id="frm">
-            <div style="margin-bottom: 10px;">
-                <p:commandButton actionListener="#{inquilinoView.newRegistre}" update="frm" value="Novo" icon="ui-icon-circle-check"></p:commandButton>
-                <p:commandButton actionListener="#{inquilinoView.save}" update="frm" value="Salvar" disabled="#{inquilinoView.currentStateName == 'SEARCH'}" icon="ui-icon-circle-check"></p:commandButton>
-                <p:commandButton actionListener="#{inquilinoView.search}" update="frm" value="#{inquilinoView.currentStateName == 'SEARCH'? 'Pesquisar':'Cancelar'}" icon="ui-icon-search"></p:commandButton>
-                <p:commandButton value="Deletar" onclick="confirmationDeleteRegistry.show()" icon="ui-icon-trash" rendered="#{inquilinoView.currentStateName == 'EDIT' and contextView.login.permissao_.name == 'ADMIN'}"></p:commandButton>
-                <p:confirmDialog message="Tem certeza que deseja remover?" header="Confirmação" severity="alert" widgetVar="confirmationDeleteRegistry">
-                    <p:commandButton id="confirm" icon="ui-icon-trash" value="Sim" update=":frm" onclick="confirmationDeleteRegistry.hide()" actionListener="#{inquilinoView.delete}" />
-                    <p:commandButton id="decline" icon="ui-icon-arrowreturnthick-1-w" value="Não" onclick="confirmationDeleteRegistry.hide()" type="button" />   
-                </p:confirmDialog>
-            </div>
+            <imb:toolbar crud="#{inquilinoView}"></imb:toolbar>
+            
             <p:fieldset legend="Informações Básicas" rendered="#{inquilinoView.currentStateName != 'SEARCH'}" >
                 <h:panelGrid columns="2">
                     <h:outputLabel value="Nome*"/>

@@ -1,155 +1,302 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:p="http://primefaces.org/ui"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 template="template.xhtml"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:c="http://java.sun.com/jsp/jstl/core">
-    <h:head>
-<!--                <script type="text/javascript">
-                    $('body').contents().hide();
-                   
-                    $('html').append('<img id="imgload" src="./resources/imagens/load.gif" style="width: 48px; top: 50%; left: 50%; margin-left: -24px; margin-top: -24px; position: fixed;"></img>').show();
-                    var hideDiv = function(){$('body').contents().fadeIn(); $('#imgload').remove()}
-                    var oldLoad = window.onload;
-                    var newLoad = oldLoad ? function(){hideDiv.call(this);oldLoad.call(this);} : hideDiv;
-                    window.onload = newLoad;
-                </script>-->
-        <link rel="stylesheet" href="resources/nivo-themes/default/default.css" type="text/css" media="screen" />
-        <link rel="stylesheet" href="resources/css/nivo-slider.css" type="text/css" media="screen" />
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="header">
+        <h:outputStylesheet library="css" name="slippry.css"></h:outputStylesheet>
+    </ui:define>
+    <ui:define name="no-container">
+
         <style>
-            .banner {width: 600px; margin-bottom: 30px; box-shadow: 0px 50px 60px -60px #000000;}
-            .busca {width: 300px;padding-top: 13px; box-shadow: 0px 50px 60px -60px #000000; font-size: 0.8em}
+            .carousel.fade {
+                opacity: 1;
+            }
+            .carousel.fade .item {
+                transition: opacity ease-out .7s;
+                left: 0;
+                opacity: 0; /* hide all slides */
+                top: 0;
+                position: absolute;
+                width: 100%;
+                display: block;
+            }
+            .carousel.fade .item:first-child {
+                top: auto;
+                opacity: 1; /* show first slide */
+                position: relative;
+            }
+            .carousel.fade .item.active {
+                opacity: 1;
+            }
+            .item-banner{
+                height: 300px;
+                width: 100%;
+                background-position: 50%!important;
+                background-repeat: no-repeat!important;
+                background-size: cover!important;
+            }
+            .carousel-control.left, .carousel-control.right {
+                background: none !important;
+                filter: none !important;
+                outline: 0;
+            }
+            .carousel .carousel-control { visibility: hidden}
+            .carousel:hover .carousel-control { visibility: visible; }
         </style>
-
-    </h:head>
-    <h:body>
-        <h:form id="frm">
-            <div class="ui-fluid">
-                
-                <p:panelGrid columns="2" columnClasses="banner,busca" layout="grid" style="margin-bottom: 20px; float: left; width: 100%">
-                    <h:panelGroup layout="block" styleClass="slider-wrapper theme-default" style="width: 600px; height: 300px; float: left; margin-top: 15px; margin-left: 10px;">
-                        <div id="slider" class="nivoSlider">
-                            <c:forEach items="#{contextView.banners}" var="entity">
-                                <img src="imagemServlet?imageName=#{entity.urlImagem}" data-thumb="imagemServlet?imageName=#{entity.urlImagem}" alt="" title="#{(not empty entity.descricao || not empty entity.link)?'#htmlcaption':''}#{(not empty entity.descricao || not empty entity.link)?entity.id:''}"/>
-                            </c:forEach>
+        <c:if test="#{not empty contextView.banners}">
+            <div id="carousel-example-generic" class="carousel fade" data-ride="carousel">
+                <div class="carousel-inner" role="listbox">
+                    <c:forEach items="#{contextView.banners}" var="banner" varStatus="p">
+                        <div class="item #{p.index == 1? 'active':''}">
+                            <div class="item-banner" style="background:url('#{request.contextPath}/imagemServlet?imageName=#{banner.urlImagem}')"></div>
                         </div>
-                        <div style="display: block; visibility: hidden;">
-                            <c:forEach items="#{contextView.banners}" var="entity">
-                                <h:panelGroup layout="block" rendered="#{not empty entity.descricao || not empty link}">
-                                    <div id="htmlcaption#{entity.id}" styleClass="nivo-html-caption">
-                                        <h:outputText value="#{entity.descricao} " rendered="#{not empty entity.descricao}"/> <h:link outcome="#{entity.link}" rendered="#{not empty entity.link}"> Clique para acessar!</h:link>
+                    </c:forEach>
+                    <!--                <div class="item">
+                                        <div class="item-banner" style="background:url('javax.faces.resource/banner2.jpg.jsf;?ln=img')"></div>
                                     </div>
-                                </h:panelGroup>
-                            </c:forEach>
-                        </div>
-                    </h:panelGroup>
-                    <p:panel header="Busca Imóvel">
-                        <h:panelGrid columns="1" style="font-size: 0.9em; width: 100%">
-                            <p:selectOneRadio style="margin: 0 auto; width: 100%" value="#{consultaImovelView.imovel.tipo_}">
-                                <f:selectItem itemLabel="Alugar" itemValue="ALUGUEL"></f:selectItem>
-                                <f:selectItem itemLabel="Comprar" itemValue="VENDA"></f:selectItem>
-                            </p:selectOneRadio>
-                            <h:outputLabel value="Tipo Imóvel:"></h:outputLabel>
-                            <p:selectOneMenu value="#{consultaImovelView.imovel.tipoImovel}" style="width: 100%">
-                                <f:selectItem itemLabel="Indiferente"></f:selectItem>
-                                <f:selectItems value="#{alugarView.tipoImovelList}" var="tipoImovel" itemValue="#{tipoImovel.id}" itemLabel="#{tipoImovel.nome}"></f:selectItems> 
-                            </p:selectOneMenu>
-                            <h:outputLabel value="Cidade:"></h:outputLabel>
-                            <p:selectOneMenu value="#{consultaImovelView.imovel.cidade}" style="width: 100%" valueChangeListener="#{alugarView.alterarBairro}">
-                                <f:selectItem itemLabel="Indiferente"></f:selectItem>
-                                <f:selectItems value="#{alugarView.cidades}"></f:selectItems>
-                                <p:ajax event="change" update=":frm"></p:ajax>
-                            </p:selectOneMenu>
-                            <h:outputLabel value="Bairro:"></h:outputLabel>
-                            <p:selectOneMenu value="#{consultaImovelView.imovel.bairro}" style="width: 100%" id="cboBairro">
-                                <f:selectItem itemLabel="Indiferente"></f:selectItem>
-                                <f:selectItems value="#{alugarView.bairros}"></f:selectItems>
-                            </p:selectOneMenu>
-                            <h:panelGrid columns="3" style="width: 100%">
-                                <h:outputLabel value="Valor Mínimo:"></h:outputLabel>
-                                <h:outputLabel value="Valor Máximo:"></h:outputLabel>
-                                <h:outputLabel></h:outputLabel>
-                                <p:spinner stepFactor="10" min="0" value="#{consultaImovelView.imovel.valorMinimo}" prefix="R$" size="8"></p:spinner>
-                                <p:spinner stepFactor="10" min="0" value="#{consultaImovelView.imovel.valorMaximo}" prefix="R$" size="8"></p:spinner>
-                                <p:commandButton value="Pesquisar" action="#{consultaImovelView.consultar}" icon="ui-icon-search"></p:commandButton>
-                            </h:panelGrid>
-                            <h:outputText value="Informe o cógido para acessar diretamente!"></h:outputText>
-                            <h:panelGrid columns="2">
-                                <p:inputText value="#{contextView.idImovel}" id="idImov">
-                                    <p:ajax event="change" update=":frm"></p:ajax>
-                                </p:inputText>
-                                <h:link id="linkDireto" outcome="visualizarImovel.jsf?imovel_id=#{contextView.idImovel}" rendered="#{contextView.idImovel != null}" onmouseover="$(this).addClass('ui-state-hover');" onmouseout="$(this).removeClass('ui-state-hover');" style="text-align: center; text-decoration: none; padding: 5px; background-position-y: 0;" styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">Ver imóvel</h:link>
-                            </h:panelGrid>
-                        </h:panelGrid>
-                    </p:panel>
-                </p:panelGrid>
-                <h:panelGroup layout="block">
-                    <p:carousel headerText="Procura por aluguel?" style="width: 100%;" responsive="true" rendered="#{not empty alugarView.entitys}" circular="true" value="#{alugarView.entitys}" numVisible="4" var="imovel" autoPlayInterval="8000">
-                        <p:column>
-                            <h:link outcome="alugar.jsf?imovel_id=#{imovel.id}" onmouseover="$(this).addClass('ui-state-hover');" onmouseout="$(this).removeClass('ui-state-hover');" style="width: 200px; height: 300px; display: block;text-align: center; text-decoration: none; padding: 5px; background-position-y: 0;" styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
-                                <p:graphicImage value="imagemServlet?imageName=#{imovel.urlFotoPrincipal}mini" style="margin: 0 auto; width: 200px; max-height: 150px;" id="img"/>
-                                <h:outputText value="#{imovel.tipoImovel.nome}" style="display: block; font-weight: bold"></h:outputText>
-                                <h:outputText value="#{imovel.descricaoCurta}"></h:outputText>
-                                <h:outputText value="#{imovel.cidade}, #{imovel.bairro}" style="display: block"></h:outputText>
-                                <h:outputText value="#{imovel.valor}" style="display: block">
-                                    <f:convertNumber currencySymbol="R$" type="currency" maxFractionDigits="2" minFractionDigits="2"></f:convertNumber>
-                                </h:outputText>
-                            </h:link>
-                        </p:column>
-                    </p:carousel>
-                    <p:spacer height="20px" width="100%"></p:spacer>
-                    <p:carousel headerText="Procura comprar!" style="width: 100%" responsive="true" rendered="#{not empty comprarView.entitys}" circular="true" value="#{comprarView.entitys}" var="imovel" numVisible="4" autoPlayInterval="8000">
-                        <p:column>
-                            <h:link outcome="comprar.jsf?imovel_id=#{imovel.id}" onmouseover="$(this).addClass('ui-state-hover');" onmouseout="$(this).removeClass('ui-state-hover');" style="width: 200px; height: 300px; display: block;text-align: center; text-decoration: none; padding: 5px; background-position-y: 0;" styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
-                                <p:graphicImage value="imagemServlet?imageName=#{imovel.urlFotoPrincipal}mini" style="margin: 0 auto; width: 200px; max-height: 150px;" id="img"/>
-                                <h:outputText value="#{imovel.tipoImovel.nome}" style="display: block; font-weight: bold"></h:outputText>
-                                <h:outputText value="#{imovel.descricaoCurta}"></h:outputText>
-                                <h:outputText value="#{imovel.cidade}, #{imovel.bairro}" style="display: block"></h:outputText>
-                                <h:outputText value="#{imovel.valor}" style="display: block">
-                                    <f:convertNumber currencyCode="BRL" type="currency" maxFractionDigits="2" minFractionDigits="2"></f:convertNumber>
-                                </h:outputText>
-                            </h:link>
-                        </p:column>
-                    </p:carousel>
-                </h:panelGroup>
+                                    <div class="item">
+                                        <div class="item-banner" style="background:url('javax.faces.resource/banner3.jpg.jsf;?ln=img')"></div>
+                                    </div>-->
+                </div>
+                <!-- Controls -->
+                <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
             </div>
-        </h:form>
-    </h:body>
+        </c:if>
 
-    <script type="text/javascript" src="resources/js/jquery.nivo.slider.js"></script>
-    <script type="text/javascript">
-                            $(window).load(function () {
-                                $('#slider').nivoSlider({
-                                    effect: 'sliceDown,sliceDownLeft,sliceUp,sliceUpLeft,sliceUpDown,sliceUpDownLeft,fold,fade', // Specify sets like: 'fold,fade,sliceDown'
-                                    slices: 15, // For slice animations
-                                    boxCols: 8, // For box animations
-                                    boxRows: 4, // For box animations
-                                    animSpeed: 600, // Slide transition speed
-                                    pauseTime: 5000, // How long each slide will show
-                                    startSlide: 0, // Set starting Slide (0 index)
-                                    directionNav: true, // Next  Prev navigation
-                                    controlNav: false, // 1,2,3... navigation
-                                    controlNavThumbs: false, // Use thumbnails for Control Nav
-                                    pauseOnHover: true, // Stop animation while hovering
-                                    manualAdvance: false, // Force manual transitions
-                                    prevText: 'Anterior', // Prev directionNav text
-                                    nextText: 'Próximo', // Next directionNav text
-                                    randomStart: true, // Start on a random slide
-                                    beforeChange: function () {
-                                    }, // Triggers before a slide transition
-                                    afterChange: function () {
-                                    }, // Triggers after a slide transition
-                                    slideshowEnd: function () {
-                                    }, // Triggers after all slides have been shown
-                                    lastSlide: function () {
-                                    }, // Triggers when last slide is shown
-                                    afterLoad: function () {
-                                    } // Triggers when slider has loaded
-                                });
-                            });
-    </script>
+        <!--        <section class="demo_wrapper" style="z-index:0">
+                    <article class="demo_block">
+                        <ul id="demo1">
+                            <li><a href="#slide1">
+                                    <h:graphicImage library="img" name="image-1.jpg"></h:graphicImage>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#slide2">
+                                    <h:graphicImage library="img" name="image-2.jpg"></h:graphicImage>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#slide3">
+                                    <h:graphicImage library="img" name="image-4.jpg"></h:graphicImage>
+                                </a>
+                            </li>
+                        </ul>
+                    </article>
+                </section>		-->
+        <br/>
+        <div class="container">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Procure pelo imóvel que você deseja:
+                    <a href="#{request.contextPath}/imovel" class="btn btn-success" data-toggle="collapse" data-target="#demo">Clique aqui para buscar</a>
+                </div>
+            </div>            
+            <!--        <div class="panel panel-default">
+                        <div class="panel-heading">Quer encontrar um imóvel de forma fácil? <button class="btn btn-success" data-toggle="collapse" data-target="#demo">Clique aqui para buscar</button></div>
+                        <div class="panel-body">
+                            <div class="bootstrap-iso">
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="">
+                                            <form class="form-horizontal collapse" method="post" id="demo">
+                                                <div class="form-group ">
+                                                    <label class="control-label col-sm-2">
+                                                        Tipo neg&oacute;cio
+                                                    </label>
+                                                    <div class="col-sm-10">
+                                                        <div class="radio">
+                                                            <label class="radio">
+                                                                <input name="radio" type="radio" value="Alugar"/>
+                                                                Alugar
+                                                            </label>
+                                                        </div>
+                                                        <div class="radio">
+                                                            <label class="radio">
+                                                                <input name="radio" type="radio" value="Comprar"/>
+                                                                Comprar
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group ">
+                                                    <label class="control-label col-sm-2" for="select">
+                                                        Tipo Im&oacute;vel
+                                                    </label>
+                                                    <div class="col-sm-10">
+                                                        <select class="select form-control" id="select" name="select">
+                                                            <option value="Casa">
+                                                                Casa
+                                                            </option>
+                                                            <option value="Apartamento">
+                                                                Apartamento
+                                                            </option>
+                                                            <option value="Loja">
+                                                                Loja
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group ">
+                                                    <label class="control-label col-sm-2" for="select1">
+                                                        Cidade
+                                                    </label>
+                                                    <div class="col-sm-10">
+                                                        <select class="select form-control" id="select1" name="select1">
+                                                            <option value="Brasil&acirc;ndia">
+                                                                Brasil&acirc;ndia
+                                                            </option>
+                                                            <option value="Jo&atilde;o Pinheiro">
+                                                                Jo&atilde;o Pinheiro
+                                                            </option>
+                                                            <option value="Paracatu">
+                                                                Paracatu
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group ">
+                                                    <label class="control-label col-sm-2" for="select2">
+                                                        Bairro
+                                                    </label>
+                                                    <div class="col-sm-10">
+                                                        <select class="select form-control" id="select2" name="select2">
+                                                            <option value="Aeroporto">
+                                                                Aeroporto
+                                                            </option>
+                                                            <option value="Centro">
+                                                                Centro
+                                                            </option>
+                                                            <option value="Esplanada">
+                                                                Esplanada
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group ">
+                                                    <label class="control-label col-sm-2" for="number">
+                                                        Valor Mínimo
+                                                    </label>
+                                                    <div class="col-sm-10">
+                                                        <div class="input-group">
+                                                            <div class="input-group-addon">
+                                                                <i class="glyphicon glyphicon-usd">
+                                                                </i>
+                                                            </div>
+                                                            <input class="form-control" id="number" name="number" type="text"/>
+                                                            <div class="input-group-addon">
+                                                                ,00
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group ">
+                                                    <label class="control-label col-sm-2" for="number1">
+                                                        Valor M&aacute;ximo
+                                                    </label>
+                                                    <div class="col-sm-10">
+                                                        <div class="input-group">
+                                                            <div class="input-group-addon">
+                                                                <i class="glyphicon glyphicon-usd">
+                                                                </i>
+                                                            </div>
+                                                            <input class="form-control" id="number1" name="number1" type="text"/>
+                                                            <div class="input-group-addon">
+                                                                ,00
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group ">
+                                                    <label class="control-label col-sm-2" for="number2">
+                                                        C&oacute;digo Im&oacute;vel
+                                                    </label>
+                                                    <div class="col-sm-10">
+                                                        <div class="input-group">
+                                                            <div class="input-group-addon">
+                                                                <i class="glyphicon glyphicon-qrcode">
+                                                                </i>
+                                                            </div>
+                                                            <input class="form-control" id="number2" name="number2" type="text"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="col-sm-10 col-sm-offset-2">
+                                                        <button class="btn btn-primary " name="submit" type="submit">
+                                                            Buscar im&oacute;vel
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>-->
+            <div class="panel panel-default">
+                <div class="panel-heading">Confira alguns imoveis em destaque!</div>
+                <div class="panel-body">
+                    <div class="row">
+                        <ui:repeat value="#{imoveisView.imoveisDestaque}" var="imovel" varStatus="p" id="listaImoveis">
+                            <div class="col-sm-6 col-md-4">
+                                    <div class="thumbnail">
+                                        <div style="height: 130px; width: 100%; background: url('imagemServlet?imageName=#{imovel.urlFotoPrincipal}'); background-position: 50%; background-size: cover"></div>
+                                        <div class="caption" style="height: 250px">
+                                            <h3><b>#{imovel.tipo_.descricao}:</b> #{imovel.tipoImovel.nome}</h3>
+                                            <h4><b>Valor: </b>
+                                                <h:outputText value="#{imovel.valor > 0?imovel.valor:'Entre em contato!'}">
+                                                    <f:convertNumber rendered="#{imovel.valor > 0}" type="currency" currencySymbol="R$" locale="pt_BR"></f:convertNumber>
+                                                </h:outputText></h4>
+                                            <p class="text-justify">
+                                                #{imovel.descricao}
+                                            </p>
+                                        </div>
+                                        <p>
+                                            <a href="imovel/visualizar/#{imovel.id}" class="btn btn-danger btn-group-justified" role="button"><span class="glyphicon glyphicon-search"></span> Visualizar</a> 
+                                        </p>
+                                    </div>
+                                </div>
+                        </ui:repeat>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+
+    <ui:define name="lastLine">
+        <!--<h:outputScript library="js" name="slippry.min.js"></h:outputScript>-->
+        <script>
+            $(function () {
+                //                        $("#demo1").slippry({
+                //                            transition: 'fade',
+                //                            pager: false
+                //                        });
+                //        
+                $('.carousel').carousel();
+            });
+            $(".dropdown-menu li a").click(function () {
+                var selText = $(this).text();
+                $(this).parents('.btn-group').find('.dropdown-toggle').html(selText + ' <span class="caret"></span>');
+            });
+
+            $("#btnSearch").click(function () {
+                alert($('.btn-select').text() + ", " + $('.btn-select2').text());
+            });
+        </script>
+    </ui:define>
+
 </ui:composition>
 

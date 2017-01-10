@@ -8,11 +8,13 @@ import br.com.softop.imobiliaria.util.StringHelper;
 import br.com.softop.imobiliaria.util.exception.BusinessException;
 import java.util.Date;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author danilo
  */
+@Service
 public class LoginLogicImpl implements LoginLogic {
 
     @Override
@@ -66,6 +68,11 @@ public class LoginLogicImpl implements LoginLogic {
             throw new BusinessException("E-mail ou Senha invalidos!");
         }
         return login;
+    }
+
+    @Override
+    public Login findById(Login entity) {
+        return findById(entity.getId());
     }
     
 }

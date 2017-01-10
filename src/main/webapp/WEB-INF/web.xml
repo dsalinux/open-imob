@@ -12,6 +12,33 @@
         <param-name>primefaces.FONT_AWESOME</param-name>
         <param-value>true</param-value>
     </context-param>
+    <context-param> 
+        <param-name>primefaces.THEME</param-name> 
+        <param-value>bootstrap</param-value>
+        <!--<param-value>#{themeSwitcherBean.tema}</param-value>--> 
+    </context-param>
+    
+    <context-param>
+        <description>Desabilita a validacao default do jsf de bean validation</description>
+        <param-name>javax.faces.validator.DISABLE_DEFAULT_BEAN_VALIDATOR</param-name>
+        <param-value>true</param-value>
+    </context-param>
+
+    <context-param> 
+        <param-name>com.sun.faces.writeStateAtFormEnd</param-name> 
+        <param-value>false</param-value> 
+    </context-param>
+    <filter>
+        <filter-name>Pretty Filter</filter-name>
+        <filter-class>com.ocpsoft.pretty.PrettyFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>Pretty Filter</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>ERROR</dispatcher>
+    </filter-mapping>
     <filter>
         <filter-name>PrimeFaces FileUpload Filter</filter-name>
         <filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
@@ -20,22 +47,22 @@
         <filter-name>PrimeFaces FileUpload Filter</filter-name>
         <servlet-name>Faces Servlet</servlet-name>
     </filter-mapping>
-    <context-param> 
-        <param-name>primefaces.THEME</param-name> 
-        <param-value>blitzer</param-value>
-        <!--<param-value>#{themeSwitcherBean.tema}</param-value>--> 
-    </context-param>
+    <listener>
+        <listener-class>
+            org.springframework.web.context.ContextLoaderListener
+        </listener-class>
+    </listener>
+    <listener>
+        <listener-class>
+            br.com.softop.imobiliaria.view.util.Config
+        </listener-class>
+    </listener>
     
-    <context-param>
-       <description>Desabilita a validacao default do jsf de bean validation</description>
-       <param-name>javax.faces.validator.DISABLE_DEFAULT_BEAN_VALIDATOR</param-name>
-       <param-value>true</param-value>
-   </context-param>
-
-    <context-param> 
-        <param-name>com.sun.faces.writeStateAtFormEnd</param-name> 
-        <param-value>false</param-value> 
-    </context-param>
+    <listener>
+        <listener-class>
+            org.springframework.web.context.request.RequestContextListener
+        </listener-class>
+    </listener>
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
@@ -51,6 +78,6 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>index.jsf</welcome-file>
+        <welcome-file>/home</welcome-file>
     </welcome-file-list>
 </web-app>

@@ -6,7 +6,6 @@ package br.com.softop.imobiliaria.entity;
 
 import br.com.softop.imobiliaria.util.StringHelper;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -27,7 +26,6 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
@@ -35,12 +33,11 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "imovel")
-@XmlRootElement
 public class Imovel implements Serializable {
     
     public enum Tipo {
-        ALUGUEL("Aluguel"),
-        VENDA("Venda");
+        ALUGUEL("Aluguar"),
+        VENDA("Comprar");
 
         private String descricao;
         
@@ -98,7 +95,7 @@ public class Imovel implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "valor")
-    private BigDecimal valor = BigDecimal.ZERO;
+    private Float valor;
     @Basic(optional = false)
     @NotNull
     @Column(name = "data_cadastro")
@@ -141,6 +138,8 @@ public class Imovel implements Serializable {
     private List<Foto> fotoListRemover;
     @Column(name="area")
     private String area;
+    @Column(name="imovel_destaque")
+    private boolean imovelDestaque;
 
     public Imovel() {
     }
@@ -149,7 +148,7 @@ public class Imovel implements Serializable {
         this.id = id;
     }
 
-    public Imovel(Integer id, String descricao, int quartos, int salas, int banheiros, int garagem, boolean armariosEmbutidos, boolean guardaroupasEmbutidos, BigDecimal valor, Date dataCadastro) {
+    public Imovel(Integer id, String descricao, int quartos, int salas, int banheiros, int garagem, boolean armariosEmbutidos, boolean guardaroupasEmbutidos, Float valor, Date dataCadastro) {
         this.id = id;
         this.descricao = descricao;
         this.quartos = quartos;
@@ -226,11 +225,11 @@ public class Imovel implements Serializable {
         this.guardaroupasEmbutidos = guardaroupasEmbitidos;
     }
 
-    public BigDecimal getValor() {
+    public Float getValor() {
         return valor;
     }
 
-    public void setValor(BigDecimal valor) {
+    public void setValor(Float valor) {
         this.valor = valor;
     }
 
@@ -258,6 +257,14 @@ public class Imovel implements Serializable {
         this.tipoImovel = tipoImovel;
     }
 
+    public boolean isImovelDestaque() {
+        return imovelDestaque;
+    }
+
+    public void setImovelDestaque(boolean imovelDestaque) {
+        this.imovelDestaque = imovelDestaque;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

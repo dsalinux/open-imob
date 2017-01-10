@@ -9,25 +9,160 @@
     <h:head>
     </h:head>
     <ui:param name="titulo" value="Gerenciar Configuração"></ui:param>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB5NF9KTUWogbPgMMtfPiFQ4ZDOkUUAD_Q" ></script>
+    <style>
+        .selectTheme{
+            margin: 10px;
+        }
+        .selectTheme:hover   {
+            box-shadow: 0px 0px 10px black;
+        }
+        .selectedTheme{
+            box-shadow: 0px 0px 15px red;
+            border: 2px solid gray;
+        }
+    </style>
     <h:body>
         <h:form id="frm">
             <div style="margin-bottom: 10px;">
-                <p:commandButton actionListener="#{configuracoesView.salvar}" update="frm" value="Salvar" icon="ui-icon-circle-check"></p:commandButton>
-                <p:commandButton actionListener="#{configuracoesView.atualizar}" update="frm" value="Atualizar" icon="ui-icon-search"></p:commandButton>
-                <p:commandButton actionListener="#{configuracoesView.testarEnvioDeEmail}" update="frm" value="Teste Envio de Email" icon="ui-icon-mail-closed"></p:commandButton>
+                <p:commandButton actionListener="#{gerenciarConfiguracoesView.salvar}" update="frm" value="Salvar" icon="ui-icon-circle-check"></p:commandButton>
+                <p:commandButton actionListener="#{gerenciarConfiguracoesView.atualizar}" update="frm" value="Atualizar" icon="ui-icon-search"></p:commandButton>
+                <p:commandButton actionListener="#{gerenciarConfiguracoesView.testarEnvioDeEmail}" update="frm" value="Teste Envio de Email" icon="ui-icon-mail-closed"></p:commandButton>
             </div>
-            <p:fieldset legend="Informações">
-                <h:panelGrid columns="1">
-                    <h:outputLabel value="Destinatários*"/>
-                    <p:inputText value="#{configuracoesView.configuracoes.emailsRecebimento}" size="100" id="inputEmails"></p:inputText>
-                    <p:tooltip for="inputEmails" value="Informe a lista de emais que receberão os emails do sistema separadas por vírgula!"></p:tooltip>
-                    <h:outputLabel value="Email Envio*"/>
-                    <p:inputText value="#{configuracoesView.configuracoes.emailEnvio}" size="50"></p:inputText>
-                    <h:outputText value="Senha Envio"></h:outputText>
-                    <p:password id="password" value="#{configuracoesView.senha}"></p:password>
-                </h:panelGrid>
+            <p:fieldset legend="Informações" class="ui-fluid">
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-md-12 ui-lg-4">
+                        <p:fieldset legend="Dados do Email">
+                            <p:panelGrid columns="1" layout="grid" class="ui-panelgrid-blank">
+                                <h:outputLabel value="Destinatários*"/>
+                                <p:inputTextarea value="#{gerenciarConfiguracoesView.configuracoes.emailsRecebimento}" maxlength="1000" id="inputEmails"></p:inputTextarea>
+                                <p:tooltip for="inputEmails" value="Informe a lista de emais que receberão os emails do sistema separadas por vírgula!"></p:tooltip>
+                                <h:outputLabel value="Email Envio*"/>
+                                <p:inputText value="#{gerenciarConfiguracoesView.configuracoes.emailEnvio}" maxlength="150" ></p:inputText>
+                                <h:outputText value="Senha Envio"></h:outputText>
+                                <p:password id="password" value="#{gerenciarConfiguracoesView.senha}" maxlength="50"></p:password>
+                            </p:panelGrid>
+                        </p:fieldset>
+                        <p:fieldset legend="Layout do Site">
+                            <p:panel id="panelimglogo">
+                                <p>Logo:</p>
+                                <h:graphicImage rendered="#{not empty gerenciarConfiguracoesView.configuracoes.logo}" value="#{facesContext.externalContext.contextName}/imagemServlet?imageName=#{gerenciarConfiguracoesView.configuracoes.logo}" id="foto" style="max-height: 80px"></h:graphicImage>
+                                <h:graphicImage rendered="#{empty gerenciarConfiguracoesView.configuracoes.logo}" library="images" name="logoimb.png"  id="semfoto" style="max-height: 80px"></h:graphicImage>
+                                <p:fileUpload fileUploadListener="#{gerenciarConfiguracoesView.uploadImagem}" label="Carrege uma logo!" update="panelimglogo" allowTypes="/(\.|\/)(gif|jpe?g|png|GIF|JPE?G|PNG)$/" widgetVar="upimg" auto="true"></p:fileUpload>
+                            </p:panel>
+                            <p:dataGrid value="#{gerenciarConfiguracoesView.themes}" id="gridtheme" columns="2" styleClass="ui-responsive" var="theme" layout="grid">
+                                <f:facet name="header">
+                                    Tema selecionado
+                                    <h:panelGroup layout="block" style="border: 1px solid gray">
+                                        <h:panelGroup layout="block" style="width: 100%; height: 30px; background: #{gerenciarConfiguracoesView.configuracoes.theme.headerBackground}; border-bottom: 4px solid #{gerenciarConfiguracoesView.configuracoes.theme.headerBackgroundHover}; color: #{gerenciarConfiguracoesView.configuracoes.theme.headerTextColor}; font-size: 0.5em">
+                                            <h:panelGroup layout="block" style="float: left; display: table; vertical-align: middle; margin-left: 1%; border-radius: 5%; box-shadow: 0px 1px 2px -1px #555; margin-top: 1%; background: white; height: 22px; width: 45px; padding: 1px">
+                                                <h:graphicImage rendered="#{not empty gerenciarConfiguracoesView.configuracoes.logo}" value="#{facesContext.externalContext.contextName}/imagemServlet?imageName=#{gerenciarConfiguracoesView.configuracoes.logo}" style="height:  20px; max-width: 40px;"></h:graphicImage>
+                                                <h:graphicImage rendered="#{empty gerenciarConfiguracoesView.configuracoes.logo}" library="images" name="logoimb.png" style="height: 20px"></h:graphicImage>
+                                            </h:panelGroup>
+                                            <div style="float: left; line-height: 34px; margin-left: 10px">Home Sobre ...</div>
+                                        </h:panelGroup>
+                                        <h:panelGroup layout="block" style="height: 30px; width: 100%; background: white"></h:panelGroup>
+                                        <h:panelGroup layout="block" style="height: 25px; width: 100%; line-height: 15px; font-size: 0.5em;  background: #{gerenciarConfiguracoesView.configuracoes.theme.footerBackground}; border-top: 4px solid #{gerenciarConfiguracoesView.configuracoes.theme.footerBorderColor}; color: #{gerenciarConfiguracoesView.configuracoes.theme.footerTextColor}">
+                                            <div style="text-decoration: none!important; margin-left: 2%">Rodapé do site</div>
+                                        </h:panelGroup>
+                                    </h:panelGroup>
+                                    Selecione para trocar:
+                                </f:facet>
+
+                                <h:panelGroup layout="block" styleClass="selectTheme">
+                                    <p:commandLink update="gridtheme" actionListener="#{gerenciarConfiguracoesView.selecionarTheme(theme)}" style="border: 1px solid black; display: block">
+                                        <h:panelGroup layout="block" style="width: 100%; height: 20px; background: #{theme.headerBackground}; border-bottom: 4px solid #{theme.headerBackgroundHover}; color: #{theme.headerTextColor}; font-size: 0.5em">
+                                            <h:panelGroup layout="block" style="float: left; display: table; vertical-align: middle; margin-left: 1%; border-radius: 5%; box-shadow: 0px 1px 2px -1px #555; margin-top: 1%; background: white; height: 22px; width: 45px; padding: 1px">
+                                                <h:graphicImage rendered="#{not empty gerenciarConfiguracoesView.configuracoes.logo}" value="#{facesContext.externalContext.contextName}/imagemServlet?imageName=#{gerenciarConfiguracoesView.configuracoes.logo}" id="foto" style="height:  20px; max-width: 40px;"></h:graphicImage>
+                                                <h:graphicImage rendered="#{empty gerenciarConfiguracoesView.configuracoes.logo}" library="images" name="logoimb.png"  id="semfoto" style="height: 20px"></h:graphicImage>
+                                            </h:panelGroup>
+                                            <div style="float: left; line-height: 24px; margin-left: 10px">Home Sobre ...</div>
+                                        </h:panelGroup>
+                                        <h:panelGroup layout="block" style="height: 20px; width: 100%; background: white"></h:panelGroup>
+                                        <h:panelGroup layout="block" style="height: 15px; width: 100%; line-height: 15px; font-size: 0.5em;  background: #{theme.footerBackground}; border-top: 4px solid #{theme.footerBorderColor}; color: #{theme.footerTextColor}">
+                                            <div style="text-decoration: none!important; margin-left: 2%">Rodapé do site</div>
+                                        </h:panelGroup>
+                                    </p:commandLink>
+                                </h:panelGroup>
+                            </p:dataGrid>
+                        </p:fieldset>
+                    </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-4">
+                        <p:fieldset legend="Dados Imobiliária">
+
+                            <p:panelGrid columns="1" layout="grid" class="ui-panelgrid-blank">
+                                <h:outputLabel for="inputNomeImobiliaria" value="Nome Imobiliária*:"></h:outputLabel>
+                                <p:inputText id="inputNomeImobiliaria" value="#{gerenciarConfiguracoesView.configuracoes.nomeImobiliaria}" maxlength="100"></p:inputText>
+                                <h:outputLabel for="inputLogradourdo" value="Logradourdo*:"></h:outputLabel>
+                                <p:inputText id="inputLogradourdo" value="#{gerenciarConfiguracoesView.configuracoes.logradouro}" maxlength="100"></p:inputText>
+                                <h:outputLabel for="inputNumero" value="Número*:"></h:outputLabel>
+                                <p:inputText id="inputNumero" value="#{gerenciarConfiguracoesView.configuracoes.numero}" maxlength="16"></p:inputText>
+                                <h:outputLabel for="inputComplemento" value="Coplemento:"></h:outputLabel>
+                                <p:inputText id="inputComplemento" value="#{gerenciarConfiguracoesView.configuracoes.complemento}" maxlength="50"></p:inputText>
+                                <h:outputLabel for="inputBairro" value="Bairro*:"></h:outputLabel>
+                                <p:inputText id="inputBairro" value="#{gerenciarConfiguracoesView.configuracoes.bairro}" maxlength="80"></p:inputText>
+                                <h:outputLabel for="inputCidade" value="Cidade*:"></h:outputLabel>
+                                <p:inputText id="inputCidade" value="#{gerenciarConfiguracoesView.configuracoes.cidade}" maxlength="80"></p:inputText>
+                                <h:outputLabel for="inputCep" value="CEP*:"></h:outputLabel>
+                                <p:inputMask id="inputCep" value="#{gerenciarConfiguracoesView.configuracoes.cep}" mask="99.999-999" maxlength="10"></p:inputMask>
+                                <h:outputLabel for="selectUf" value="UF*:"></h:outputLabel>
+                                <p:selectOneMenu id="selectUf" value="#{gerenciarConfiguracoesView.configuracoes.uf}">
+                                    <f:selectItem itemValue="" itemLabel="Selecione"></f:selectItem>
+                                    <f:selectItem itemValue="AC" itemLabel="AC"></f:selectItem>
+                                    <f:selectItem itemValue="AL" itemLabel="AL"></f:selectItem>
+                                    <f:selectItem itemValue="AM" itemLabel="AM"></f:selectItem>
+                                    <f:selectItem itemValue="AP" itemLabel="AP"></f:selectItem>
+                                    <f:selectItem itemValue="BA" itemLabel="BA"></f:selectItem>
+                                    <f:selectItem itemValue="CE" itemLabel="CE"></f:selectItem>
+                                    <f:selectItem itemValue="DF" itemLabel="DF"></f:selectItem>
+                                    <f:selectItem itemValue="ES" itemLabel="ES"></f:selectItem>
+                                    <f:selectItem itemValue="GO" itemLabel="GO"></f:selectItem>
+                                    <f:selectItem itemValue="MA" itemLabel="MA"></f:selectItem>
+                                    <f:selectItem itemValue="MG" itemLabel="MG"></f:selectItem>
+                                    <f:selectItem itemValue="MS" itemLabel="MS"></f:selectItem>
+                                    <f:selectItem itemValue="MT" itemLabel="MT"></f:selectItem>
+                                    <f:selectItem itemValue="PA" itemLabel="PA"></f:selectItem>
+                                    <f:selectItem itemValue="PB" itemLabel="PB"></f:selectItem>
+                                    <f:selectItem itemValue="PE" itemLabel="PE"></f:selectItem>
+                                    <f:selectItem itemValue="PI" itemLabel="PI"></f:selectItem>
+                                    <f:selectItem itemValue="PR" itemLabel="PR"></f:selectItem>
+                                    <f:selectItem itemValue="RJ" itemLabel="RJ"></f:selectItem>
+                                    <f:selectItem itemValue="RN" itemLabel="RN"></f:selectItem>
+                                    <f:selectItem itemValue="RS" itemLabel="RS"></f:selectItem>
+                                    <f:selectItem itemValue="RO" itemLabel="RO"></f:selectItem>
+                                    <f:selectItem itemValue="RR" itemLabel="RR"></f:selectItem>
+                                    <f:selectItem itemValue="SC" itemLabel="SC"></f:selectItem>
+                                    <f:selectItem itemValue="SE" itemLabel="SE"></f:selectItem>
+                                    <f:selectItem itemValue="SP" itemLabel="SP"></f:selectItem>
+                                    <f:selectItem itemValue="TO" itemLabel="TO"></f:selectItem>
+                                </p:selectOneMenu>
+                                <h:outputLabel for="inputFone1" value="Fone 1:"></h:outputLabel>
+                                <p:inputText id="inputFone1" value="#{gerenciarConfiguracoesView.configuracoes.fone1}" maxlength="20"></p:inputText>
+                                <h:outputLabel for="inputFone2" value="Fone 2:"></h:outputLabel>
+                                <p:inputText id="inputFone2" value="#{gerenciarConfiguracoesView.configuracoes.fone2}" maxlength="20"></p:inputText>
+                                <h:outputLabel for="inputFone3" value="Fone 3:"></h:outputLabel>
+                                <p:inputText id="inputFone3" value="#{gerenciarConfiguracoesView.configuracoes.fone3}" maxlength="20"></p:inputText>
+                                <h:outputLabel for="inputFax" value="Fax:"></h:outputLabel>
+                                <p:inputText id="inputFax" value="#{gerenciarConfiguracoesView.configuracoes.fax}" maxlength="20"></p:inputText>
+                            </p:panelGrid>
+                        </p:fieldset>
+                    </div>
+                    <div class="ui-g-12 ui-md-12 ui-lg-4">
+                        <p:fieldset legend="Mapa">
+                            <p:panelGrid columns="1" layout="grid" class="ui-panelgrid-blank">
+                                <h:outputText value="Localização:"></h:outputText>
+                                <p:gmap center="#{gerenciarConfiguracoesView.configuracoes.latitude}, #{gerenciarConfiguracoesView.configuracoes.longitude}" model="#{gerenciarConfiguracoesView.mapaImobiliariaModel}" type="ROADMAP" zoom="12" style="width:100%;height:400px">
+                                    <p:ajax event="markerDrag" listener="#{gerenciarConfiguracoesView.onMarkerDrag}" />
+                                </p:gmap>
+                            </p:panelGrid>
+                        </p:fieldset>
+
+                    </div>
+                </div>
             </p:fieldset>
         </h:form>
     </h:body>
 </ui:composition>
+
+
 

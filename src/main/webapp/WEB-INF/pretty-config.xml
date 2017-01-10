@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pretty-config xmlns="http://ocpsoft.org/schema/rewrite-config-prettyfaces" 
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+               xsi:schemaLocation="http://ocpsoft.org/schema/rewrite-config-prettyfaces
+                      http://ocpsoft.org/xml/ns/prettyfaces/rewrite-config-prettyfaces.xsd">
+
+    <url-mapping id="home">
+        <pattern value="/home" />
+        <view-id value="/index.jsf" />
+    </url-mapping>
+    <url-mapping id="/">
+        <pattern value="/" />
+        <view-id value="/index.jsf" />
+    </url-mapping>
+    <url-mapping id="sobre">
+        <pattern value="/sobre" />
+        <view-id value="/sobre.jsf" />
+    </url-mapping>
+    <url-mapping id="contato">
+        <pattern value="/contato" />
+        <view-id value="/contato.jsf" />
+    </url-mapping>
+    <url-mapping id="orientacoes">
+        <pattern value="/orientacoes" />
+        <view-id value="/orientacoes.jsf" />
+    </url-mapping>
+    <url-mapping id="imovel">
+        <pattern value="/imovel" />
+        <view-id value="/alugar.jsf" />
+    </url-mapping>
+    <url-mapping id="imovel">
+        <pattern value="/imovel/visualizar/#{visualizarImovelView.imovelId}" />
+        <view-id value="/visualizarImovel_1.jsf" />
+    </url-mapping>
+    
+    <!-- Admin -->
+    <url-mapping id="index-admin">
+        <pattern value="/admin" />
+        <view-id value="/index-admin.jsf" />
+    </url-mapping>
+    <url-mapping>
+        <pattern value="/admin/" />
+        <view-id value="/index-admin.jsf" />
+    </url-mapping>
+    <url-mapping>
+        <pattern value="/admin/usuario" />
+        <view-id value="/gerenciar-login.jsf" />
+    </url-mapping>
+    <url-mapping>
+        <pattern value="/admin/tipo-imovel" />
+        <view-id value="/gerenciar-tipo-imovel.jsf" />
+    </url-mapping>
+    <url-mapping>
+        <pattern value="/admin/clientes" />
+        <view-id value="/gerenciar-clientes.jsf" />
+    </url-mapping>
+    <url-mapping>
+        <pattern value="/admin/inquilino" />
+        <view-id value="/gerenciar-inquilino.jsf" />
+    </url-mapping>
+    <url-mapping>
+        <pattern value="/admin/imovel" />
+        <view-id value="/gerenciar-imovel.jsf" />
+    </url-mapping>
+    <url-mapping>
+        <pattern value="/admin/banner" />
+        <view-id value="/gerenciar-banner.jsf" />
+    </url-mapping>
+    <url-mapping>
+        <pattern value="/admin/orientacoes" />
+        <view-id value="/gerenciar-orientacoes.jsf" />
+    </url-mapping>
+    <url-mapping>
+        <pattern value="/admin/configuracao" />
+        <view-id value="/gerenciar-configuracao.jsf" />
+    </url-mapping>
+    <url-mapping>
+        <pattern value="/admin/sair" />
+        <view-id value="/logout.jsf" />
+    </url-mapping>
+    <url-mapping>
+        <pattern value="/admin/login" />
+        <view-id value="/login-admin.jsf" />
+    </url-mapping>
+    <url-mapping>
+        <pattern value="/admin/sem-permissao" />
+        <view-id value="/sem-permissao.jsf" />
+    </url-mapping>
+    <url-mapping>
+        <pattern value="/admin/sobre" />
+        <view-id value="/about-developer.jsf" />
+    </url-mapping>
+</pretty-config>

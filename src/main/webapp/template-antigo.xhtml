@@ -1,0 +1,126 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <link  href="resources/css/style.css" type="text/css" rel="stylesheet"/>
+        <link href='http://fonts.googleapis.com/css?family=Happy+Monkey' rel='stylesheet' type='text/css'></link>
+        <title>Imóveis</title>
+    </h:head>
+    <body>
+        <header>
+            <div class="center">
+                <div class="logo"></div>
+                <div style="height: 89px; width: 700px; float:right;" class="cadInquilino">
+                    <div style="float: right;">
+                        <h:link onclick="PF('dialogInquilino').show();
+                                return false;" outcome="#" onmouseover="$(this).addClass('ui-state-hover');" onmouseout="$(this).removeClass('ui-state-hover');" style="width: 350px;display: block;text-align: center; text-decoration: none; padding: 5px; background-position-y: 0;" styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+                            <h:graphicImage library="imagens" name="icone-imovel.png" ></h:graphicImage>
+                            <h:outputText value="Não encontrou o imóvel que você quer? Clique aqui!" style="width: 250px; margin-top: 10px; display: block; float: left"></h:outputText>
+                        </h:link>
+                    </div>
+                    <p:dialog widgetVar="dialogInquilino" id="dialogInquilinoId" modal="true" header="Deixa aqui seus dados, vamos procurar um imóvel que atenda suas necessidades!" resizable="false" showEffect="fade" hideEffect="drop" width="500" height="400">
+                        <p:messages autoUpdate="true" showDetail="true">
+                            <p:effect type="pulsate" event="load" speed="200" delay="400">  
+                                <f:param name="mode" value="'show'" />
+                            </p:effect> 
+                        </p:messages>
+                        <h:panelGrid columns="1" width="100%">
+                            <h:outputLabel value="Informe seu nome: "></h:outputLabel>
+                            <p:inputText value="#{inquilinoSiteView.inquilino.nome}" maxlength="100" style="width: 450px"></p:inputText>
+                            <h:outputLabel value="Seu telefone (Informe telefone ou email como preferir): "></h:outputLabel>
+                            <p:inputMask value="#{inquilinoSiteView.inquilino.telefone}" mask="(99) 9999-9999" maxlength="30" size="20"></p:inputMask>
+                            <h:outputLabel value="Seu Email (Informe telefone ou email como preferir): "></h:outputLabel>
+                            <p:inputText value="#{inquilinoSiteView.inquilino.email}" maxlength="150" style="width: 450px"></p:inputText>
+                            <h:panelGroup>
+                                <h:outputLabel value="Descreva o imóvel que você procura!: "></h:outputLabel>
+                                <h:outputText id="contadorLetrasDesc"></h:outputText>
+                            </h:panelGroup>
+                            <p:inputTextarea value="#{inquilinoSiteView.inquilino.descricao}" autoResize="false" maxlength="500" counter="contadorLetrasDesc" style="max-height: 60px; max-width: 450px; min-width: 450px"></p:inputTextarea>
+                        </h:panelGrid>
+                        <p:commandButton actionListener="#{inquilinoSiteView.salvar}" value="Enviar" style="width: 100%"></p:commandButton>
+                    </p:dialog>
+                </div>
+                <p:button styleClass="btnMenu" icon="fa fa-navicon" style="z-index: 100000; float: right" onclick="mostrarEsconderMenu();
+                        return false;"></p:button>
+                <div class="menu">
+                    <ul id="menuSite">
+                        <li><a href="index.jsf">Home</a></li>
+                        <li><a href="sobre.jsf">Sobre nós</a></li>
+                        <li><a href="alugar.jsf">Quero Alugar</a></li>
+                        <li><a href="comprar.jsf">Quero Comprar</a></li>
+                        <li><a href="orientacoes.jsf">Orientações</a></li>
+                        <li><a href="contato.jsf">Fale Conosco</a></li>
+                    </ul>
+                </div>
+                <div class="overlay" onclick="mostrarEsconderMenu()"></div>
+                <script>
+                    function mostrarEsconderMenu() {
+                        if ($('#menuSite').css('display') == 'none') {
+                            $('#menuSite').slideDown();
+                            $('.overlay').show('fade');
+
+                        } else {
+                            $('#menuSite').slideUp();
+                            $('.overlay').hide('fade');
+                        }
+                    }
+                </script>
+                <div class="sombraMenu"></div>
+            </div>
+        </header>
+        <footer>
+            <div class="center">
+                <div id="content" class="center_content">
+                    <p:messages autoUpdate="true" showDetail="true">
+                        <p:effect type="pulsate" event="load" speed="1000" delay="400"></p:effect> 
+                    </p:messages>
+                </div>
+                <ui:insert></ui:insert>
+            </div>
+            <div class="rodape">
+                <div class="center">
+                    <ul>
+                        <li><a href="index.jsf">Home</a></li>
+                        <li><a href="sobre.jsf">Quem somos</a></li>
+                        <li><a href="alugar.jsf">Quero Alugar</a></li>
+                        <li><a href="comprar.jsf">Quero Comprar</a></li>
+                        <li><a href="index-admin.jsf">Administração</a></li>
+                        <li><a href="#">E-mail</a></li>
+                    </ul>
+                    <div class="sombraVertical"></div>
+                    <div style="float: left; margin-left: 20px;text-shadow: 1px 1px 1px #fff;">
+                        <p>Praça Coronel Hermógenes, 280</p>
+                        <p>Centro, João Pinheiro-MG</p>
+                        <p>CEP: 38.770-000</p>
+                        <p>Telefone: (38)3561.3866 - Fax: (38)3561.5204</p>
+                    </div>
+                    <div style="float: right;">
+                        <a href="#">
+                            <div class="logoMini" style="margin-right: 10px; margin-top:10px;"></div></a>
+                        <br />
+                        <div style="float: right; margin-right: 10px;">
+                            <a href="http://www.softop.com.br" target="_blank" title="Softop - Técnologias Inovadoras"><img src="http://dsadeveloper.com.br/softop/public/image/softop_mini.png" style="padding-top: 5px;"/>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <p:ajaxStatus onstart="PF('dialogAjax').show()" oncomplete="PF('dialogAjax').hide()" onerror="PF('dialogAjax').hide()" onsuccess="PF('dialogAjax').hide()" id="ajaxStatusPanel">  
+            <p:dialog height="55" width="220" widgetVar="dialogAjax" styleClass="ui-widget ui-state-default ui-corner-all ui-button-text-icon-left" modal="true" draggable="false" visible="false" closable="false" resizable="false" showHeader="false" appendTo="@(body)" style="position: fixed">
+                <h:panelGrid columns="2" columnClasses="columnEsquerda, columnDireita">
+                    <h:graphicImage value="./resources/imagens/load.gif" style="width: 48px; margin-right: 10px;"/>
+                    <h:outputText style="float: right; vertical-align: middle; font-weight: bold; border: none; background: none;-moz-box-shadow: inset 0px 0px 0px #fff;-webkit-box-shadow: inset 0px 0px 0px white;box-shadow: inset 0px 0px 0px white;" styleClass="ui-state-default" value="Processando!"></h:outputText>
+                </h:panelGrid>
+            </p:dialog>
+        </p:ajaxStatus>
+    </body>
+</html>
