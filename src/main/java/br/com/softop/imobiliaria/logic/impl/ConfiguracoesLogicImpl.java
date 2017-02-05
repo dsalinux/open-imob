@@ -6,13 +6,11 @@ import br.com.softop.imobiliaria.util.Assert;
 import br.com.softop.imobiliaria.util.ContextDAO;
 import br.com.softop.imobiliaria.util.StringHelper;
 import br.com.softop.imobiliaria.util.exception.BusinessException;
-import org.springframework.stereotype.Service;
 
 /**
  *
  * @author danilo
  */
-@Service
 public class ConfiguracoesLogicImpl implements ConfiguracoesLogic {
 
     @Override

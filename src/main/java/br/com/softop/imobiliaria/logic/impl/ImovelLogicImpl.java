@@ -11,14 +11,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.hibernate.Hibernate;
-import org.springframework.stereotype.Service;
 
 /**
  *
  * @author danilo
  */
-@Service
 public class ImovelLogicImpl implements ImovelLogic {
 
     @Override

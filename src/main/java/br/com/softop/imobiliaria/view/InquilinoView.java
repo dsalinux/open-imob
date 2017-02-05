@@ -5,13 +5,12 @@ import br.com.softop.imobiliaria.logic.impl.InquilinoLogicImpl;
 import java.util.Date;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import org.springframework.stereotype.Controller;
 
 /**
  *
  * @author danilo
  */
-@Controller
+//@Controller
 @ManagedBean
 @SessionScoped
 public class InquilinoView extends GenericBean<Inquilino, InquilinoLogicImpl> {

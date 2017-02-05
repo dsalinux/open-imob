@@ -47,22 +47,22 @@
         <filter-name>PrimeFaces FileUpload Filter</filter-name>
         <servlet-name>Faces Servlet</servlet-name>
     </filter-mapping>
-    <listener>
+<!--    <listener>
         <listener-class>
             org.springframework.web.context.ContextLoaderListener
         </listener-class>
-    </listener>
+    </listener>-->
     <listener>
         <listener-class>
             br.com.softop.imobiliaria.view.util.Config
         </listener-class>
     </listener>
     
-    <listener>
+<!--    <listener>
         <listener-class>
             org.springframework.web.context.request.RequestContextListener
         </listener-class>
-    </listener>
+    </listener>-->
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>

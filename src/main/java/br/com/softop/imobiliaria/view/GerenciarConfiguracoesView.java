@@ -25,13 +25,12 @@ import org.primefaces.model.map.DefaultMapModel;
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
 import org.primefaces.model.map.Marker;
-import org.springframework.stereotype.Controller;
 
 /**
  *
  * @author danilo
  */
-@Controller
+//@Controller
 @ManagedBean
 @ApplicationScoped
 public class GerenciarConfiguracoesView extends JSFUtil {

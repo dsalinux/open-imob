@@ -47,6 +47,9 @@ public class Theme {
     }
 
     public void setHeaderBackground(String headerBackground) {
+        if(!headerBackground.contains("#")){
+            headerBackground = "#"+headerBackground;
+        }
         this.headerBackground = headerBackground;
     }
 
@@ -55,6 +58,9 @@ public class Theme {
     }
 
     public void setHeaderBackgroundHover(String headerBackgroundHover) {
+        if(!headerBackgroundHover.contains("#")){
+            headerBackgroundHover = "#"+headerBackgroundHover;
+        }
         this.headerBackgroundHover = headerBackgroundHover;
     }
 
@@ -63,6 +69,9 @@ public class Theme {
     }
 
     public void setHeaderTextColor(String headerTextColor) {
+        if(!headerTextColor.contains("#")){
+            headerTextColor = "#"+headerTextColor;
+        }
         this.headerTextColor = headerTextColor;
     }
 
@@ -71,6 +80,9 @@ public class Theme {
     }
 
     public void setFooterBackground(String footerBackground) {
+        if(!footerBackground.contains("#")){
+            footerBackground = "#"+footerBackground;
+        }
         this.footerBackground = footerBackground;
     }
 
@@ -79,6 +91,9 @@ public class Theme {
     }
 
     public void setFooterBorderColor(String footerBorderColor) {
+        if(!footerBorderColor.contains("#")){
+            footerBorderColor = "#"+footerBorderColor;
+        }
         this.footerBorderColor = footerBorderColor;
     }
 
@@ -87,6 +102,9 @@ public class Theme {
     }
 
     public void setFooterTextColor(String footerTextColor) {
+        if(!footerTextColor.contains("#")){
+            footerTextColor = "#"+footerTextColor;
+        }
         this.footerTextColor = footerTextColor;
     }
 

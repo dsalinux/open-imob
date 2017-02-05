@@ -11,13 +11,11 @@ import br.com.softop.imobiliaria.util.exception.BusinessException;
 import java.net.URL;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
-import org.springframework.stereotype.Service;
 
 /**
  *
  * @author danilo
  */
-@Service
 public class ContatoLogicImpl implements ContatoLogic {
 
     @Override

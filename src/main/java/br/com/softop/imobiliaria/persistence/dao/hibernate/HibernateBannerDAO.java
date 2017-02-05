@@ -5,20 +5,21 @@ import br.com.softop.imobiliaria.persistence.dao.BannerDAO;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.stereotype.Service;
 
 /**
  *
  * @author danilo
  */
-@Service
+//@Service
 public class HibernateBannerDAO extends HibernateGenericDAO<Banner, Integer> implements BannerDAO {
 
     @Override
     public List<Banner> buscarAtivos() {
         Criteria criteria = getSession().createCriteria(getPersistentClass());
         criteria.add(Restrictions.isNull("dataDesativacao"));
-        return criteria.list();
+        List<Banner> banners = criteria.list();
+        getSession().close();
+        return banners;
     }
     
 }

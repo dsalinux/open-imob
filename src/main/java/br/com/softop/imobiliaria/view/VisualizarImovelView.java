@@ -16,15 +16,12 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
-import javax.faces.context.FacesContext;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 /**
  *
  * @author danilo
  */
-@Component
+//@Component
 @RequestScoped
 @ManagedBean
 public class VisualizarImovelView extends JSFUtil {
@@ -35,7 +32,6 @@ public class VisualizarImovelView extends JSFUtil {
     private ContatoVO contato = new ContatoVO();
     private Integer imovelId;
 
-    @Autowired
     private ImovelLogic imovelLogic;
 
     @PostConstruct

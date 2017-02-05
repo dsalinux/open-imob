@@ -9,9 +9,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
-import org.springframework.stereotype.Controller;
 
-@Controller
+//@Controller
 @ManagedBean
 @RequestScoped
 public class ContatoView extends JSFUtil{

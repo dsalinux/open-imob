@@ -75,6 +75,10 @@
         <view-id value="/gerenciar-configuracao.jsf" />
     </url-mapping>
     <url-mapping>
+        <pattern value="/admin/themes" />
+        <view-id value="/gerenciar-themes.jsf" />
+    </url-mapping>
+    <url-mapping>
         <pattern value="/admin/sair" />
         <view-id value="/logout.jsf" />
     </url-mapping>

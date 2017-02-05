@@ -7,7 +7,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <div class="panel panel-default">
-        <div class="panel-heading">Quer encontrar um imóvel de forma fácil? <button class="btn btn-success" data-toggle="collapse" data-target="#demo" onclick="return false;"><i class="glyphicon glyphicon-filter"></i>Filtrar pesquisa</button></div>
+        <div class="panel-heading">Quer encontrar um imóvel de forma fácil? <button class="btn btn-success" data-toggle="collapse" data-target="#demo" onclick="return false;"><i class="glyphicon glyphicon-filter"></i>Mais opções</button></div>
         <div class="panel-body">
             <div class="bootstrap-iso">
                 <div class="container-fluid">
@@ -20,7 +20,7 @@
                                 <div class="col-sm-10">
                                     <div class="btn-group" role="group" aria-label="...">
                                         <h:commandButton styleClass="btn #{imoveisView.imovelVO.tipo_ == null?'btn-primary':'btn-default'}" value="Todos">
-                                            <f:ajax listener="#{imoveisView.selecionarTipoNegocio(null)}" render="@form"></f:ajax>
+                                            <f:ajax listener="#{imoveisView.selecionarTipoNegocio(' ')}" render="@form"></f:ajax>
                                         </h:commandButton>
                                         <h:commandButton styleClass="btn #{imoveisView.imovelVO.tipo_.name == 'ALUGUEL'?'btn-primary':'btn-default'}" value="Alugar">
                                             <f:ajax listener="#{imoveisView.selecionarTipoNegocio('ALUGUEL')}" render="@form"></f:ajax>

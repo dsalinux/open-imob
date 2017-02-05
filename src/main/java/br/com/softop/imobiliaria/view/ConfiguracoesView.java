@@ -3,32 +3,16 @@ package br.com.softop.imobiliaria.view;
 import br.com.softop.imobiliaria.entity.Configuracoes;
 import br.com.softop.imobiliaria.logic.ConfiguracoesLogic;
 import br.com.softop.imobiliaria.logic.impl.ConfiguracoesLogicImpl;
-import br.com.softop.imobiliaria.logic.impl.ContatoLogicImpl;
-import br.com.softop.imobiliaria.util.Constants;
-import br.com.softop.imobiliaria.util.FileUtil;
-import br.com.softop.imobiliaria.util.StringHelper;
-import br.com.softop.imobiliaria.util.exception.BusinessException;
-import java.io.File;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
-import org.primefaces.event.FileUploadEvent;
-import org.primefaces.event.map.MarkerDragEvent;
-import org.primefaces.model.map.DefaultMapModel;
-import org.primefaces.model.map.LatLng;
-import org.primefaces.model.map.MapModel;
-import org.primefaces.model.map.Marker;
-import org.springframework.stereotype.Controller;
 
 /**
  *
  * @author danilo
  */
-@Controller
+//@Controller
 @ManagedBean
 @ApplicationScoped
 public class ConfiguracoesView extends JSFUtil {

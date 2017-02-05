@@ -12,12 +12,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import org.primefaces.event.FileUploadEvent;
-import org.springframework.stereotype.Controller;
 
-@Controller
+//@Controller
 @ManagedBean
 @SessionScoped
 public class BannerView extends GenericBean<Banner, BannerLogicImpl> {

@@ -6,13 +6,12 @@ import br.com.softop.imobiliaria.util.exception.BusinessException;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
-import org.springframework.stereotype.Controller;
 
 /**
  *
  * @author danilo
  */
-@Controller
+//@Controller
 @ManagedBean
 @RequestScoped
 public class InquilinoSiteView extends JSFUtil {

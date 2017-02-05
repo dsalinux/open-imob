@@ -5,10 +5,8 @@ import br.com.softop.imobiliaria.logic.impl.LoginLogicImpl;
 import br.com.softop.imobiliaria.util.StringHelper;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.event.ActionEvent;
-import org.springframework.stereotype.Controller;
 
-@Controller
+//@Controller
 @ManagedBean
 @ViewScoped
 public class GerenciarLoginView extends GenericBean<Login, LoginLogicImpl> {

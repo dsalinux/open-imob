@@ -4,10 +4,8 @@ import br.com.softop.imobiliaria.entity.Cliente;
 import br.com.softop.imobiliaria.logic.impl.ClienteLogicImpl;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.event.ActionEvent;
-import org.springframework.stereotype.Controller;
 
-@Controller
+//@Controller
 @ManagedBean
 @ViewScoped
 public class ClienteView extends GenericBean<Cliente, ClienteLogicImpl> {

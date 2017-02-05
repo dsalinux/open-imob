@@ -5,13 +5,11 @@ import br.com.softop.imobiliaria.logic.OrientacoesLogic;
 import br.com.softop.imobiliaria.util.ContextDAO;
 import br.com.softop.imobiliaria.util.StringHelper;
 import br.com.softop.imobiliaria.util.exception.BusinessException;
-import org.springframework.stereotype.Service;
 
 /**
  *
  * @author danilo
  */
-@Service
 public class OrientacoesLogicImpl implements OrientacoesLogic {
 
     @Override

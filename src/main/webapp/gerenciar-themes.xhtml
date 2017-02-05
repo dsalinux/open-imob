@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="template-admin.xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:imb="http://xmlns.jcp.org/jsf/composite/imb">
+    <h:head>
+    </h:head>
+    <ui:param name="titulo" value="Gerenciar Configuração"></ui:param>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB5NF9KTUWogbPgMMtfPiFQ4ZDOkUUAD_Q" ></script>
+    <style>
+        .selectTheme{
+            margin: 10px;
+        }
+        .selectTheme:hover   {
+            box-shadow: 0px 0px 10px black;
+        }
+        .selectedTheme{
+            box-shadow: 0px 0px 15px red;
+            border: 2px solid gray;
+        }
+    </style>
+    <h:body>
+        <h:form id="frm">
+            <imb:toolbar crud="#{gerenciarThemeView}"></imb:toolbar>
+            <p:fieldset legend="Detalhes do tema" rendered="#{gerenciarThemeView.currentStateName != 'SEARCH'}">
+                <h:panelGroup layout="block" style="border: 1px solid gray" id="visualizarTheme">
+                    <h:panelGroup layout="block" style="width: 100%; height: 30px; background: #{gerenciarThemeView.entity.headerBackground}; border-bottom: 4px solid #{gerenciarThemeView.entity.headerBackgroundHover}; color: #{gerenciarThemeView.entity.headerTextColor}; font-size: 0.8em">
+                        <h:panelGroup layout="block" style="float: left; display: table; vertical-align: middle; margin-left: 1%; border-radius: 5%; box-shadow: 0px 1px 2px -1px #555; margin-top: 1%; background: white; height: 22px; width: 45px; padding: 1px">
+                            <h:graphicImage rendered="#{not empty configuracoesView.configuracoes.logo}" value="#{facesContext.externalContext.contextName}/imagemServlet?imageName=#{configuracoesView.configuracoes.logo}" style="height:  20px; max-width: 40px;"></h:graphicImage>
+                            <h:graphicImage rendered="#{empty configuracoesView.configuracoes.logo}" library="images" name="logoimb.png" style="height: 20px"></h:graphicImage>
+                        </h:panelGroup>
+                        <div style="float: left; line-height: 34px; margin-left: 10px">Home Sobre ...</div>
+                    </h:panelGroup>
+                    <h:panelGroup layout="block" style="height: 30px; width: 100%; background: white"></h:panelGroup>
+                    <h:panelGroup layout="block" style="height: 25px; width: 100%; line-height: 15px; font-size: 0.8em;  background: #{gerenciarThemeView.entity.footerBackground}; border-top: 4px solid #{gerenciarThemeView.entity.footerBorderColor}; color: #{gerenciarThemeView.entity.footerTextColor}">
+                        <div style="text-decoration: none!important; margin-left: 2%">Rodapé do site</div>
+                    </h:panelGroup>
+                    <p:remoteCommand process="@form" autoRun="true" delay="1000" global="false" update="visualizarTheme"></p:remoteCommand>
+                </h:panelGroup>
+                <p:panelGrid columns="2">
+                    <h:outputLabel value="Cor de fundo do cabeçalho:"></h:outputLabel>
+                    <p:colorPicker value="#{gerenciarThemeView.entity.headerBackground}"></p:colorPicker>
+                    <h:outputLabel value="Cor de destaque do cabeçalho:"></h:outputLabel>
+                    <p:colorPicker value="#{gerenciarThemeView.entity.headerBackgroundHover}"></p:colorPicker>
+                    <h:outputLabel value="Cor do texto do cabeçalho:"></h:outputLabel>
+                    <p:colorPicker value="#{gerenciarThemeView.entity.headerTextColor}"></p:colorPicker>
+                    <h:outputLabel value="Cor de fundo do rodapé:"></h:outputLabel>
+                    <p:colorPicker value="#{gerenciarThemeView.entity.footerBackground}"></p:colorPicker>
+                    <h:outputLabel value="Cor da borda do rodapé"></h:outputLabel>
+                    <p:colorPicker value="#{gerenciarThemeView.entity.footerBorderColor}"></p:colorPicker>
+                    <h:outputLabel value="Cor do texto do rodapé"></h:outputLabel>
+                    <p:colorPicker value="#{gerenciarThemeView.entity.footerTextColor}"></p:colorPicker>
+                </p:panelGrid>
+            </p:fieldset>
+            <p:fieldset legend="Temas salvos" rendered="#{gerenciarThemeView.currentStateName == 'SEARCH'}">
+                <p:dataGrid value="#{gerenciarThemeView.entitys}" emptyMessage="Nenhum tema listado!" id="gridtheme" columns="2" styleClass="ui-responsive" var="theme" layout="grid">
+                    <h:panelGroup layout="block" styleClass="selectTheme">
+                        <p:commandLink update="@form" actionListener="#{gerenciarThemeView.edit(theme)}" style="border: 1px solid black; display: block">
+                            <h:panelGroup layout="block" style="width: 100%; height: 20px; background: #{theme.headerBackground}; border-bottom: 4px solid #{theme.headerBackgroundHover}; color: #{theme.headerTextColor}; font-size: 0.5em">
+                                <h:panelGroup layout="block" style="float: left; display: table; vertical-align: middle; margin-left: 1%; border-radius: 5%; box-shadow: 0px 1px 2px -1px #555; margin-top: 1%; background: white; height: 22px; width: 45px; padding: 1px">
+                                    <h:graphicImage rendered="#{not empty configuracoesView.configuracoes.logo}" value="#{facesContext.externalContext.contextName}/imagemServlet?imageName=#{configuracoesView.configuracoes.logo}" id="foto" style="height:  20px; max-width: 40px;"></h:graphicImage>
+                                    <h:graphicImage rendered="#{empty configuracoesView.configuracoes.logo}" library="images" name="logoimb.png"  id="semfoto" style="height: 20px"></h:graphicImage>
+                                </h:panelGroup>
+                                <div style="float: left; line-height: 24px; margin-left: 10px">Home Sobre ...</div>
+                            </h:panelGroup>
+                            <h:panelGroup layout="block" style="height: 20px; width: 100%; background: white"></h:panelGroup>
+                            <h:panelGroup layout="block" style="height: 15px; width: 100%; line-height: 15px; font-size: 0.5em;  background: #{theme.footerBackground}; border-top: 4px solid #{theme.footerBorderColor}; color: #{theme.footerTextColor}">
+                                <div style="text-decoration: none!important; margin-left: 2%">Rodapé do site</div>
+                            </h:panelGroup>
+                        </p:commandLink>
+                    </h:panelGroup>
+                </p:dataGrid>
+            </p:fieldset>
+        </h:form>
+    </h:body>
+</ui:composition>
+
+
+

@@ -11,14 +11,11 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.transform.ResultTransformer;
-import org.springframework.stereotype.Service;
 
 /**
  *
  * @author danilo
  */
-@Service
 public class HibernateImovelDAO extends HibernateGenericDAO<Imovel, Integer> implements ImovelDAO {
 
     @Override

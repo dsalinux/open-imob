@@ -6,7 +6,6 @@ import br.com.softop.imobiliaria.entity.vo.ImovelVO;
 import br.com.softop.imobiliaria.logic.ImovelLogic;
 import br.com.softop.imobiliaria.logic.impl.ImovelLogicImpl;
 import br.com.softop.imobiliaria.logic.impl.TipoImovelLogicImpl;
-import br.com.softop.imobiliaria.util.Context;
 import br.com.softop.imobiliaria.util.StringHelper;
 import br.com.softop.imobiliaria.util.exception.BusinessException;
 import java.util.List;
@@ -16,13 +15,12 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.event.ValueChangeEvent;
-import org.springframework.stereotype.Controller;
 
 /**
  *
  * @author danilo
  */
-@Controller
+//@Controller
 @SessionScoped
 @ManagedBean
 public class AlugarView extends JSFUtil {

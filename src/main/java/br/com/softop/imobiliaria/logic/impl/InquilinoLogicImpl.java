@@ -7,13 +7,11 @@ import br.com.softop.imobiliaria.util.StringHelper;
 import br.com.softop.imobiliaria.util.exception.BusinessException;
 import java.util.Date;
 import java.util.List;
-import org.springframework.stereotype.Service;
 
 /**
  *
  * @author danilo
  */
-@Service
 public class InquilinoLogicImpl implements InquilinoLogic {
 
     @Override

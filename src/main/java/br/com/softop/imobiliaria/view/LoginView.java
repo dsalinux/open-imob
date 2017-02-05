@@ -12,22 +12,18 @@ import br.com.softop.imobiliaria.util.StringHelper;
 import br.com.softop.imobiliaria.util.exception.BusinessException;
 import com.ocpsoft.pretty.PrettyContext;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletRequest;
-import org.springframework.stereotype.Controller;
 
 /**
  *
  * @author danilo
  */
-@Controller
+//@Controller
 @ManagedBean
 @SessionScoped
 public class LoginView extends JSFUtil {

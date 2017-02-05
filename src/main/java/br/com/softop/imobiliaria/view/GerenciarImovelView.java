@@ -7,7 +7,6 @@ import br.com.softop.imobiliaria.entity.TipoImovel;
 import br.com.softop.imobiliaria.logic.impl.ClienteLogicImpl;
 import br.com.softop.imobiliaria.logic.impl.ImovelLogicImpl;
 import br.com.softop.imobiliaria.logic.impl.TipoImovelLogicImpl;
-import br.com.softop.imobiliaria.util.Constants;
 import br.com.softop.imobiliaria.util.FileUtil;
 import br.com.softop.imobiliaria.util.ImagemUtil;
 import br.com.softop.imobiliaria.util.exception.BusinessException;
@@ -21,18 +20,16 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import org.primefaces.event.FileUploadEvent;
-import org.springframework.stereotype.Controller;
 
 /**
  *
  * @author danilo
  */
-@Controller
+//@Controller
 @ManagedBean
 @SessionScoped
 public class GerenciarImovelView extends GenericBean<Imovel, ImovelLogicImpl> {
