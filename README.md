@@ -1,5 +1,5 @@
 # open-imob
-## Site para Imobiliárias Open Source
+## Site para Imobiliárias "Open Source"
 Site desenvolvido usando tecnologias:
 * Java
 * JSF
