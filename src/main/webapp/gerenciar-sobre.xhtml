@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="template-admin.xhtml"
+                xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+    </h:head>
+
+    <ui:param name="titulo" value="Gerenciar Orientações"></ui:param>
+
+    <h:form id="frm">
+        <div style="margin-bottom: 10px;">
+            <p:toolbar>
+                <p:toolbarGroup>
+                    <p:commandButton actionListener="#{sobreView.salvar}" update="frm" value="Salvar" icon="ui-icon-circle-check"></p:commandButton>
+                    <p:commandButton actionListener="#{sobreView.atualizar}" update="frm" value="Atualizar" icon="ui-icon-search"></p:commandButton>
+                </p:toolbarGroup>
+            </p:toolbar>
+        </div>
+        <p:fieldset legend="Informações">
+            <h:panelGrid columns="1">
+                <h:outputLabel value="Título"></h:outputLabel>
+                <p:inputText value="#{sobreView.sobre.titulo}" maxlength="100" style="width: 100%"></p:inputText>
+                <p:separator></p:separator>
+                <h:outputLabel value="Texto"></h:outputLabel>
+                <p:editor value="#{sobreView.sobre.texto}" style="width: 100%"></p:editor>
+            </h:panelGrid>
+        </p:fieldset>
+        <p:fileUpload fileUploadListener="#{sobreView.uploadArquivo}" label="Escolha ou araste a imagem aqui." update=":frm:treeFiles" widgetVar="upimg" multiple="true" auto="true" ></p:fileUpload>
+        <p:tree value="#{sobreView.listaArquivos}" var="arq" animate="true" id="treeFiles" selectionMode="single" selection="#{sobreView.selecionado}" highlight="true">
+            <p:treeNode expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed">  
+                <h:outputText value="#{arq}"/>  
+            </p:treeNode>
+            <p:treeNode icon="ui-icon-document" type="file">  
+                <h:outputText value="#{arq}"/>  
+            </p:treeNode>
+            <p:ajax event="select" update=":frm" listener="#{sobreView.onNodeSelected}"/>
+        </p:tree>
+
+        <p:dialog id="dialogArquivo" visible="true" header="Copie o código abaixo e cole no documento para disponibilizar para download!" rendered="#{sobreView.arquivoVisualizado != null}" closable="fase" resizable="false" width="400">
+            <p:inputText value="$file{#{sobreView.arquivoVisualizado.name}}" style="font-size: 20px" transient="true" readonly="true"></p:inputText>
+            <p:spacer height="20px" width="350px"></p:spacer>
+            <h:outputText value="Para renomear o arquivo, altere o nome e clique em renomar!"></h:outputText>
+            <p:inputText value="#{sobreView.novoNome}" style="width: 350px"></p:inputText>
+            <p:commandButton icon="ui-icon-pencil" actionListener="#{sobreView.renomear}" update=":frm" value="Renomear" rendered="#{sobreView.arquivoVisualizado != null}"></p:commandButton>
+            <p:commandButton icon="ui-icon-close" actionListener="#{sobreView.fecharVisualizacaoArquivo}" update=":frm" value="Fechar" rendered="#{sobreView.arquivoVisualizado != null}"></p:commandButton>
+            <p:commandButton icon="ui-icon-trash" value="Deletar" process=":frm" update=":frm" onclick="javascript:if (confirm('Deseja realmete deletar?'))
+                        return true;
+                    return false;" actionListener="#{sobreView.deletarArquivo}" />
+        </p:dialog>
+    </h:form>
+
+</ui:composition>
+

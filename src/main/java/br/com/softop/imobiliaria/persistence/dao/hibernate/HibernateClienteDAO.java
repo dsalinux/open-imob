@@ -23,7 +23,9 @@ public class HibernateClienteDAO extends HibernateGenericDAO<Cliente, Integer> i
         if(!StringHelper.isEmpty(entity.getNome())){
             criteria.add(Restrictions.ilike("nome", entity.getNome(), MatchMode.ANYWHERE));
         }
-        return criteria.list();
+        List<Cliente> clientes = criteria.list();
+        getSession().close();
+        return clientes;
     }
     
 }

@@ -47,6 +47,10 @@
         <view-id value="/gerenciar-login.jsf" />
     </url-mapping>
     <url-mapping>
+        <pattern value="/admin/sobre" />
+        <view-id value="/gerenciar-sobre.jsf" />
+    </url-mapping>
+    <url-mapping>
         <pattern value="/admin/tipo-imovel" />
         <view-id value="/gerenciar-tipo-imovel.jsf" />
     </url-mapping>
@@ -75,7 +79,7 @@
         <view-id value="/gerenciar-configuracao.jsf" />
     </url-mapping>
     <url-mapping>
-        <pattern value="/admin/themes" />
+        <pattern value="/admin/temas" />
         <view-id value="/gerenciar-themes.jsf" />
     </url-mapping>
     <url-mapping>

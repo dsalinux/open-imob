@@ -16,6 +16,10 @@
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password">RQRyxm48823</property>-->
         
+<!--        <property name="hibernate.connection.url">jdbc:mysql://mysql29594-agroinvesti.mircloud.host/imobiliaria?autoReconnect=true&amp;useSSL=false</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">rlTie1OaaB</property>-->
+        
         <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/imperialimoveis?autoReconnect=true&amp;useSSL=false</property>
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password">root</property>
@@ -44,6 +48,7 @@
         <mapping class="br.com.softop.imobiliaria.entity.Inquilino"/>
         <mapping class="br.com.softop.imobiliaria.entity.Login"/>
         <mapping class="br.com.softop.imobiliaria.entity.Orientacoes"/>
+         <mapping class="br.com.softop.imobiliaria.entity.Sobre"/>
         <mapping class="br.com.softop.imobiliaria.entity.TipoImovel"/>
         <mapping class="br.com.softop.imobiliaria.entity.Theme"/>
     

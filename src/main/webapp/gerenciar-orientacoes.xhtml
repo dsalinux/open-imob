@@ -23,7 +23,7 @@
         <p:fieldset legend="Informações">
             <p:editor value="#{orientacoesView.orientacoes.texto}" width="930"></p:editor>
         </p:fieldset>
-        <p:fileUpload fileUploadListener="#{orientacoesView.uploadArquivo}" label="Escolha ou araste a imagem aqui." update=":frm:treeFiles" widgetVar="upimg" multiple="true" auto="true" ></p:fileUpload>
+        <p:fileUpload fileUploadListener="#{orientacoesView.uploadArquivo}" label="Escolha ou araste um arquivo aqui." update=":frm:treeFiles" widgetVar="upimg" multiple="true" auto="true" ></p:fileUpload>
         <p:tree value="#{orientacoesView.listaArquivos}" var="arq" animate="true" id="treeFiles" selectionMode="single" selection="#{orientacoesView.selecionado}" highlight="true">
             <p:treeNode expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed">  
                 <h:outputText value="#{arq}"/>  

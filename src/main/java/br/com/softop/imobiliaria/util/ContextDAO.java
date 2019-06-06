@@ -1,6 +1,5 @@
 package br.com.softop.imobiliaria.util;
 
-import br.com.softop.imobiliaria.entity.Inquilino;
 import br.com.softop.imobiliaria.persistence.dao.BannerDAO;
 import br.com.softop.imobiliaria.persistence.dao.ClienteDAO;
 import br.com.softop.imobiliaria.persistence.dao.ConfiguracoesDAO;
@@ -9,6 +8,7 @@ import br.com.softop.imobiliaria.persistence.dao.ImovelDAO;
 import br.com.softop.imobiliaria.persistence.dao.InquilinoDAO;
 import br.com.softop.imobiliaria.persistence.dao.LoginDAO;
 import br.com.softop.imobiliaria.persistence.dao.OrientacoesDAO;
+import br.com.softop.imobiliaria.persistence.dao.SobreDAO;
 import br.com.softop.imobiliaria.persistence.dao.ThemeDAO;
 import br.com.softop.imobiliaria.persistence.dao.TipoImovelDAO;
 import br.com.softop.imobiliaria.persistence.dao.hibernate.HibernateBannerDAO;
@@ -19,6 +19,7 @@ import br.com.softop.imobiliaria.persistence.dao.hibernate.HibernateImovelDAO;
 import br.com.softop.imobiliaria.persistence.dao.hibernate.HibernateInquilinoDAO;
 import br.com.softop.imobiliaria.persistence.dao.hibernate.HibernateLoginDAO;
 import br.com.softop.imobiliaria.persistence.dao.hibernate.HibernateOrientacoesDAO;
+import br.com.softop.imobiliaria.persistence.dao.hibernate.HibernateSobreDAO;
 import br.com.softop.imobiliaria.persistence.dao.hibernate.HibernateThemeDAO;
 import br.com.softop.imobiliaria.persistence.dao.hibernate.HibernateTipoImovelDAO;
 
@@ -38,6 +39,7 @@ public class ContextDAO {
     private static OrientacoesDAO orientacoesDAO;
     private static InquilinoDAO inquilinoDAO;
     private static ThemeDAO themeDAO;
+    private static SobreDAO sobreDAO;
     
     public static LoginDAO getLoginDAO() {
         if(loginDAO == null){
@@ -107,6 +109,12 @@ public class ContextDAO {
             themeDAO = new HibernateThemeDAO();
         }
         return themeDAO;
+    }
+    public static SobreDAO getSobreDAO() {
+        if(sobreDAO == null){
+            sobreDAO = new HibernateSobreDAO();
+        }
+        return sobreDAO;
     }
     
     

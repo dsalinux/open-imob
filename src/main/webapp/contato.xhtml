@@ -88,18 +88,16 @@
                 var contentString = '<div id="content">' +
                         '<div id="siteNotice">' +
                         '</div>' +
-                        '<h4 id="firstHeading" class="firstHeading title full-width">Imperial Imóveis</h4>' +
+                        '<h4 id="firstHeading" class="firstHeading title full-width">#{configuracoesView.configuracoes.nomeImobiliaria}</h4>' +
                         '<div id="bodyContent">' +
-                        'A <b>Imperial Imóveis</b>, foi inaugurada em João' +
-                        'Pinheiro no dia 11/08/2006, com o objetivo de oferecer' +
-                        'uma nova opção para o Mercado Imobiliário de João' +
-                        'Pinheiro/MG, através de um serviço diferenciado, ' +
-                        'moderno e de alta qualidade para surpreender às ' +
-                        'expectativas deste exigente e seleto nicho de' +
-                        'mercado. Venha nos conhecer!' +
+                        
+                        '<p>#{configuracoesView.configuracoes.logradouro}, #{configuracoesView.configuracoes.numero}</p> '+
+                                '<p> #{configuracoesView.configuracoes.bairro}, #{configuracoesView.configuracoes.cidade}-#{configuracoesView.configuracoes.uf}</p> '+
+                                '<p> CEP: #{configuracoesView.configuracoes.cep}</p>'+
+                                
                         '</div>' +
                         '</div>';
-                image = '#{request.contextPath}/javax.faces.resource/flag_imperial.png.jsf?ln=images';
+//                image = '#{request.contextPath}/#{configuracoesView.configuracoes.logo==null?"javax.faces.resource/logoimb.png.jsf?ln=images":facesContext.externalContext.contextName.concat("/imagemServlet?imageName=").concat(configuracoesView.configuracoes.logo)}';
                 myPosition = {lat: #{configuracoesView.configuracoes.latitude}, lng: #{configuracoesView.configuracoes.longitude}}
                 var map = new google.maps.Map(document.getElementById('map'), {
                     center: myPosition,
@@ -109,7 +107,7 @@
                 var marker = new google.maps.Marker({
                     position: myPosition,
                     map: map,
-                    icon: image,
+//                    icon: image,
                     title: 'Imperial imóveis!'
                 });
                 var infowindow = new google.maps.InfoWindow({

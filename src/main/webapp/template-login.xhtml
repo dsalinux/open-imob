@@ -21,7 +21,8 @@
             </p:messages>
             <div class="ui-fluid">
                 <p:panelGrid layout="grid" columns="2" styleClass="ui-panelgrid-blank">
-                    <h:graphicImage library="images" name="logo.png" style="margin-top: 10px; max-width: 120px"></h:graphicImage>
+                    <h:graphicImage rendered="#{not empty configuracoesView.configuracoes.logo}" value="#{facesContext.externalContext.contextName}/imagemServlet?imageName=#{configuracoesView.configuracoes.logo}" style="max-height: 40px"></h:graphicImage>
+                    <h:graphicImage rendered="#{empty configuracoesView.configuracoes.logo}" library="images" name="logoimb.png"  style="max-height: 40px"></h:graphicImage>
                     <h:panelGroup style="float: left;">
                         <ui:insert></ui:insert>
                     </h:panelGroup>
